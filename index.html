@@ -8,7 +8,6 @@
   * { margin:0; padding:0; box-sizing:border-box; }
   html, body { background:#0f172a; color:#e2e8f0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen,Ubuntu,sans-serif; line-height:1.5; }
 
-  /* HEADER */
   .header { background:#0f172a; border-bottom:1px solid #1e293b; padding:20px 32px 0; position:sticky; top:0; z-index:10; }
   .header-top { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:16px; gap:24px; flex-wrap:wrap; }
   .header h1 { font-size:22px; font-weight:700; color:#f1f5f9; }
@@ -21,7 +20,6 @@
   .metric-label { font-size:10px; color:#64748b; text-transform:uppercase; letter-spacing:0.5px; margin-top:4px; }
   .arrow { color:#64748b; font-size:18px; }
 
-  /* TABS */
   .tabs { display:flex; gap:4px; overflow-x:auto; scrollbar-width:thin; scrollbar-color:#334155 transparent; }
   .tabs::-webkit-scrollbar { height:3px; }
   .tabs::-webkit-scrollbar-thumb { background:#334155; border-radius:3px; }
@@ -32,7 +30,6 @@
   .tab .num { color:#475569; margin-right:4px; font-size:11px; }
   .tab.active .num { color:#94a3b8; }
 
-  /* CONTENT */
   .content-wrap { padding:0 32px 32px; }
   .content { background:#1e293b; border-radius:0 8px 8px 8px; border:1px solid #334155; border-top:none; padding:28px; min-height:500px; }
   .section { display:none; }
@@ -43,7 +40,6 @@
   .section-goal { font-size:14px; color:#94a3b8; margin-top:8px; line-height:1.6; }
   .section-goal strong { color:#cbd5e1; }
 
-  /* BLOCKS */
   .blocks { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
   .block { background:#0f172a; border-radius:8px; padding:18px; border:1px solid #334155; }
   .block.full { grid-column: 1 / -1; }
@@ -56,11 +52,11 @@
   .block li::before { content:"•"; position:absolute; left:4px; color:#475569; }
   .block li.checkbox { padding-left:26px; }
   .block li.checkbox::before { content:"☐"; color:#475569; font-size:14px; left:4px; top:5px; }
-
   .block h4 { font-size:13px; color:#cbd5e1; margin:14px 0 6px; font-weight:600; }
   .block h4:first-child { margin-top:0; }
+  .block p { font-size:13px; color:#cbd5e1; line-height:1.55; margin-bottom:8px; }
+  .block p:last-child { margin-bottom:0; }
 
-  /* TABLE */
   .data-table { width:100%; border-collapse:collapse; margin-top:8px; font-size:12px; }
   .data-table th { font-size:10px; text-transform:uppercase; letter-spacing:0.5px; color:#64748b; text-align:left; padding:8px 10px; border-bottom:1px solid #334155; font-weight:600; }
   .data-table td { font-size:12px; color:#cbd5e1; padding:9px 10px; border-bottom:1px solid #1e293b; vertical-align:top; }
@@ -73,33 +69,48 @@
   .badge.orange { background:#431407; color:#fb923c; }
   .badge.red { background:#450a0a; color:#f87171; }
   .badge.gray { background:#1e293b; color:#94a3b8; }
+  .badge.purple { background:#2e1065; color:#a78bfa; }
 
-  /* INSIGHT BOX */
   .insight { background:#172554; border-radius:6px; padding:12px 14px; border:1px solid #1e3a5f; margin-top:12px; }
   .insight.warning { background:#431407; border-color:#7c2d12; }
   .insight.success { background:#052e16; border-color:#14532d; }
+  .insight.danger { background:#450a0a; border-color:#7f1d1d; }
   .insight-label { font-size:10px; color:#3b82f6; font-weight:700; text-transform:uppercase; letter-spacing:0.5px; }
   .insight.warning .insight-label { color:#fb923c; }
   .insight.success .insight-label { color:#22c55e; }
+  .insight.danger .insight-label { color:#f87171; }
   .insight-text { font-size:13px; color:#cbd5e1; margin-top:4px; line-height:1.5; }
 
-  /* SOURCES */
+  .quote { font-style:italic; color:#94a3b8; font-size:13px; padding:8px 12px; border-left:3px solid #475569; margin:8px 0; line-height:1.5; }
+
   .sources { margin-top:24px; padding-top:18px; border-top:1px solid #334155; }
   .sources-title { font-size:10px; color:#64748b; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:10px; }
   .source-tag { display:inline-block; background:#0f172a; color:#94a3b8; font-size:11px; padding:4px 10px; border-radius:4px; margin:0 6px 6px 0; border:1px solid #334155; font-family:monospace; }
 
-  /* FORMULA */
   .formula { background:#0f172a; border:1px solid #334155; border-radius:8px; padding:16px; text-align:center; font-size:14px; color:#cbd5e1; margin:8px 0; }
   .formula .num { color:#3b82f6; font-weight:700; font-size:18px; }
   .formula .op { color:#64748b; margin:0 6px; }
   .formula .res { color:#22c55e; font-weight:700; font-size:18px; }
 
-  /* FOOTER */
+  .segment-card { background:#0f172a; border-radius:8px; padding:16px; border:1px solid #334155; margin-bottom:14px; }
+  .segment-card h3 { font-size:15px; color:#f1f5f9; margin-bottom:4px; }
+  .segment-card .meta { font-size:11px; color:#64748b; margin-bottom:10px; }
+  .segment-stats { display:grid; grid-template-columns:repeat(auto-fit, minmax(110px, 1fr)); gap:8px; margin-bottom:12px; }
+  .stat { background:#1e293b; border-radius:5px; padding:6px 8px; }
+  .stat-label { font-size:9px; color:#64748b; text-transform:uppercase; letter-spacing:0.4px; }
+  .stat-value { font-size:13px; color:#f1f5f9; font-weight:600; margin-top:2px; }
+  .stat-value.green { color:#22c55e; }
+  .stat-value.blue { color:#60a5fa; }
+  .stat-value.orange { color:#fb923c; }
+  .stat-value.red { color:#f87171; }
+
+  .segment-block-title { font-size:10px; color:#64748b; text-transform:uppercase; letter-spacing:0.4px; margin:10px 0 4px; font-weight:600; }
+  .segment-block-content { font-size:12px; color:#cbd5e1; line-height:1.5; }
+
   .footer { padding:20px 32px 30px; text-align:center; color:#475569; font-size:11px; }
   .footer a { color:#64748b; text-decoration:none; }
   .footer a:hover { color:#94a3b8; }
 
-  /* RESPONSIVE */
   @media (max-width: 768px) {
     .blocks { grid-template-columns:1fr; }
     .header { padding:16px 16px 0; }
@@ -117,7 +128,6 @@
 </head>
 <body>
 
-<!-- HEADER -->
 <div class="header">
   <div class="header-top">
     <div>
@@ -125,28 +135,19 @@
       <div class="subtitle">Внутренний справочник команды · апрель 2026</div>
     </div>
     <div class="metrics">
-      <div class="metric">
-        <div class="metric-value">20М</div>
-        <div class="metric-label">Сейчас</div>
-      </div>
+      <div class="metric"><div class="metric-value">20М</div><div class="metric-label">Сейчас</div></div>
       <div class="arrow">→</div>
-      <div class="metric">
-        <div class="metric-value target">40М</div>
-        <div class="metric-label">Цель</div>
-      </div>
-      <div class="metric" style="margin-left:8px;">
-        <div class="metric-value deadline">8 мес</div>
-        <div class="metric-label">До декабря</div>
-      </div>
+      <div class="metric"><div class="metric-value target">40М</div><div class="metric-label">Цель</div></div>
+      <div class="metric" style="margin-left:8px;"><div class="metric-value deadline">8 мес</div><div class="metric-label">До декабря</div></div>
     </div>
   </div>
-
   <div class="tabs" id="tabs">
     <div class="tab active" data-section="s1"><span class="num">1.</span>As-Is</div>
     <div class="tab" data-section="s2"><span class="num">2.</span>To-Be</div>
     <div class="tab" data-section="s3"><span class="num">3.</span>Рычаги</div>
     <div class="tab blocker" data-section="s4"><span class="num">4.</span>Продукт ⚠️</div>
     <div class="tab" data-section="s5"><span class="num">5.</span>Сегменты</div>
+    <div class="tab" data-section="s5b"><span class="num">5+.</span>Смежные</div>
     <div class="tab" data-section="s6"><span class="num">6.</span>Каналы</div>
     <div class="tab" data-section="s7"><span class="num">7.</span>Кросс-сейл</div>
     <div class="tab" data-section="s8"><span class="num">8.</span>Операции</div>
@@ -158,7 +159,6 @@
   </div>
 </div>
 
-<!-- CONTENT -->
 <div class="content-wrap">
 <div class="content">
 
@@ -166,20 +166,9 @@
 <div class="section active" id="s1">
   <div class="section-header">
     <div class="section-title">1. Исходная позиция (As-Is)</div>
-    <div class="section-goal"><strong>Цель:</strong> Зафиксировать отправную точку — где мы сейчас, чтобы точно измерять прогресс.</div>
+    <div class="section-goal"><strong>Где мы сейчас.</strong> 1000 активных партнёров, 20М ₽/мес, ассортимент готов, продукт — на бумаге.</div>
   </div>
   <div class="blocks">
-    <div class="block">
-      <div class="block-title">Ключевые вопросы</div>
-      <ul>
-        <li>Сколько приносит бизнес сейчас? (выручка, GMV, маржа)</li>
-        <li>Кто наши партнёры? 1000 активных — по сегментам, сколько приносит каждый</li>
-        <li>Какой средний чек и частота заказов?</li>
-        <li>CAC, LTV, ARPPU, retention по сегментам?</li>
-        <li>Что есть в ассортименте: свет, электрокарнизы, умный дом — что продаётся?</li>
-        <li>Спящая база 5000 — кто они, почему ушли?</li>
-      </ul>
-    </div>
     <div class="block">
       <div class="block-title">Текущие метрики</div>
       <table class="data-table">
@@ -188,32 +177,58 @@
         <tr><td>Спящая база</td><td><strong>5 000</strong></td><td><span class="badge orange">реактивация</span></td></tr>
         <tr><td>Выручка/мес</td><td><strong>20М ₽</strong></td><td><span class="badge green">стабильно</span></td></tr>
         <tr><td>Средний CAC</td><td>18 500 ₽</td><td><span class="badge blue">норма</span></td></tr>
+        <tr><td>LTV</td><td>150 000 ₽</td><td><span class="badge green">здорово</span></td></tr>
         <tr><td>LTV/CAC</td><td>8.1x</td><td><span class="badge green">здорово</span></td></tr>
-        <tr><td>Payback</td><td>1 месяц</td><td><span class="badge green">быстро</span></td></tr>
+        <tr><td>ARPPU (за заказ)</td><td>100 000 ₽</td><td><span class="badge gray">—</span></td></tr>
+        <tr><td>Маржа на заказ</td><td>30 000 ₽ (30%)</td><td><span class="badge blue">норма</span></td></tr>
+        <tr><td>Lifetime партнёра</td><td>5 лет</td><td><span class="badge green">долго</span></td></tr>
+        <tr><td>Churn rate</td><td>15%/год</td><td><span class="badge blue">норма</span></td></tr>
+        <tr><td>Payback CAC</td><td>1 месяц</td><td><span class="badge green">быстро</span></td></tr>
       </table>
     </div>
     <div class="block">
       <div class="block-title warning">Продукт: что есть и чего нет</div>
       <table class="data-table">
         <tr><th>Компонент</th><th>Статус</th></tr>
-        <tr><td>Основной ассортимент (свет)</td><td><span class="badge green">работает</span></td></tr>
+        <tr><td>Свет (основной ассортимент)</td><td><span class="badge green">работает</span></td></tr>
         <tr><td>Электрокарнизы</td><td><span class="badge green">в ассортименте</span></td></tr>
         <tr><td>Умный дом</td><td><span class="badge green">в ассортименте</span></td></tr>
+        <tr><td>Комплектация под проект</td><td><span class="badge green">работает</span></td></tr>
+        <tr><td>Ответственное хранение</td><td><span class="badge green">работает</span></td></tr>
+        <tr><td>Рекламация за 24 ч</td><td><span class="badge green">работает</span></td></tr>
         <tr><td>Личный кабинет</td><td><span class="badge red">нет</span></td></tr>
-        <tr><td>Лендинг</td><td><span class="badge red">нет</span></td></tr>
+        <tr><td>Лендинг с калькулятором</td><td><span class="badge red">нет</span></td></tr>
         <tr><td>Реферальная система L2</td><td><span class="badge red">нет</span></td></tr>
+        <tr><td>Светорасчёт (Dialux)</td><td><span class="badge red">нет</span></td></tr>
+        <tr><td>OCR парсинг смет</td><td><span class="badge red">нет</span></td></tr>
+        <tr><td>Мгновенные выплаты</td><td><span class="badge red">нет</span></td></tr>
       </table>
     </div>
     <div class="block">
-      <div class="block-title">Ассортимент</div>
-      <ul>
-        <li><strong>Свет</strong> — основная категория, рабочий процесс</li>
-        <li><strong>Электрокарнизы</strong> — готово, можно продавать сегодня</li>
-        <li><strong>Умный дом</strong> — готово, можно продавать сегодня</li>
-      </ul>
+      <div class="block-title">Размер рынка</div>
+      <table class="data-table">
+        <tr><td>TAM (весь ремонт в РФ)</td><td><strong>2.75 трлн ₽</strong></td></tr>
+        <tr><td>SAM (свет в ремонте)</td><td><strong>165 млрд ₽</strong></td></tr>
+        <tr><td>SOM (целевой объём)</td><td><strong>1.2 млрд ₽+</strong></td></tr>
+        <tr><td>Рост рынка</td><td>8-12% CAGR</td></tr>
+      </table>
       <div class="insight">
-        <div class="insight-label">Потенциал кросс-сейла</div>
-        <div class="insight-text">+33% к среднему чеку через допродажу карнизов и умного дома текущим 1000 партнёрам</div>
+        <div class="insight-label">Целевой GMV при 5000 партнёров</div>
+        <div class="insight-text">4.775 млрд ₽/год · валовая маржа 2.626 млрд (55%) · EBITDA 334 млн (19%)</div>
+      </div>
+    </div>
+    <div class="block">
+      <div class="block-title">Что уже работает</div>
+      <ul>
+        <li>1000 активных партнёров (заказы за последние 4 мес)</li>
+        <li>Архитекторы HoReCa: база 1500+ партнёров</li>
+        <li>Сегмент комплектаторов с LTV/CAC до 53x</li>
+        <li>Здоровые юнит-экономики во всех A-сегментах</li>
+        <li>Healthy LTV/CAC = 8.1x на средней когорте</li>
+      </ul>
+      <div class="insight success">
+        <div class="insight-label">Готовность к кросс-сейлу</div>
+        <div class="insight-text">+33% к среднему чеку через допродажу карнизов и умного дома текущим 1000 партнёрам — категории готовы, продавать можно сегодня</div>
       </div>
     </div>
   </div>
@@ -229,7 +244,7 @@
 <div class="section" id="s2">
   <div class="section-header">
     <div class="section-title">2. Целевая позиция (To-Be)</div>
-    <div class="section-goal"><strong>Цель:</strong> Конкретные цифры на декабрь 2026 — что значит «40М/мес» в деталях.</div>
+    <div class="section-goal"><strong>Декабрь 2026.</strong> 40М ₽/мес — конкретные цифры, как раскладывается, что нужно для поддержки этого объёма.</div>
   </div>
   <div class="blocks">
     <div class="block full">
@@ -240,25 +255,41 @@
       <div style="font-size:12px; color:#94a3b8; text-align:center; margin-top:8px;">партнёров × средняя выручка с партнёра/мес</div>
     </div>
     <div class="block">
-      <div class="block-title">Ключевые вопросы</div>
-      <ul>
-        <li>40М/мес — как раскладывается: партнёры × чек × частота?</li>
-        <li>Целевая структура базы по сегментам — кого сколько?</li>
-        <li>Доля кросс-сейла в выручке: свет vs карнизы vs умный дом?</li>
-        <li>Операционные метрики для x2 объёма: SLA, NPS?</li>
-        <li>Как выглядит «типичный месяц» при 40М?</li>
-      </ul>
-    </div>
-    <div class="block">
       <div class="block-title">Целевые показатели</div>
       <table class="data-table">
         <tr><th>Показатель</th><th>Сейчас</th><th>Цель</th></tr>
         <tr><td>Активные партнёры</td><td>1 000</td><td><strong>1 500</strong></td></tr>
-        <tr><td>Выручка/партнёр/мес</td><td>20 000 ₽</td><td><strong>26 700 ₽</strong></td></tr>
+        <tr><td>Выручка/партнёр/мес</td><td>20 000 ₽</td><td><strong>26 700 ₽</strong> (+33%)</td></tr>
         <tr><td>Выручка/мес</td><td>20М ₽</td><td><strong>40М ₽</strong></td></tr>
         <tr><td>Доля кросс-сейла</td><td>низкая</td><td><strong>25-30%</strong></td></tr>
         <tr><td>NPS</td><td>—</td><td><strong>≥ 50</strong></td></tr>
+        <tr><td>Retention</td><td>85% (lifetime 5 лет)</td><td><strong>≥ 80%</strong></td></tr>
       </table>
+    </div>
+    <div class="block">
+      <div class="block-title">Целевая структура базы</div>
+      <table class="data-table">
+        <tr><th>Сегмент</th><th>Партнёров</th><th>Доля</th></tr>
+        <tr><td>Premium-студии</td><td>170</td><td>34%</td></tr>
+        <tr><td>Комплектаторы-аутсорсеры</td><td>120</td><td>24%</td></tr>
+        <tr><td>Дизайнеры-блогеры</td><td>90</td><td>18%</td></tr>
+        <tr><td>HoReCa/коворкинги</td><td>60</td><td>12%</td></tr>
+        <tr><td>Фрилансеры-частники</td><td>30</td><td>6%</td></tr>
+        <tr><td>Home Staging</td><td>20</td><td>4%</td></tr>
+        <tr><td>Студенты/новички</td><td>10</td><td>2%</td></tr>
+        <tr><td><strong>Итого +500</strong></td><td><strong>500</strong></td><td><strong>100%</strong></td></tr>
+      </table>
+    </div>
+    <div class="block full">
+      <div class="block-title">Структура целевого месяца при 40М</div>
+      <div class="segment-stats">
+        <div class="stat"><div class="stat-label">Заказов/мес</div><div class="stat-value blue">~400</div></div>
+        <div class="stat"><div class="stat-label">Средний чек</div><div class="stat-value blue">100 000 ₽</div></div>
+        <div class="stat"><div class="stat-label">Валовая маржа</div><div class="stat-value green">~12М ₽</div></div>
+        <div class="stat"><div class="stat-label">Выплаты партнёрам</div><div class="stat-value orange">~8М ₽</div></div>
+        <div class="stat"><div class="stat-label">OPEX</div><div class="stat-value">~2М ₽</div></div>
+        <div class="stat"><div class="stat-label">EBITDA</div><div class="stat-value green">~2М ₽</div></div>
+      </div>
     </div>
   </div>
   <div class="sources">
@@ -273,12 +304,12 @@
 <div class="section" id="s3">
   <div class="section-header">
     <div class="section-title">3. Стратегические рычаги</div>
-    <div class="section-goal"><strong>Цель:</strong> Определить два главных рычага роста и их вклад в удвоение выручки.</div>
+    <div class="section-goal"><strong>Два рычага.</strong> Рост базы +500 партнёров и рост среднего чека +33%. Каждый даёт ~50% от удвоения.</div>
   </div>
   <div class="blocks">
     <div class="block">
-      <div class="block-title">Рычаг 1 — рост базы</div>
-      <p style="font-size:13px; color:#cbd5e1; margin-bottom:12px;">От 1000 до ~1500 активных партнёров. Откуда +500?</p>
+      <div class="block-title">Рычаг 1 — рост базы +500</div>
+      <p>От 1000 до ~1500 активных партнёров. Источники:</p>
       <ul>
         <li><strong>Реактивация спящих</strong> (5000 база) → 180-220 партнёров</li>
         <li><strong>Реферальная сеть L2</strong> → 100-130 партнёров</li>
@@ -286,29 +317,36 @@
         <li><strong>Лендинг + контент</strong> → 50-70 партнёров</li>
         <li><strong>Школы/ивенты</strong> → 30-50 партнёров</li>
       </ul>
+      <div class="insight">
+        <div class="insight-label">Зависимость</div>
+        <div class="insight-text">Высокая — без личного кабинета и реферальной системы каналы не работают</div>
+      </div>
     </div>
     <div class="block">
-      <div class="block-title">Рычаг 2 — рост выручки на партнёра</div>
-      <p style="font-size:13px; color:#cbd5e1; margin-bottom:12px;">+33% к среднему чеку через кросс-сейл</p>
+      <div class="block-title">Рычаг 2 — рост чека +33%</div>
+      <p>Средний чек: 20 000 → 26 700 ₽/партнёр/мес. Источники:</p>
       <ul>
-        <li><strong>Электрокарнизы</strong> — допродажа существующим партнёрам</li>
-        <li><strong>Умный дом</strong> — для Premium и HoReCa</li>
+        <li><strong>Электрокарнизы</strong> +1 800 ₽ к ARPPU</li>
+        <li><strong>Умный дом</strong> +2 500 ₽ к ARPPU</li>
+        <li><strong>Акцентное освещение</strong> +700 ₽</li>
+        <li><strong>Сервисный пакет</strong> (монтаж, настройка) +500 ₽</li>
+        <li><strong>Доп. позиции</strong> в существующих заказах</li>
       </ul>
       <div class="insight success">
         <div class="insight-label">Преимущество</div>
-        <div class="insight-text">Категории уже в ассортименте — продавать можно сегодня</div>
+        <div class="insight-text">Категории уже в ассортименте, поставщики подключены — можно стартовать сегодня</div>
       </div>
     </div>
     <div class="block full">
       <div class="block-title">Соотношение рычагов</div>
       <table class="data-table">
-        <tr><th>Рычаг</th><th>Вклад</th><th>Скорость</th><th>Зависимость от продукта</th></tr>
-        <tr><td>Рост базы (+500)</td><td>~50%</td><td>Медленнее (8 мес)</td><td>Высокая (нужен кабинет, лендинг)</td></tr>
-        <tr><td>Рост выручки/партнёр (+33%)</td><td>~50%</td><td>Быстрее (можно начать сразу)</td><td>Низкая (категории готовы)</td></tr>
+        <tr><th>Рычаг</th><th>Вклад в рост</th><th>Скорость</th><th>Зависимость от продукта</th></tr>
+        <tr><td>Рост базы (+500)</td><td>~50%</td><td>Медленнее (8 мес)</td><td><span class="badge red">Высокая</span> кабинет, лендинг, L2</td></tr>
+        <tr><td>Рост чека (+33%)</td><td>~50%</td><td>Быстрее (можно сразу)</td><td><span class="badge green">Низкая</span> категории готовы</td></tr>
       </table>
-      <div class="insight">
+      <div class="insight warning">
         <div class="insight-label">Стратегическая логика</div>
-        <div class="insight-text">Кросс-сейл текущим партнёрам стартует немедленно. Рост базы блокирован продуктом — раздел 4.</div>
+        <div class="insight-text">Кросс-сейл текущим 1000 партнёрам стартует немедленно — это самый быстрый путь к деньгам. Рост базы блокирован продуктом (раздел 4) — параллельно строим инфраструктуру.</div>
       </div>
     </div>
   </div>
@@ -319,42 +357,56 @@
   </div>
 </div>
 
-<!-- SECTION 4: Product (BLOCKER) -->
+<!-- SECTION 4: Product BLOCKER -->
 <div class="section" id="s4">
   <div class="section-header">
     <div class="section-title">4. Продуктовая стратегия <span style="background:#431407; color:#fb923c; font-size:11px; padding:3px 10px; border-radius:4px; vertical-align:middle; margin-left:8px;">⚠️ БЛОКЕР №1</span></div>
-    <div class="section-goal"><strong>Цель:</strong> Определить что строить и в каком порядке. Без продукта остальные рычаги не работают.</div>
+    <div class="section-goal"><strong>Без продукта рычаги не работают.</strong> Кабинет, лендинг, реферальная система — всё ещё на бумаге.</div>
   </div>
   <div class="blocks">
     <div class="block full">
       <div class="block-title warning">Что нужно построить</div>
       <table class="data-table">
-        <tr><th>Компонент</th><th>Что внутри</th><th>Приоритет</th></tr>
-        <tr><td><strong>MVP кабинета</strong></td><td>Финансовый модуль (баланс, выплаты, история), реферальный дашборд (L2)</td><td><span class="badge red">P0</span></td></tr>
-        <tr><td><strong>Лендинг</strong></td><td>Калькулятор дохода, конверсионная воронка</td><td><span class="badge red">P0</span></td></tr>
-        <tr><td><strong>Реферальная система L2</strong></td><td>Механика, антифрод (DaDa API), быстрые выплаты</td><td><span class="badge red">P0</span></td></tr>
-        <tr><td>Полный кабинет</td><td>Смарт-импорт XLSX/PDF/JPG → OCR, геймификация Base/Pro/Expert</td><td><span class="badge orange">P1</span></td></tr>
-        <tr><td>Интеграции</td><td>1С/ERP, API самозанятых</td><td><span class="badge gray">P2</span></td></tr>
+        <tr><th>Компонент</th><th>Что внутри</th><th>Приоритет</th><th>Влияние</th></tr>
+        <tr><td><strong>MVP кабинета</strong></td><td>Финансовый модуль (баланс, выплаты, история транзакций), реферальный дашборд (L2 сеть, воронка приглашённых, дивиденды)</td><td><span class="badge red">P0</span></td><td>Разблок реферальной программы</td></tr>
+        <tr><td><strong>Лендинг с калькулятором</strong></td><td>«Сколько заработаешь» калькулятор, конверсионная воронка, лид-магнит</td><td><span class="badge red">P0</span></td><td>Запуск платных каналов</td></tr>
+        <tr><td><strong>L2 реферальная система</strong></td><td>Механика 5%, антифрод DaDa API, быстрые выплаты, защита от спама</td><td><span class="badge red">P0</span></td><td>Виральный рост базы</td></tr>
+        <tr><td>Smart-импорт смет</td><td>OCR парсинг XLSX/PDF/JPG → автогенерация спеки</td><td><span class="badge orange">P1</span></td><td>Снижение трения для аутсорсеров</td></tr>
+        <tr><td>Геймификация</td><td>Base 20% → Pro 30% → Expert 40%, прогрессия, перки, статус-бейджи</td><td><span class="badge orange">P1</span></td><td>Удержание + апселл уровня</td></tr>
+        <tr><td>Светорасчёт</td><td>Dialux интеграция, IES-файлы, проверка норм освещённости</td><td><span class="badge orange">P1</span></td><td>Захват HoReCa</td></tr>
+        <tr><td>Мгновенные выплаты</td><td>Выплата комиссии в день оплаты счёта клиентом, API самозанятых</td><td><span class="badge orange">P1</span></td><td>Снятие риска №1 (доверие)</td></tr>
+        <tr><td>Интеграции</td><td>1С/ERP реал-тайм, ФНС API для самозанятых</td><td><span class="badge gray">P2</span></td><td>Автоматизация бэка</td></tr>
       </table>
     </div>
     <div class="block">
-      <div class="block-title">Ключевые вопросы</div>
+      <div class="block-title">MVP кабинета — что в первой версии</div>
+      <h4>Финансовый модуль</h4>
       <ul>
-        <li>Какой MVP кабинета запустить первым?</li>
-        <li>Какой лендинг нужен и как считать доход?</li>
-        <li>Как устроена реферальная система L2?</li>
-        <li>Что даёт максимальный разблок за минимум разработки?</li>
-        <li>Какие интеграции необходимы (1С, самозанятые)?</li>
+        <li>Pending balance (в процессе) и Available balance (доступно)</li>
+        <li>История транзакций по заказам</li>
+        <li>Юр. документы (договор, акты) на скачивание</li>
+        <li>Интеграция с API самозанятых для легальных выплат</li>
+      </ul>
+      <h4>Реферальный дашборд</h4>
+      <ul>
+        <li>L2 сеть: кого пригласил, кто активен</li>
+        <li>Воронка приглашённых со статусами</li>
+        <li>Lifetime-счётчик дивидендов от L2</li>
+        <li>Реферальная ссылка с трекингом</li>
       </ul>
     </div>
     <div class="block">
       <div class="block-title">Геймификация уровней</div>
       <table class="data-table">
-        <tr><th>Уровень</th><th>Комиссия</th><th>SLA</th></tr>
-        <tr><td>Base</td><td>20%</td><td>8 ч</td></tr>
-        <tr><td>Pro</td><td>30%</td><td>4 ч</td></tr>
-        <tr><td>Expert</td><td>40%</td><td>2 ч</td></tr>
+        <tr><th>Уровень</th><th>Доля базы</th><th>Комиссия</th><th>SLA</th><th>Перки</th></tr>
+        <tr><td><strong>Base</strong></td><td>60% (3000)</td><td>20%</td><td>8 ч</td><td>—</td></tr>
+        <tr><td><strong>Pro</strong></td><td>35% (1750)</td><td>30%</td><td>4 ч</td><td>Приоритетный менеджер</td></tr>
+        <tr><td><strong>Expert</strong></td><td>5% (250)</td><td>40%</td><td>2 ч</td><td>VIP 24/7, Padel-турниры</td></tr>
       </table>
+      <div class="insight warning">
+        <div class="insight-label">Стресс-тест Expert на чек 500к ₽</div>
+        <div class="insight-text">Маржа 55% (275к) − выплата 40% (200к) − L2 5% (25к) − налоги (22.5к) − OPEX (27.5к) = <strong>0 ₽</strong>. Expert работает в ноль, маржа из Base/Pro.</div>
+      </div>
     </div>
   </div>
   <div class="sources">
@@ -365,65 +417,349 @@
   </div>
 </div>
 
-<!-- SECTION 5: Segments -->
+<!-- SECTION 5: Main Segments -->
 <div class="section" id="s5">
   <div class="section-header">
-    <div class="section-title">5. Сегментная стратегия</div>
-    <div class="section-goal"><strong>Цель:</strong> Расставить приоритеты — кого привлекать первыми, кого позже, кого пока не трогать.</div>
+    <div class="section-title">5. Сегментная стратегия — основные сегменты</div>
+    <div class="section-goal"><strong>8 сегментов</strong> с полной юнит-экономикой и приоритетами. Расставляем порядок.</div>
   </div>
-  <div class="blocks">
-    <div class="block full">
-      <div class="block-title">Основные сегменты (8 шт.)</div>
-      <table class="data-table">
-        <tr><th>Сегмент</th><th>Скоринг</th><th>LTV/CAC</th><th>Роль в стратегии</th></tr>
-        <tr><td><strong>Дизайнер-блогер</strong></td><td>81</td><td><span class="badge green">200x</span></td><td>Виральный: нулевой CAC, сетевой эффект</td></tr>
-        <tr><td><strong>Дизайнер-декоратор</strong></td><td>80</td><td><span class="badge green">58x</span></td><td>Частотный: 3 заказа/мес, быстрый оборот</td></tr>
-        <tr><td><strong>Студия полного цикла</strong></td><td>80</td><td><span class="badge blue">6.3x</span></td><td>Крупночековый: умный дом + карнизы</td></tr>
-        <tr><td><strong>Архитектор HoReCa</strong></td><td>79</td><td><span class="badge blue">7.5x</span></td><td>HoReCa: большие проекты, повторы</td></tr>
-        <tr><td><strong>Комплектатор-аутсорсер</strong></td><td>78</td><td><span class="badge green">53x</span></td><td>Якорный: стабильный поток, высокий LTV</td></tr>
-        <tr><td><strong>Региональный партнёр</strong></td><td>78</td><td><span class="badge orange">3.15x</span></td><td>Географический рычаг</td></tr>
-        <tr><td>Начинающий дизайнер</td><td>75</td><td><span class="badge blue">5.7x</span></td><td>Инкубатор: ранний захват лояльности</td></tr>
-        <tr><td>Частный фрилансер</td><td>65</td><td><span class="badge orange">4.0x</span></td><td>Фундамент: объём, низкий приоритет</td></tr>
-      </table>
-    </div>
-    <div class="block full">
-      <div class="block-title">Смежные сегменты (7 шт.)</div>
-      <table class="data-table">
-        <tr><th>Сегмент</th><th>Switch Score</th><th>LTV/CAC</th><th>Статус</th></tr>
-        <tr><td><strong>Ландшафтный дизайнер (уличный)</strong></td><td>55</td><td><span class="badge green">6.4x</span></td><td>Высокий потенциал, сезонность</td></tr>
-        <tr><td>Прораб жилых объектов</td><td>51</td><td><span class="badge orange">1.8x → 3.0x</span></td><td>Зависит от кросс-сейла</td></tr>
-        <tr><td>Ландшафтный архитектор (коммерч.)</td><td>44</td><td><span class="badge blue">4.0x</span></td><td>Маленький рынок, 44-ФЗ</td></tr>
-        <tr><td>Прораб коммерческих объектов</td><td>37</td><td><span class="badge red">1.4x</span></td><td>Слабая экономика, не приоритет</td></tr>
-        <tr><td><strong>Потолочник-монтажник</strong></td><td>35</td><td><span class="badge orange">3.2x</span></td><td>Уже работает — масштабировать</td></tr>
-        <tr><td>Мастер-универсал</td><td>25</td><td><span class="badge orange">1.7x → 8.5x</span></td><td>Масштаб, но слабая база</td></tr>
-        <tr><td>Электрик-монтажник</td><td>5</td><td><span class="badge red">1.1x</span></td><td>На грани рентабельности</td></tr>
-      </table>
-    </div>
-    <div class="block">
-      <div class="block-title success">Фокус-сегменты</div>
-      <ul>
-        <li>Комплектатор-аутсорсер — якорь</li>
-        <li>Дизайнер-блогер — виральность</li>
-        <li>Студия полного цикла — крупный чек</li>
-        <li>Дизайнер-декоратор — частотность</li>
-        <li>Потолочник + Ландшафтный — смежные</li>
-      </ul>
-    </div>
-    <div class="block">
-      <div class="block-title">Ключевые вопросы</div>
-      <ul>
-        <li>Сколько партнёров нужно в каждом сегменте?</li>
-        <li>Какая ожидаемая выручка от сегмента?</li>
-        <li>Какая специфика работы: SLA, инструменты?</li>
-        <li>Какие смежные подключать и когда?</li>
-        <li>Для каких нужен апсейл, чтобы экономика сошлась?</li>
-      </ul>
-    </div>
+
+  <div class="block full" style="margin-bottom:16px;">
+    <div class="block-title">Рейтинг сегментов</div>
+    <table class="data-table">
+      <tr><th>Сегмент</th><th>Скоринг</th><th>LTV/CAC</th><th>ARPPU</th><th>Категория</th><th>Роль</th></tr>
+      <tr><td><strong>Студия полного цикла (Premium)</strong></td><td>83</td><td><span class="badge blue">6.3x</span></td><td>500к</td><td><span class="badge green">A</span></td><td>Якорный + кросс-сейл</td></tr>
+      <tr><td><strong>Дизайнер-блогер-инфлюенсер</strong></td><td>81</td><td><span class="badge green">200x</span></td><td>45к</td><td><span class="badge green">A</span></td><td>Виральный масштаб</td></tr>
+      <tr><td><strong>Дизайнер-декоратор (Home Staging)</strong></td><td>80</td><td><span class="badge green">58x</span></td><td>15к</td><td><span class="badge green">A</span></td><td>Частотность 3/мес</td></tr>
+      <tr><td><strong>Архитектор HoReCa</strong></td><td>79</td><td><span class="badge blue">7.5x</span></td><td>750к</td><td><span class="badge green">A</span></td><td>Большие проекты</td></tr>
+      <tr><td><strong>Комплектатор-аутсорсер</strong></td><td>78</td><td><span class="badge green">53x</span></td><td>850к</td><td><span class="badge green">A</span></td><td>Стабильный поток</td></tr>
+      <tr><td>Начинающий дизайнер (студент)</td><td>74</td><td><span class="badge blue">5.7x</span></td><td>45к</td><td><span class="badge green">A</span></td><td>Инкубатор лояльности</td></tr>
+      <tr><td>Региональный партнёр</td><td>72</td><td><span class="badge orange">3.15x</span></td><td>350к</td><td><span class="badge orange">B</span></td><td>Гео-расширение</td></tr>
+      <tr><td>Частный фрилансер</td><td>66</td><td><span class="badge orange">4.0x</span></td><td>100к</td><td><span class="badge orange">B</span></td><td>Объёмный фундамент</td></tr>
+    </table>
   </div>
+
+  <!-- 1. Premium -->
+  <div class="segment-card">
+    <h3>🏆 Студия полного цикла (Premium) — Скоринг 83/100, Категория A</h3>
+    <div class="meta">35-55 лет · опыт 15+ лет · оборот студии 50-500 млн/год · 300-500 студий в РФ</div>
+    <div class="segment-stats">
+      <div class="stat"><div class="stat-label">ARPPU</div><div class="stat-value">500 000 ₽</div></div>
+      <div class="stat"><div class="stat-label">LTV</div><div class="stat-value green">1 575 000 ₽</div></div>
+      <div class="stat"><div class="stat-label">CAC</div><div class="stat-value">250 000 ₽</div></div>
+      <div class="stat"><div class="stat-label">LTV/CAC</div><div class="stat-value blue">6.3x</div></div>
+      <div class="stat"><div class="stat-label">Маржа</div><div class="stat-value">55%</div></div>
+      <div class="stat"><div class="stat-label">Частота</div><div class="stat-value">3 проекта/год</div></div>
+    </div>
+    <div class="segment-block-title">Pain Points</div>
+    <div class="segment-block-content">Нужно безупречное соответствие рендеру. Санкционные риски: европейская логистика встаёт на 4 месяца. Невозможно адаптировать стандартные модели под проект.</div>
+    <div class="quote">«Нам не нужен просто светильник, нам нужно чтобы он выглядел именно так, как мы пообещали заказчику на картинке»</div>
+    <div class="segment-block-title">Текущее решение</div>
+    <div class="segment-block-content">Прямые поставки из Европы (Flos, Artemide) · бутики света в МСК/СПб · локальное ремесленное производство для кастома</div>
+    <div class="segment-block-title">Value Proposition</div>
+    <div class="segment-block-content">Собственное гибкое производство + VIP-менеджер 24/7 + точное попадание в рендер через кастомизацию (финиши, размеры) + 100% локальное производство без санкционных рисков + smart home для расширения чека</div>
+  </div>
+
+  <!-- 2. Influencer -->
+  <div class="segment-card">
+    <h3>📱 Дизайнер-блогер-инфлюенсер — Скоринг 81/100, Категория A</h3>
+    <div class="meta">28-45 лет · 5к-100к+ подписчиков · доход 50-300 тыс/мес · 300-500 в РФ</div>
+    <div class="segment-stats">
+      <div class="stat"><div class="stat-label">ARPPU</div><div class="stat-value">45 000 ₽</div></div>
+      <div class="stat"><div class="stat-label">LTV (24 мес)</div><div class="stat-value green">2 400 000 ₽</div></div>
+      <div class="stat"><div class="stat-label">CAC</div><div class="stat-value">12 000 ₽</div></div>
+      <div class="stat"><div class="stat-label">LTV/CAC</div><div class="stat-value green">200x</div></div>
+      <div class="stat"><div class="stat-label">CPUser</div><div class="stat-value green">0 ₽</div></div>
+      <div class="stat"><div class="stat-label">Заказов/мес</div><div class="stat-value">40-50</div></div>
+    </div>
+    <div class="segment-block-title">Pain Points</div>
+    <div class="segment-block-content">Подписчики постоянно спрашивают где такой свет. Маркетплейсы дают 1-3% — копейки. Нет личного кабинета для трекинга. Долгие ручные выплаты.</div>
+    <div class="quote">«Мои подписчики постоянно спрашивают, где я беру такой свет. Мне надоело давать ссылки бесплатно»</div>
+    <div class="segment-block-title">Value Proposition</div>
+    <div class="segment-block-content">Личный кабинет с прозрачной статистикой каждого клика и покупки + комиссия 10-15% (в 5-10x выше маркетплейсов) + автоматизация и регулярность выплат + превращение экспертного контента в пассивный доход</div>
+  </div>
+
+  <!-- 3. Home Staging -->
+  <div class="segment-card">
+    <h3>🏠 Дизайнер-декоратор (Home Staging) — Скоринг 80/100, Категория A</h3>
+    <div class="meta">30-45 лет · опыт 5-10 лет · оборот 60-150 тыс/мес · 500-800 активных в РФ</div>
+    <div class="segment-stats">
+      <div class="stat"><div class="stat-label">ARPPU</div><div class="stat-value">15 000 ₽</div></div>
+      <div class="stat"><div class="stat-label">LTV (18 мес)</div><div class="stat-value green">810 000 ₽</div></div>
+      <div class="stat"><div class="stat-label">CAC</div><div class="stat-value green">3 750 ₽</div></div>
+      <div class="stat"><div class="stat-label">LTV/CAC</div><div class="stat-value green">58x</div></div>
+      <div class="stat"><div class="stat-label">Частота</div><div class="stat-value blue">3/мес</div></div>
+      <div class="stat"><div class="stat-label">Lifetime</div><div class="stat-value">18 мес</div></div>
+    </div>
+    <div class="segment-block-title">Pain Points</div>
+    <div class="segment-block-content">Узкие временные окна 2-3 дня. Объезд 5-10 магазинов. Hoff/Leroy не дают бонусов профессионалам. Срыв сроков = потеря денег.</div>
+    <div class="segment-block-title">Текущее решение</div>
+    <div class="segment-block-content">Hoff (дёшево) · Leroy Merlin (объезд гипермаркетов) · Avito (уникальный декор)</div>
+    <div class="segment-block-title">Value Proposition</div>
+    <div class="segment-block-content">Гарантия 100% наличия позиций + экспресс-доставка за 4 часа + дизайн «Instagram-ready» + кэшбэк 5-10% + 0% риска срыва фотосессии</div>
+  </div>
+
+  <!-- 4. HoReCa -->
+  <div class="segment-card">
+    <h3>🏨 Архитектор HoReCa и коворкингов — Скоринг 79/100, Категория A</h3>
+    <div class="meta">35-55 лет · опыт 10+ лет · бюро 10-50 чел · база уже 1500+ партнёров</div>
+    <div class="segment-stats">
+      <div class="stat"><div class="stat-label">ARPPU</div><div class="stat-value">750 000 ₽</div></div>
+      <div class="stat"><div class="stat-label">LTV</div><div class="stat-value blue">750 000 ₽</div></div>
+      <div class="stat"><div class="stat-label">CAC</div><div class="stat-value">100 000 ₽</div></div>
+      <div class="stat"><div class="stat-label">LTV/CAC</div><div class="stat-value blue">7.5x</div></div>
+      <div class="stat"><div class="stat-label">Комиссия</div><div class="stat-value">20-40%</div></div>
+      <div class="stat"><div class="stat-label">Churn</div><div class="stat-value green">&lt;5%/год</div></div>
+    </div>
+    <div class="segment-block-title">Pain Points</div>
+    <div class="segment-block-content">Гарантийные обязательства за свой счёт. Жёсткие нормы (СанПиН, пожарные, ГОСТ/ЕАС). Тендеры. Европейские бренды — 3-4 мес доставка. Нет IES-файлов у мелких поставщиков.</div>
+    <div class="quote">«Если свет в ресторане погаснет через месяц, мне придётся оплачивать выезд монтажников из своего кармана»</div>
+    <div class="segment-block-title">Value Proposition</div>
+    <div class="segment-block-content">Сервис замены за 24 часа + комиссия до 40% (максимум на рынке) + полный пакет документов для госкомиссии + IES-файлы для Dialux + сертификация ЕАС/ГОСТ + персональный менеджер</div>
+  </div>
+
+  <!-- 5. Complektator -->
+  <div class="segment-card">
+    <h3>📦 Комплектатор-аутсорсер — Скоринг 78/100, Категория A</h3>
+    <div class="meta">32-50 лет · опыт 7-15 лет · ведёт 3-7 объектов · оборот 10-50 млн/год · 150-200 в РФ</div>
+    <div class="segment-stats">
+      <div class="stat"><div class="stat-label">ARPPU</div><div class="stat-value">850 000 ₽</div></div>
+      <div class="stat"><div class="stat-label">LTV</div><div class="stat-value green">2 656 250 ₽</div></div>
+      <div class="stat"><div class="stat-label">CAC</div><div class="stat-value">50 000 ₽</div></div>
+      <div class="stat"><div class="stat-label">LTV/CAC</div><div class="stat-value green">53x</div></div>
+      <div class="stat"><div class="stat-label">Частота</div><div class="stat-value blue">5/год</div></div>
+      <div class="stat"><div class="stat-label">Маржа</div><div class="stat-value">25%</div></div>
+    </div>
+    <div class="segment-block-title">Pain Points</div>
+    <div class="segment-block-content">Логистический хаос: 10-15 поставщиков, путаница в счетах, Excel для сведения сотен позиций. Разные курьеры, отсутствие консолидации.</div>
+    <div class="quote">«Мне проще купить всё в одном месте чуть дороже, чем собирать счета по крупицам и три дня разгребать доставки на стройке»</div>
+    <div class="segment-block-title">Value Proposition</div>
+    <div class="segment-block-content">Единый счёт на 80% брендов + маркировка коробок по зонам проекта + персональный менеджер Single Point of Contact + экономия 40+ часов на проекте + 100% гарантия отсутствия ошибок при разгрузке</div>
+  </div>
+
+  <!-- 6. Student -->
+  <div class="segment-card">
+    <h3>🎓 Начинающий дизайнер (студент) — Скоринг 74/100, Категория A</h3>
+    <div class="meta">22-28 лет · опыт &lt;1 года · доход 20-40 тыс · TAM ~500 000 человек, SOM ~15 000</div>
+    <div class="segment-stats">
+      <div class="stat"><div class="stat-label">ARPPU</div><div class="stat-value">45 000 ₽</div></div>
+      <div class="stat"><div class="stat-label">LTV (36 мес)</div><div class="stat-value">67 500 ₽</div></div>
+      <div class="stat"><div class="stat-label">CAC</div><div class="stat-value green">9 333 ₽</div></div>
+      <div class="stat"><div class="stat-label">LTV/CAC</div><div class="stat-value blue">5.7x</div></div>
+      <div class="stat"><div class="stat-label">Retention</div><div class="stat-value">65%</div></div>
+      <div class="stat"><div class="stat-label">Lifetime</div><div class="stat-value">36 мес</div></div>
+    </div>
+    <div class="segment-block-title">Pain Points</div>
+    <div class="segment-block-content">Парализующий страх ошибки: «лампочки не подойдут к цоколям», «света будет мало». Нет бюджета на платных консультантов. Любая ошибка = репутационный крах.</div>
+    <div class="segment-block-title">Value Proposition</div>
+    <div class="segment-block-content">Бесплатное экспертное сопровождение + 100% гарантия отсутствия техошибок + лучший LTV/CAC через школы (Skillbox, Contented) + макс. бонус до 15% от чека</div>
+  </div>
+
+  <!-- 7. Regional -->
+  <div class="segment-card">
+    <h3>🌍 Региональный партнёр (миллионники) — Скоринг 72/100, Категория B</h3>
+    <div class="meta">28-45 лет · ЕКБ, Казань, Новосибирск, Воронеж, Пермь и др. · 2-3 тыс активных в РФ</div>
+    <div class="segment-stats">
+      <div class="stat"><div class="stat-label">ARPPU</div><div class="stat-value">350 000 ₽</div></div>
+      <div class="stat"><div class="stat-label">LTV (24 мес)</div><div class="stat-value">175 000 ₽</div></div>
+      <div class="stat"><div class="stat-label">CAC</div><div class="stat-value">44 400 ₽</div></div>
+      <div class="stat"><div class="stat-label">LTV/CAC</div><div class="stat-value orange">3.15x</div></div>
+      <div class="stat"><div class="stat-label">Частота</div><div class="stat-value">1/4 мес</div></div>
+      <div class="stat"><div class="stat-label">Take rate</div><div class="stat-value">25%</div></div>
+    </div>
+    <div class="segment-block-title">Pain Points</div>
+    <div class="segment-block-content">2-3 локальных магазина с ограниченным ассортиментом. Долгая доставка из Москвы (1-2 нед). Высокие местные цены. Риск боя при дальней доставке.</div>
+    <div class="segment-block-title">Value Proposition</div>
+    <div class="segment-block-content">Широкий московский ассортимент + доставка за 3-5 дней + комиссия 10-15% + менеджер на языке региона + гарантия от боя при доставке</div>
+  </div>
+
+  <!-- 8. Freelancer -->
+  <div class="segment-card">
+    <h3>🆓 Частный фрилансер (Low-budget) — Скоринг 66/100, Категория B</h3>
+    <div class="meta">28-42 лет · опыт 3-7 лет · доход 80-150 тыс/мес · 3-5 тыс активных в РФ</div>
+    <div class="segment-stats">
+      <div class="stat"><div class="stat-label">ARPPU</div><div class="stat-value">100 000 ₽</div></div>
+      <div class="stat"><div class="stat-label">LTV</div><div class="stat-value">60 000 ₽</div></div>
+      <div class="stat"><div class="stat-label">CAC</div><div class="stat-value">15 000 ₽</div></div>
+      <div class="stat"><div class="stat-label">LTV/CAC</div><div class="stat-value orange">4.0x</div></div>
+      <div class="stat"><div class="stat-label">Комиссия</div><div class="stat-value">10%</div></div>
+      <div class="stat"><div class="stat-label">Switch Score</div><div class="stat-value blue">95</div></div>
+    </div>
+    <div class="segment-block-title">Pain Points</div>
+    <div class="segment-block-content">«Проще отправить клиента в Леруа, чем три дня ждать ответ от менеджера». Долгий поиск артикулов (4+ ч). Страх что клиент купит сам и заберёт бонус. Волатильность цен.</div>
+    <div class="quote">«Мне проще отправить клиента в Леруа, чем три дня ждать ответ от менеджера»</div>
+    <div class="segment-block-title">Value Proposition</div>
+    <div class="segment-block-content">Защита дохода (гарантия 10% бонуса при оплате клиентом) + автогенерация КП за 15 мин + AI-подбор аналогов по бюджету + 90%+ наличие позиций + выплата за 3-5 дней</div>
+  </div>
+
   <div class="sources">
     <div class="sources-title">Источники данных</div>
-    <span class="source-tag">КОНТЕКСТ/02_Сегменты/</span>
-    <span class="source-tag">КОНТЕКСТ СМЕЖНЫЕ/</span>
+    <span class="source-tag">КОНТЕКСТ/02_Сегменты/ — 33 файла</span>
+  </div>
+</div>
+
+<!-- SECTION 5b: Adjacent Segments -->
+<div class="section" id="s5b">
+  <div class="section-header">
+    <div class="section-title">5+. Смежные сегменты</div>
+    <div class="section-goal"><strong>7 смежных профессий</strong> — потолочники, электрики, прорабы, ландшафтники. Switch Score, юнит-экономика, статус.</div>
+  </div>
+
+  <div class="block full" style="margin-bottom:16px;">
+    <div class="block-title">Рейтинг смежных сегментов</div>
+    <table class="data-table">
+      <tr><th>Сегмент</th><th>Switch Score</th><th>LTV/CAC</th><th>ARPPU</th><th>Статус</th><th>Рычаг роста</th></tr>
+      <tr><td><strong>Ландшафтный дизайнер (уличный)</strong></td><td>55</td><td><span class="badge green">6.4x</span></td><td>90к</td><td><span class="badge orange">B</span></td><td>Smart home для участка</td></tr>
+      <tr><td>Прораб жилых объектов</td><td>51</td><td><span class="badge orange">1.8x → 3.0x</span></td><td>55к</td><td><span class="badge orange">B</span></td><td>Smart home + карнизы</td></tr>
+      <tr><td>Ландшафтный архитектор (коммерч.)</td><td>44</td><td><span class="badge blue">4.0x</span></td><td>1М</td><td><span class="badge red">C</span></td><td>BIM (блок 44-ФЗ)</td></tr>
+      <tr><td>Прораб коммерческих объектов</td><td>37</td><td><span class="badge red">1.4x</span></td><td>350к</td><td><span class="badge red">C</span></td><td>Юр.док. (блок 44-ФЗ)</td></tr>
+      <tr><td><strong>Потолочник-монтажник</strong></td><td>35</td><td><span class="badge orange">3.2x</span></td><td>32к/мес</td><td><span class="badge green">A</span></td><td>Световые линии 2-3x чек</td></tr>
+      <tr><td>Мастер-универсал</td><td>25</td><td><span class="badge orange">1.7x → 8.5x</span></td><td>25к</td><td><span class="badge red">C</span></td><td>B2C рефералы 2-3x</td></tr>
+      <tr><td>Электрик-монтажник</td><td>5</td><td><span class="badge red">1.1x</span></td><td>25к</td><td><span class="badge red">C</span></td><td>Smart home upsell</td></tr>
+    </table>
+  </div>
+
+  <!-- Потолочник -->
+  <div class="segment-card">
+    <h3>🔧 Потолочник-монтажник натяжных потолков — Switch Score 35</h3>
+    <div class="meta">3-8 объектов/мес · в момент максимального доверия клиента</div>
+    <div class="segment-stats">
+      <div class="stat"><div class="stat-label">ARPPU/мес</div><div class="stat-value">32 000 ₽</div></div>
+      <div class="stat"><div class="stat-label">LTV</div><div class="stat-value">80 000 ₽</div></div>
+      <div class="stat"><div class="stat-label">CAC</div><div class="stat-value">25 000 ₽</div></div>
+      <div class="stat"><div class="stat-label">LTV/CAC</div><div class="stat-value orange">3.2x</div></div>
+      <div class="stat"><div class="stat-label">AMPPU</div><div class="stat-value">8 000 ₽/мес</div></div>
+      <div class="stat"><div class="stat-label">Churn</div><div class="stat-value">10%/мес</div></div>
+    </div>
+    <div class="segment-block-title">Где сейчас покупают свет</div>
+    <div class="segment-block-content">Каталоги фабрик (MSD, Clipso) с 10% комиссией · Ozon без комиссии · локальные электротовары</div>
+    <div class="segment-block-title">Главный крючок</div>
+    <div class="segment-block-content">Комиссия 2-4x выше каталогов фабрик. Допродажа световых линий и трековых систем поднимает чек с 8к до 15-25к.</div>
+    <div class="quote">«Проще закупать через каталог фабрики — всё в одном месте»</div>
+  </div>
+
+  <!-- Ландшафтный дизайнер -->
+  <div class="segment-card">
+    <h3>🌿 Ландшафтный дизайнер (уличный свет) — Switch Score 55</h3>
+    <div class="meta">2-5 объектов за сезон апрель-октябрь · бюджет 50-150к/проект</div>
+    <div class="segment-stats">
+      <div class="stat"><div class="stat-label">ARPPU</div><div class="stat-value">90 000 ₽</div></div>
+      <div class="stat"><div class="stat-label">LTV</div><div class="stat-value">126 000 ₽</div></div>
+      <div class="stat"><div class="stat-label">CAC</div><div class="stat-value green">19 786 ₽</div></div>
+      <div class="stat"><div class="stat-label">LTV/CAC</div><div class="stat-value green">6.4x</div></div>
+      <div class="stat"><div class="stat-label">Маржа</div><div class="stat-value">35%</div></div>
+      <div class="stat"><div class="stat-label">Сезонность</div><div class="stat-value orange">Критическая</div></div>
+    </div>
+    <div class="segment-block-title">Pain Points</div>
+    <div class="segment-block-content">Часы поиска уличного света для РФ (IP65+, -30°C). Главная боль — рекламация после первой зимы, поставщик не берёт обратно. Координация 3-5 узких поставщиков.</div>
+    <div class="segment-block-title">Где покупают</div>
+    <div class="segment-block-content">Узкие поставщики outdoor (Ландшафтный свет, 500LUX, Lu.ru) · InsertDesign под ключ · прямые закупки Ozon</div>
+    <div class="insight success">
+      <div class="insight-label">Кросс-канал</div>
+      <div class="insight-text">Кросс-сейл с интерьерными дизайнерами — самый низкий CAC (500 ₽). Smart home для участка увеличивает чек.</div>
+    </div>
+  </div>
+
+  <!-- Прораб жилых -->
+  <div class="segment-card">
+    <h3>🔨 Прораб жилых объектов (ремонт квартир) — Switch Score 51</h3>
+    <div class="meta">2-4 объекта одновременно · 6-12 заказов/год · резиденциальный сектор</div>
+    <div class="segment-stats">
+      <div class="stat"><div class="stat-label">ARPPU</div><div class="stat-value">55 000 ₽</div></div>
+      <div class="stat"><div class="stat-label">Net LTV</div><div class="stat-value">99 000 ₽</div></div>
+      <div class="stat"><div class="stat-label">CAC</div><div class="stat-value">54 000 ₽</div></div>
+      <div class="stat"><div class="stat-label">LTV/CAC базе</div><div class="stat-value orange">1.8x</div></div>
+      <div class="stat"><div class="stat-label">С апсейлом</div><div class="stat-value green">3.0x+</div></div>
+      <div class="stat"><div class="stat-label">Churn</div><div class="stat-value">35%/год</div></div>
+    </div>
+    <div class="segment-block-title">Pain Points</div>
+    <div class="segment-block-content">Жонглирует 5-10 поставщиками. Срыв сроков по свету = простой бригады (5-15к/день) + штрафы. Ошибки спеки = переделки за свой счёт. Свет — 1 из 30+ позиций сметы.</div>
+    <div class="segment-block-title">Где покупают</div>
+    <div class="segment-block-content">Леруа/Лемана (0% комиссии) · дилерские программы (Alloc, Partner-Stroi) 10-15% · личные связи · Ozon/WB</div>
+    <div class="insight warning">
+      <div class="insight-label">Зависимость от апсейла</div>
+      <div class="insight-text">Без допродажи smart home/карнизов экономика 1.8x — на грани. С апсейлом до 3.0x+. ARPPU 55к → 75к+</div>
+    </div>
+  </div>
+
+  <!-- Ландшафтный архитектор -->
+  <div class="segment-card">
+    <h3>🏞️ Ландшафтный архитектор (коммерческие) — Switch Score 44</h3>
+    <div class="meta">ТЦ, БЦ, парки, набережные · 1-3 проекта/год · до 500 бюро в РФ</div>
+    <div class="segment-stats">
+      <div class="stat"><div class="stat-label">ARPPU</div><div class="stat-value">1 000 000 ₽</div></div>
+      <div class="stat"><div class="stat-label">LTV</div><div class="stat-value">400 000 ₽</div></div>
+      <div class="stat"><div class="stat-label">CAC</div><div class="stat-value">100 000 ₽</div></div>
+      <div class="stat"><div class="stat-label">LTV/CAC</div><div class="stat-value blue">4.0x</div></div>
+      <div class="stat"><div class="stat-label">Churn</div><div class="stat-value">20%/год</div></div>
+      <div class="stat"><div class="stat-label">Lifetime</div><div class="stat-value">2 сделки</div></div>
+    </div>
+    <div class="insight danger">
+      <div class="insight-label">Критические барьеры</div>
+      <div class="insight-text">44-ФЗ блокирует партнёрские выплаты на гос. объектах. Подрядчик меняет спеку архитектора на дешёвые аналоги без согласования.</div>
+    </div>
+  </div>
+
+  <!-- Прораб коммерческих -->
+  <div class="segment-card">
+    <h3>🏢 Прораб коммерческих объектов (HoReCa, офисы) — Switch Score 18</h3>
+    <div class="meta">1-2 объекта/год · чеки 200-500к+ · слабая экономика</div>
+    <div class="segment-stats">
+      <div class="stat"><div class="stat-label">ARPPU</div><div class="stat-value">350 000 ₽</div></div>
+      <div class="stat"><div class="stat-label">Net LTV</div><div class="stat-value">210 000 ₽</div></div>
+      <div class="stat"><div class="stat-label">CAC</div><div class="stat-value red">150 000 ₽</div></div>
+      <div class="stat"><div class="stat-label">LTV/CAC</div><div class="stat-value red">1.4x</div></div>
+      <div class="stat"><div class="stat-label">Чистая маржа</div><div class="stat-value">15%</div></div>
+      <div class="stat"><div class="stat-label">Lifetime</div><div class="stat-value">4 года</div></div>
+    </div>
+    <div class="insight danger">
+      <div class="insight-label">Не приоритет</div>
+      <div class="insight-text">Слабая экономика 1.4x · 44-ФЗ блокирует часть рынка · нужны сертификаты ЕАС/ГОСТ + закрывающие документы + договор с юрлицом · сложная закупочная цепочка (юрлицо подтверждает)</div>
+    </div>
+  </div>
+
+  <!-- Мастер-универсал -->
+  <div class="segment-card">
+    <h3>🛠️ Мастер-универсал (ремонт под ключ) — Switch Score 25</h3>
+    <div class="meta">3-6 объектов одновременно · 8-15/год · от электрики до обоев</div>
+    <div class="segment-stats">
+      <div class="stat"><div class="stat-label">ARPPU</div><div class="stat-value">25 000 ₽</div></div>
+      <div class="stat"><div class="stat-label">LTV прямой</div><div class="stat-value">37 500 ₽</div></div>
+      <div class="stat"><div class="stat-label">CAC</div><div class="stat-value">22 000 ₽</div></div>
+      <div class="stat"><div class="stat-label">LTV/CAC</div><div class="stat-value orange">1.7x</div></div>
+      <div class="stat"><div class="stat-label">С B2C реф.</div><div class="stat-value green">3-5x</div></div>
+      <div class="stat"><div class="stat-label">Churn</div><div class="stat-value">30%/год</div></div>
+    </div>
+    <div class="segment-block-title">Главная проблема</div>
+    <div class="segment-block-content">Не воспринимает свет как отдельную категорию заработка. Покупает «по пути» в Леруа/Лемана. Привычка строймага: «всё в одном месте, быстро».</div>
+    <div class="quote">«Мне проще заехать в Леруа по пути на объект и купить всё за один раз»</div>
+    <div class="segment-block-title">Скрытая ценность</div>
+    <div class="segment-block-content">Каждый мастер приводит 2-3 B2C-клиентов (40-60к чеки). С учётом B2C рефералов LTV/CAC = 3-5x</div>
+  </div>
+
+  <!-- Электрик -->
+  <div class="segment-card">
+    <h3>⚡ Электрик-монтажник — Switch Score 5</h3>
+    <div class="meta">4-10 объектов одновременно · решает что предложить клиенту</div>
+    <div class="segment-stats">
+      <div class="stat"><div class="stat-label">ARPPU</div><div class="stat-value">25 000 ₽</div></div>
+      <div class="stat"><div class="stat-label">LTV/CAC</div><div class="stat-value red">1.1x</div></div>
+      <div class="stat"><div class="stat-label">CAC</div><div class="stat-value">32 000 ₽</div></div>
+      <div class="stat"><div class="stat-label">С smart home</div><div class="stat-value orange">1.75x</div></div>
+      <div class="stat"><div class="stat-label">Churn</div><div class="stat-value">14%/год</div></div>
+      <div class="stat"><div class="stat-label">Lifetime</div><div class="stat-value">7 заказов</div></div>
+    </div>
+    <div class="segment-block-title">Где покупают</div>
+    <div class="segment-block-content">ЭТМ/Russvet (мгновенная доступность, 800+/400+ точек) · дилерские программы 10-15% · Ozon для расходников · личные связи с менеджерами</div>
+    <div class="insight danger">
+      <div class="insight-label">На грани рентабельности</div>
+      <div class="insight-text">LTV/CAC 1.1x. Без smart home апсейла — убыточно. ЭТМ/Russvet с мгновенной доступностью — слишком сильный конкурент для привычки.</div>
+    </div>
+  </div>
+
+  <div class="sources">
+    <div class="sources-title">Источники данных</div>
+    <span class="source-tag">КОНТЕКСТ СМЕЖНЫЕ/ — 7 файлов</span>
   </div>
 </div>
 
@@ -431,43 +767,56 @@
 <div class="section" id="s6">
   <div class="section-header">
     <div class="section-title">6. Каналы привлечения</div>
-    <div class="section-goal"><strong>Цель:</strong> Определить микс каналов, последовательность запуска и бюджет.</div>
+    <div class="section-goal"><strong>Целевой микс +500 партнёров.</strong> Тир 1 — быстрые каналы (180+120+100=400). Тир 2 — системные (50+30=80).</div>
   </div>
   <div class="blocks">
     <div class="block full">
-      <div class="block-title success">Тир 1 — быстрые каналы (первые 30 дней)</div>
+      <div class="block-title success">Тир 1 — быстрые (первые 30 дней)</div>
       <table class="data-table">
-        <tr><th>Канал</th><th>Прогноз</th><th>CAC</th><th>Почему быстрый</th></tr>
-        <tr><td><strong>Реактивация спящей базы 5000</strong></td><td>180-220 партнёров</td><td><span class="badge green">минимальный</span></td><td>Уже знают продукт, есть доверие</td></tr>
-        <tr><td><strong>Реферальная сеть L2</strong></td><td>100-130 партнёров</td><td><span class="badge blue">через комиссию</span></td><td>Активные приводят коллег</td></tr>
-        <tr><td><strong>Прямые продажи (PDF/встречи)</strong></td><td>80-110 партнёров</td><td><span class="badge blue">средний</span></td><td>Точечная работа с Premium/HoReCa</td></tr>
+        <tr><th>Канал</th><th>Прогноз</th><th>CAC</th><th>Цикл</th><th>Почему быстрый</th></tr>
+        <tr><td><strong>Реактивация спящей базы 5000</strong></td><td>180-220 партнёров</td><td><span class="badge green">~0 ₽</span></td><td>Неделя 1-2</td><td>Уже знают продукт, есть доверие, контакты в CRM</td></tr>
+        <tr><td><strong>Реферальная сеть L2</strong></td><td>100-130 партнёров</td><td><span class="badge blue">через 5%</span></td><td>Месяц 1-2</td><td>Активные приводят коллег, виральный эффект</td></tr>
+        <tr><td><strong>Прямые продажи (PDF/встречи)</strong></td><td>80-110 партнёров</td><td>~50 000 ₽</td><td>Месяц 1-3</td><td>Точечная работа с Premium/HoReCa/комплектаторами</td></tr>
       </table>
     </div>
     <div class="block full">
-      <div class="block-title">Тир 2 — системные каналы</div>
+      <div class="block-title">Тир 2 — системные</div>
       <table class="data-table">
         <tr><th>Канал</th><th>Прогноз</th><th>CAC</th><th>Когда запускать</th></tr>
-        <tr><td>Лендинг + контент + лид-магнит</td><td>50-70 партнёров</td><td>~8К ₽</td><td>После готовности лендинга</td></tr>
-        <tr><td>Школы/ивенты/комьюнити</td><td>30-50 партнёров</td><td>~40К ₽</td><td>Параллельно с тир 1</td></tr>
+        <tr><td>Лендинг + контент + лид-магнит</td><td>50-70 партнёров</td><td>~8 000 ₽</td><td>После готовности лендинга</td></tr>
+        <tr><td>Школы (Skillbox, Contented, Details)</td><td>20-30 партнёров</td><td>~9 000 ₽</td><td>Месяц 2-3</td></tr>
+        <tr><td>Ивенты/выставки (MosBuild, ArchDaily)</td><td>10-20 партнёров</td><td>~40 000 ₽</td><td>Параллельно с тир 1</td></tr>
       </table>
     </div>
     <div class="block">
-      <div class="block-title">Ключевые вопросы</div>
+      <div class="block-title">Бюджетные сценарии</div>
+      <h4>Base — 1.0М ₽/мес</h4>
       <ul>
-        <li>Какой бюджет на каждый канал?</li>
-        <li>В какой последовательности запускать?</li>
-        <li>Как измерять эффективность канала?</li>
-        <li>Когда подключать платный трафик (Яндекс.Директ, TG Ads)?</li>
+        <li>Трафик: 300к ₽</li>
+        <li>Падел/Контент/Комьюнити: 700к ₽</li>
+        <li>Прирост: 100-150 партнёров/мес</li>
+      </ul>
+      <h4>Aggressive — 1.5М ₽/мес</h4>
+      <ul>
+        <li>Трафик: 800к ₽</li>
+        <li>Падел/Контент/Комьюнити: 700к ₽</li>
+        <li>Прирост: 350-500 партнёров/мес</li>
+        <li>L2 рост через 4-5 мес самостоятельно</li>
       </ul>
     </div>
     <div class="block">
       <div class="block-title">Принципы запуска</div>
       <ul>
-        <li>Сначала тир 1 — быстрая обратная связь</li>
-        <li>Платный трафик — только после первых 100 рефералов</li>
-        <li>Школы — параллельно, длинный цикл</li>
+        <li>Сначала тир 1 — быстрая обратная связь по экономике</li>
+        <li>Платный трафик — после первых 100 рефералов</li>
+        <li>Школы — длинный цикл, запускать параллельно</li>
         <li>Каждый канал = отдельный CAC и метрики</li>
+        <li>Cohort-тест L2 на 100-150 участников до масштабирования</li>
       </ul>
+      <div class="insight">
+        <div class="insight-label">Ключевая цель GTM-месяца</div>
+        <div class="insight-text">500 активных реферальных ссылок к концу 30 дней</div>
+      </div>
     </div>
   </div>
   <div class="sources">
@@ -481,49 +830,56 @@
 <div class="section" id="s7">
   <div class="section-header">
     <div class="section-title">7. Стратегия кросс-сейла</div>
-    <div class="section-goal"><strong>Цель:</strong> Увеличить средний чек на +33% через допродажу электрокарнизов и умного дома.</div>
+    <div class="section-goal"><strong>+33% к чеку = +6 700 ₽ на партнёра/мес.</strong> Электрокарнизы и умный дом готовы к продаже сегодня.</div>
   </div>
   <div class="blocks">
-    <div class="block">
-      <div class="block-title">Категории кросс-сейла</div>
+    <div class="block full">
+      <div class="block-title">Раскладка прироста ARPPU на +6 700 ₽</div>
       <table class="data-table">
-        <tr><th>Категория</th><th>Статус</th></tr>
-        <tr><td><strong>Электрокарнизы</strong></td><td><span class="badge green">в ассортименте</span></td></tr>
-        <tr><td><strong>Умный дом</strong></td><td><span class="badge green">в ассортименте</span></td></tr>
-      </table>
-      <div class="insight success">
-        <div class="insight-label">Готовность</div>
-        <div class="insight-text">Обе категории есть, поставщики подключены — продавать можно сегодня</div>
-      </div>
-    </div>
-    <div class="block">
-      <div class="block-title">Сегменты-покупатели</div>
-      <table class="data-table">
-        <tr><th>Сегмент</th><th>Восприимчивость</th></tr>
-        <tr><td>Premium-студии</td><td><span class="badge green">высокая</span> · карнизы + умный дом</td></tr>
-        <tr><td>Архитектор HoReCa</td><td><span class="badge green">высокая</span> · автоматизация</td></tr>
-        <tr><td>Комплектатор-аутсорсер</td><td><span class="badge blue">средняя</span></td></tr>
-        <tr><td>Дизайнер-декоратор</td><td><span class="badge orange">низкая</span></td></tr>
+        <tr><th>Категория</th><th>Прирост</th><th>Лучшие сегменты</th><th>Готовность</th></tr>
+        <tr><td><strong>Умный дом / автоматизация</strong></td><td>+2 500 ₽</td><td>Premium, HoReCa</td><td><span class="badge green">в ассортименте</span></td></tr>
+        <tr><td><strong>Электрокарнизы</strong></td><td>+1 800 ₽</td><td>Premium, full-cycle</td><td><span class="badge green">в ассортименте</span></td></tr>
+        <tr><td>Доп. зоны освещения</td><td>+700 ₽</td><td>Premium, full-cycle</td><td><span class="badge green">работает</span></td></tr>
+        <tr><td>Сервис (монтаж, настройка, экспресс-логистика)</td><td>+500 ₽</td><td>Все B2B сегменты</td><td><span class="badge orange">требует процесса</span></td></tr>
+        <tr><td><strong>Итого</strong></td><td><strong>+5 500 ₽</strong></td><td>+ доп. позиции в свете</td><td>—</td></tr>
       </table>
     </div>
     <div class="block">
-      <div class="block-title">Ключевые вопросы</div>
+      <div class="block-title">Восприимчивость сегментов</div>
+      <table class="data-table">
+        <tr><th>Сегмент</th><th>Smart home</th><th>Карнизы</th></tr>
+        <tr><td>Premium-студии</td><td><span class="badge green">высокая</span></td><td><span class="badge green">высокая</span></td></tr>
+        <tr><td>Архитектор HoReCa</td><td><span class="badge green">высокая</span></td><td><span class="badge orange">средняя</span></td></tr>
+        <tr><td>Комплектатор-аутсорсер</td><td><span class="badge blue">средняя</span></td><td><span class="badge blue">средняя</span></td></tr>
+        <tr><td>Дизайнер-блогер</td><td><span class="badge blue">средняя</span></td><td><span class="badge orange">низкая</span></td></tr>
+        <tr><td>Дизайнер-декоратор</td><td><span class="badge red">низкая</span></td><td><span class="badge red">низкая</span></td></tr>
+        <tr><td>Студент</td><td><span class="badge red">низкая</span></td><td><span class="badge red">низкая</span></td></tr>
+        <tr><td>Прораб жилых</td><td><span class="badge orange">критическая</span></td><td><span class="badge orange">критическая</span></td></tr>
+      </table>
+    </div>
+    <div class="block">
+      <div class="block-title danger">Риски кросс-сейла (score 20)</div>
+      <p><strong>Premium-студии могут не купить smart home/карнизы.</strong> Допрос на +20-30% к бюджету проекта.</p>
       <ul>
-        <li>Какой вклад каждой категории в +33%?</li>
-        <li>Какие сегменты восприимчивее?</li>
-        <li>Как встраивать в процесс продажи (не болт-он, а часть проекта)?</li>
-        <li>Нужно ли обучение менеджеров?</li>
-        <li>Какие барьеры: незнание категории, нет доверия?</li>
+        <li>Митигация: 12 интервью с Premium</li>
+        <li>3-5 интервью с конечными клиентами</li>
+        <li>5 пилотных смет с включением smart home</li>
+        <li>Threshold: attach rate &lt; 20% или согласие на доплату &lt; 25-30%</li>
       </ul>
     </div>
     <div class="block">
       <div class="block-title">Метрики кросс-сейла</div>
       <ul>
-        <li>Доля заказов с кросс-сейлом</li>
+        <li>Attach rate — доля заказов с кросс-сейлом</li>
         <li>Средний чек с кросс-сейлом vs без</li>
         <li>Конверсия из света в карнизы/умный дом</li>
-        <li>Маржинальность по категориям</li>
+        <li>Маржа по категориям (карнизы, умный дом, свет)</li>
+        <li>Возвраты по новым категориям</li>
       </ul>
+      <div class="insight success">
+        <div class="insight-label">Ключевой инсайт</div>
+        <div class="insight-text">Не «болт-он» к свету, а часть проекта. Premium-студии покупают smart home когда это вписано в общую концепцию.</div>
+      </div>
     </div>
   </div>
   <div class="sources">
@@ -538,45 +894,54 @@
 <div class="section" id="s8">
   <div class="section-header">
     <div class="section-title">8. Операционная модель масштабирования</div>
-    <div class="section-goal"><strong>Цель:</strong> Обслуживать x2 объём и не потерять качество сервиса.</div>
+    <div class="section-goal"><strong>Не сломаться при x2.</strong> SLA по уровням, верификация спеки, быстрые выплаты, найм.</div>
   </div>
   <div class="blocks">
     <div class="block">
       <div class="block-title">SLA по уровням партнёров</div>
       <table class="data-table">
-        <tr><th>Уровень</th><th>Ответ</th><th>Комиссия</th></tr>
-        <tr><td><strong>Expert</strong></td><td>2 часа</td><td>40%</td></tr>
-        <tr><td><strong>Pro</strong></td><td>4 часа</td><td>30%</td></tr>
-        <tr><td><strong>Base</strong></td><td>8 часов</td><td>20%</td></tr>
+        <tr><th>Уровень</th><th>Ответ</th><th>Заказы</th><th>Доля</th></tr>
+        <tr><td><strong>Expert</strong> (40%)</td><td>2 ч</td><td>250</td><td>5%</td></tr>
+        <tr><td><strong>Pro</strong> (30%)</td><td>4 ч</td><td>1 750</td><td>35%</td></tr>
+        <tr><td><strong>Base</strong> (20%)</td><td>8 ч</td><td>3 000</td><td>60%</td></tr>
       </table>
-    </div>
-    <div class="block">
-      <div class="block-title warning">Критичные процессы</div>
-      <ul>
-        <li><strong>Верификация спецификаций</strong> — двухэтапная проверка</li>
-        <li><strong>Аудит первых 50 заказов</strong> нового партнёра — экспертный</li>
-        <li><strong>Быстрые выплаты</strong> — конкурентное преимущество</li>
-        <li><strong>API самозанятых</strong> — для легальных выплат</li>
-      </ul>
-    </div>
-    <div class="block">
-      <div class="block-title">Ключевые вопросы</div>
-      <ul>
-        <li>Как верифицировать спецификации?</li>
-        <li>Как устроены выплаты?</li>
-        <li>Кого нанимать при росте?</li>
-        <li>Где узкие места в команде?</li>
-        <li>Как не допустить коллапс SLA?</li>
-        <li>Что автоматизировать в первую очередь?</li>
-      </ul>
-    </div>
-    <div class="block">
-      <div class="block-title danger">Главный операционный риск</div>
-      <p style="font-size:13px; color:#cbd5e1;">Коллапс SLA при масштабировании (риск score 20). Premium и HoReCa требуют интенсивного сервиса. При росте объёма команда не успевает.</p>
       <div class="insight warning">
-        <div class="insight-label">Митигация</div>
-        <div class="insight-text">Автоматизация рутины + найм по триггерам объёма + двухэтапная верификация</div>
+        <div class="insight-label">Риск коллапса SLA (score 20)</div>
+        <div class="insight-text">При x2 росте операционная команда не выдерживает потока Premium и комплектаторов</div>
       </div>
+    </div>
+    <div class="block">
+      <div class="block-title">Верификация спецификаций</div>
+      <ul>
+        <li>Двухэтапная проверка ТЗ менеджером + техконтролёром</li>
+        <li>Экспертный аудит первых 50 заказов нового партнёра</li>
+        <li>Чек-лист проверки (мощность, цоколь, цвет, габариты)</li>
+        <li>Слепое тестирование менеджеров на архивных сметах</li>
+      </ul>
+      <div class="insight danger">
+        <div class="insight-label">Риск ошибок ТЗ (score 20)</div>
+        <div class="insight-text">«Один раз подставленный дизайнер больше не вернётся». Premium-студия с оборотом миллионы — потеряна навсегда.</div>
+      </div>
+    </div>
+    <div class="block">
+      <div class="block-title">Выплаты — конкурентное преимущество</div>
+      <ul>
+        <li><strong>Мгновенные выплаты:</strong> в день оплаты счёта клиентом</li>
+        <li><strong>Прозрачность:</strong> отдельный pending и available balance</li>
+        <li><strong>Юр. чистота:</strong> API самозанятых, договоры онлайн</li>
+        <li><strong>Антифрод:</strong> DaDa API против дублей и спама</li>
+      </ul>
+      <div class="quote">«Деньги вчера» — оффер позиционирования платформы</div>
+    </div>
+    <div class="block">
+      <div class="block-title">Найм при росте</div>
+      <ul>
+        <li>Триггеры найма по объёму запросов</li>
+        <li>Менеджеры по сегментам: Premium-VIP отдельно</li>
+        <li>Техконтролёр — на первые 50 заказов нового партнёра</li>
+        <li>Юрист по налоговой схеме L2</li>
+        <li>Что автоматизировать: рутина проверок, рассылки, статусы</li>
+      </ul>
     </div>
   </div>
   <div class="sources">
@@ -591,40 +956,51 @@
 <div class="section" id="s9">
   <div class="section-header">
     <div class="section-title">9. Конкурентное позиционирование</div>
-    <div class="section-goal"><strong>Цель:</strong> Отстроиться от VamSvet.ru, BasicDecor, Lu.ru и маркетплейсов.</div>
+    <div class="section-goal"><strong>VamSvet, BasicDecor, Lu.ru</strong> — ритейл-платформы. Маркетплейсы — угроза. Наша отстройка: партнёрская экосистема.</div>
   </div>
   <div class="blocks">
     <div class="block full">
       <div class="block-title">Прямые конкуренты</div>
       <table class="data-table">
-        <tr><th>Конкурент</th><th>Сильная сторона</th><th>Слабость (наша возможность)</th></tr>
-        <tr><td><strong>VamSvet.ru</strong></td><td>120+ брендов, рейтинг 4.8/5</td><td>Нестабильный SLA, медленная рекламация</td></tr>
-        <tr><td><strong>BasicDecor</strong></td><td>Свет + мебель + декор в одном месте</td><td>Высокие цены, нестабильные менеджеры</td></tr>
-        <tr><td><strong>Lu.ru</strong></td><td>Скорость доставки, ассортимент</td><td>Нет партнёрской модели, нет прозрачного заработка</td></tr>
+        <tr><th>Конкурент</th><th>Сильные стороны</th><th>Слабости (наша возможность)</th><th>Доставка/Условия</th></tr>
+        <tr><td><strong>VamSvet.ru</strong><br><span style="font-size:10px; color:#64748b;">Rating 4.8/5, 490 отзывов</span></td><td>120+ брендов, калькулятор мощности, подбор по фото, 3D-модели, менеджерская поддержка</td><td>Доставка с переносами, ошибки комплектации, медленные возвраты</td><td>350 ₽ в МКАД, +25 ₽/км за МКАД</td></tr>
+        <tr><td><strong>Lu.ru</strong><br><span style="font-size:10px; color:#64748b;">Rating 5.0/5, 1296 отзывов</span></td><td>Масштаб каталога, доставка 3+ дня, price-match, установка, рассрочка</td><td>Ошибки комплектации, долгая доставка крупных заказов, нет партнёрской модели</td><td>Бесплатно от 3 000 ₽ МСК, от 10 000 ₽ за МКАД (40 км)</td></tr>
+        <tr><td><strong>BasicDecor.ru</strong><br><span style="font-size:10px; color:#64748b;">Rating 4.7/5, 201 отзыв</span></td><td>Свет + мебель + декор + электрика, IES-файлы, ArchiCAD шаблоны, дизайнерский контур</td><td>Цены выше, задержки доставки, меняющиеся менеджеры, слабая рекламация</td><td>Самовывоз бесплатно, доставка от 10 000 ₽</td></tr>
       </table>
     </div>
     <div class="block">
       <div class="block-title danger">Угроза маркетплейсов</div>
-      <p style="font-size:13px; color:#cbd5e1; margin-bottom:10px;">Ozon/WB/Я.Маркет — клиенты ищут по артикулу и покупают на 10-30% дешевле</p>
+      <p><strong>Ozon/WB/Я.Маркет.</strong> На 10-30% дешевле дилеров, 3 дня доставка, поиск по фото, easy return.</p>
       <ul>
-        <li><strong>Эксклюзивные SKU</strong> — нет в маркетплейсе</li>
-        <li><strong>Проектная защита</strong> — зарегистрированный клиент = фиксированная цена</li>
-        <li><strong>Техаудит</strong> — маркетплейс не даёт</li>
+        <li><strong>Showrooming:</strong> клиент копирует артикулы из подборки и заказывает сам</li>
+        <li><strong>Loss of trust:</strong> систематическое недоверие клиента к наценке дизайнера</li>
+        <li><strong>Потеря дизайнера:</strong> -10-20% комиссии на заказе</li>
+      </ul>
+      <h4>Наша защита</h4>
+      <ul>
+        <li>Эксклюзивные SKU — нет в маркетплейсе</li>
+        <li>Проектная защита — клиент зарегистрирован за дизайнером</li>
+        <li>Техаудит спецификации — маркетплейс не даёт</li>
+        <li>Anti-breakage delivery — гарантия от боя</li>
       </ul>
     </div>
     <div class="block">
-      <div class="block-title success">Ключевое отличие ДонПлафон</div>
+      <div class="block-title success">Наша отстройка — 4 рычага</div>
       <ul>
-        <li>Прозрачная реферальная экономика 20-40% + L2</li>
-        <li>Техаудит спецификаций</li>
-        <li>White-label позиционирование для студий</li>
-        <li>Быстрые выплаты как сервис</li>
+        <li><strong>Один контрагент вместо хаоса.</strong> Замена Excel + WhatsApp + 10 поставщиков на единый счёт и менеджера</li>
+        <li><strong>Проектный сервис.</strong> Инженерный аудит, спецификация, рекламация за 24 часа</li>
+        <li><strong>Партнёрский доход.</strong> L1 комиссия 20-40% + L2 реферальная 5% — всех конкурентов выше</li>
+        <li><strong>Прозрачность через ЛК.</strong> Трекинг каждого клика и покупки, мгновенные выплаты, юр. документы</li>
       </ul>
+      <div class="insight success">
+        <div class="insight-label">Стратегический инсайт</div>
+        <div class="insight-text">Конкуренты — retail-платформы с каталогом. ДонПлафон — партнёрская экосистема с операционной ответственностью + доход за рекомендацию.</div>
+      </div>
     </div>
   </div>
   <div class="sources">
     <div class="sources-title">Источники данных</div>
-    <span class="source-tag">КОНТЕКСТ/04_Конкуренты/</span>
+    <span class="source-tag">КОНТЕКСТ/04_Конкуренты/ — 6 файлов</span>
     <span class="source-tag">КОНТЕКСТ/03_Риски/</span>
   </div>
 </div>
@@ -633,37 +1009,61 @@
 <div class="section" id="s10">
   <div class="section-header">
     <div class="section-title">10. Управление рисками</div>
-    <div class="section-goal"><strong>Цель:</strong> Топ-риски, которые могут сорвать стратегию, и план митигации.</div>
+    <div class="section-goal"><strong>37 рисков</strong> в 12 категориях. 2 критических (score 25), 7 высоких (score 20), 21 средний.</div>
   </div>
   <div class="blocks">
     <div class="block full">
-      <div class="block-title danger">Критические риски (score 25)</div>
+      <div class="block-title danger">КРИТИЧЕСКИЕ риски (score 25) — блокируют запуск</div>
       <table class="data-table">
-        <tr><th>Риск</th><th>Суть</th><th>Что делать</th></tr>
-        <tr><td><strong>Дефицит доверия к выплатам</strong></td><td>Дизайнеры боятся, что комиссию не заплатят</td><td>Быстрые выплаты, прозрачность, юр. договоры</td></tr>
-        <tr><td><strong>Налоговая нагрузка</strong></td><td>13% НДФЛ + 30% взносы убивают юнит-экономику</td><td>Аудит налоговой схемы, пилот с самозанятыми</td></tr>
+        <tr><th>Риск</th><th>Триггер</th><th>Последствия</th><th>Митигация</th></tr>
+        <tr><td><strong>1. Недоверие к выплатам</strong></td><td>Отсутствие доказательства надёжности выплат</td><td>Никакая комиссия не заставит рисковать репутацией перед клиентом</td><td>Тестовая выплата за 24ч, юр. аудит схемы, интервью с 10 партнёрами</td></tr>
+        <tr><td><strong>2. Налоговая нагрузка ФЛ/СЗ</strong></td><td>Выплаты физлицам без статуса самозанятого (13% НДФЛ + 30% взносы)</td><td>Программа становится убыточной</td><td>Налоговый юрист, аудит договоров, пилот выплат 5-10 самозанятым</td></tr>
       </table>
     </div>
     <div class="block full">
-      <div class="block-title warning">Высокие риски (score 20)</div>
+      <div class="block-title warning">ВЫСОКИЕ риски (score 20)</div>
       <table class="data-table">
-        <tr><th>Риск</th><th>Суть</th><th>Что делать</th></tr>
-        <tr><td>Ошибки в ТЗ</td><td>Менеджер подбирает не тот аналог → потеря партнёра</td><td>Двухэтапная верификация</td></tr>
-        <tr><td>Экономика комиссий</td><td>L1+L2+операционка съедают маржу</td><td>Стресс-тест по сценариям</td></tr>
-        <tr><td>Коллапс SLA</td><td>При росте не успеваем отвечать</td><td>Автоматизация + найм</td></tr>
-        <tr><td>Переклассификация L2 как трудовые</td><td>Налоговая признаёт рефералов сотрудниками</td><td>Юридическая экспертиза</td></tr>
-        <tr><td>Негативный CAC в бюджетных сегментах</td><td>Фрилансеры/студенты не окупаются</td><td>Фокус на рентабельных сегментах</td></tr>
-        <tr><td>Lock-in эффект поставщиков</td><td>Привычка работать с текущими менеджерами</td><td>Превосходящий сервис + финансовый стимул</td></tr>
+        <tr><th>Риск</th><th>Описание</th><th>Митигация</th></tr>
+        <tr><td>3. Ошибки в ТЗ</td><td>Менеджер подбирает не тот аналог (цоколь, CRI, габариты) → потеря Premium-партнёра</td><td>Двойной контроль, выборочная проверка 10% смет, NPS-опрос ТОП-20</td></tr>
+        <tr><td>4. Технические ошибки при подборе аналогов</td><td>Менеджеры допускают ошибки в характеристиках при росте объёма</td><td>Чек-лист, слепое тестирование, техконтролёр на первые 50 заказов</td></tr>
+        <tr><td>5. Переквалификация L2 как трудовые</td><td>ФНС признаёт регулярные 5% выплаты трудовыми</td><td>Юр. аудит договора, пилот 50 самозанятых, мониторинг ФНС</td></tr>
+        <tr><td>6. Отрицательный ROI в low-budget</td><td>CAC через платные каналы не окупается первой сделкой студента/фрилансера</td><td>Расчёт CAC по каналам, когортный анализ 12 мес</td></tr>
+        <tr><td>7. L1+L2 комиссии ломают экономику</td><td>Совокупная комиссия + OPEX убивают маржу</td><td>3 сценария юнит-экономики, стресс-тест с долей L2</td></tr>
+        <tr><td>8. Сервис не выдержит Premium</td><td>Команда не выдержит поток Premium и комплектаторов</td><td>Нагрузочный тест 50-100 параллельных, пилот 10-15 проектов</td></tr>
+        <tr><td>9. Premium не купят smart home/карнизы</td><td>Допрос на +20-30% бюджета проекта</td><td>12 интервью Premium, 5 пилотных смет</td></tr>
       </table>
     </div>
-    <div class="block full">
+    <div class="block">
+      <div class="block-title">Средние риски (16-19)</div>
+      <ul>
+        <li>L2 не даст потока — спам/фрод (16)</li>
+        <li>CAC премиум-каналов выше допустимого (16)</li>
+        <li>Низкий SLA при масштабе (16)</li>
+        <li>Lock-in эффект текущих поставщиков (16)</li>
+        <li>Привычка Excel/WhatsApp сильнее ЛК (16)</li>
+        <li>Ценовая война с монобрендами (16)</li>
+        <li>Уход к Centrsvet/Arlight (16)</li>
+        <li>Дефицит складских остатков (15)</li>
+        <li>Крах SLA комплектации (15)</li>
+        <li>Маркетплейсы отжимают Premium (15)</li>
+        <li>Узкий рынок smart home/карнизов (15)</li>
+        <li>Нет сертификации для HoReCa (15)</li>
+      </ul>
+    </div>
+    <div class="block">
       <div class="block-title">Подход к управлению рисками</div>
       <ul>
-        <li>Для каждого риска: триггер, план митигации, ответственный, дедлайн</li>
-        <li>Какие риски блокируют запуск (доверие, налоги) — решать первыми</li>
-        <li>Какие можно принять — фиксировать в журнале</li>
+        <li>Для каждого риска: триггер + митигация + ответственный + дедлайн</li>
+        <li>Критические (25) — решать первыми, до запуска продукта</li>
+        <li>Высокие (20) — параллельно с запуском</li>
+        <li>Средние — мониторинг + пилоты</li>
         <li>Ежеквартальный пересмотр карты рисков</li>
+        <li>Логировать инциденты в журнал</li>
       </ul>
+      <div class="insight warning">
+        <div class="insight-label">Концентрация рисков</div>
+        <div class="insight-text">Юнит-экономика — 8 рисков · Доставка ценности — 7 · Операции — 6 · Конкуренция — 4</div>
+      </div>
     </div>
   </div>
   <div class="sources">
@@ -676,7 +1076,7 @@
 <div class="section" id="s11">
   <div class="section-header">
     <div class="section-title">11. Финансовая модель</div>
-    <div class="section-goal"><strong>Цель:</strong> Помесячная проекция от 20М до 40М — цифры, а не ощущения.</div>
+    <div class="section-goal"><strong>Базовая юнит-экономика здорова.</strong> 3 сценария на декабрь 2026. Целевой GMV при 5000 партнёров — 4.775 млрд ₽/год.</div>
   </div>
   <div class="blocks">
     <div class="block full">
@@ -689,31 +1089,60 @@
       <div class="block-title">Три сценария на декабрь 2026</div>
       <table class="data-table">
         <tr><th>Сценарий</th><th>Выручка/мес</th><th>Партнёров</th><th>Условия</th></tr>
-        <tr><td><span class="badge green">Оптимистичный</span></td><td><strong>40М+ ₽</strong></td><td>1500+</td><td>Оба рычага сработали полностью</td></tr>
-        <tr><td><span class="badge blue">Базовый</span></td><td><strong>35М ₽</strong></td><td>1300</td><td>Один из рычагов сработал на 70-80%</td></tr>
-        <tr><td><span class="badge orange">Пессимистичный</span></td><td><strong>28-30М ₽</strong></td><td>1100</td><td>Только кросс-сейл, продукт задержался</td></tr>
+        <tr><td><span class="badge green">Оптимистичный</span></td><td><strong>40М+ ₽</strong></td><td>1 500+</td><td>Оба рычага сработали полностью + кросс-сейл +33%</td></tr>
+        <tr><td><span class="badge blue">Базовый</span></td><td><strong>35М ₽</strong></td><td>1 300</td><td>Один из рычагов сработал на 70-80%</td></tr>
+        <tr><td><span class="badge orange">Пессимистичный</span></td><td><strong>28-30М ₽</strong></td><td>1 100</td><td>Только кросс-сейл, продукт задержался</td></tr>
       </table>
     </div>
     <div class="block">
-      <div class="block-title">Ключевые вопросы</div>
-      <ul>
-        <li>Помесячная модель: база × ARPPU × частота = выручка</li>
-        <li>Вклад каждого рычага по месяцам</li>
-        <li>Бюджет на привлечение по каналам и ROI</li>
-        <li>Расходы на разработку (кабинет, лендинг)</li>
-        <li>Точка окупаемости инвестиций в продукт</li>
-      </ul>
-    </div>
-    <div class="block">
-      <div class="block-title">Юнит-экономика</div>
+      <div class="block-title">Юнит-экономика (текущая)</div>
       <table class="data-table">
         <tr><td>Средний CAC</td><td><strong>18 500 ₽</strong></td></tr>
         <tr><td>LTV</td><td><strong>150 000 ₽</strong></td></tr>
-        <tr><td>LTV/CAC</td><td><strong>8.1x</strong></td></tr>
+        <tr><td>LTV/CAC</td><td><strong>8.1x</strong> <span class="badge green">healthy</span></td></tr>
         <tr><td>ARPPU (за заказ)</td><td><strong>100 000 ₽</strong></td></tr>
-        <tr><td>Маржа на заказ</td><td><strong>30 000 ₽</strong></td></tr>
-        <tr><td>Payback</td><td><strong>1 месяц</strong></td></tr>
+        <tr><td>Маржа на заказ</td><td><strong>30 000 ₽ (30%)</strong></td></tr>
+        <tr><td>Lifetime партнёра</td><td><strong>5 лет</strong></td></tr>
+        <tr><td>Payback CAC</td><td><strong>1 месяц</strong></td></tr>
       </table>
+    </div>
+    <div class="block">
+      <div class="block-title">Целевая модель на 5000 партнёров</div>
+      <table class="data-table">
+        <tr><td>GMV</td><td><strong>4.775 млрд ₽/год</strong></td></tr>
+        <tr><td>Валовая маржа (55%)</td><td><strong>2.626 млрд ₽</strong></td></tr>
+        <tr><td>Выплаты партнёрам (36%)</td><td><strong>1.719 млрд ₽</strong></td></tr>
+        <tr><td>OPEX (логистика, ФОТ, эквайринг)</td><td><strong>573 млн ₽ (12%)</strong></td></tr>
+        <tr><td>Net Operating Profit</td><td><strong>334 млн ₽ (19% EBITDA)</strong></td></tr>
+        <tr><td>Бюджет комьюнити (Padel, TG, выставки)</td><td><strong>40 млн ₽</strong></td></tr>
+      </table>
+    </div>
+    <div class="block full">
+      <div class="block-title warning">Стресс-тест Expert на чек 500 000 ₽</div>
+      <table class="data-table">
+        <tr><td>Сумма заказа</td><td><strong>500 000 ₽</strong></td></tr>
+        <tr><td>Валовая маржа (55%)</td><td>+275 000 ₽</td></tr>
+        <tr><td>Выплата дизайнеру L1 (40%)</td><td>−200 000 ₽</td></tr>
+        <tr><td>Реферальный бонус L2 (5%)</td><td>−25 000 ₽</td></tr>
+        <tr><td>Налоги</td><td>−22 500 ₽</td></tr>
+        <tr><td>OPEX (логистика, эквайринг, ФОТ, резерв)</td><td>−27 500 ₽</td></tr>
+        <tr><td><strong>Остаток</strong></td><td><strong>0 ₽</strong></td></tr>
+      </table>
+      <div class="insight warning">
+        <div class="insight-label">Вывод стресс-теста</div>
+        <div class="insight-text">Expert работает в ноль на отдельной сделке — это инвестиция в LTV через будущие заказы и СТМ. Маржа платформы формируется из Base/Pro сегментов (15-25%).</div>
+      </div>
+    </div>
+    <div class="block full">
+      <div class="block-title success">Go/No-Go вердикт</div>
+      <p><strong>GO (Scale).</strong> Продукт подтвердил ценность на 1500 партнёрах. Потенциал роста в 3.3x достижим.</p>
+      <ul>
+        <li>1 500 активных партнёров уже валидируют PMF</li>
+        <li>3.3x рост до 5 000 партнёров достижим</li>
+        <li>Здоровые юнит-экономики во всех A-сегментах</li>
+        <li>Условия успеха: автоматизация Base + VIP-сервис для Expert</li>
+        <li>Blue Ocean: прибыльный масс-маркет субсидирует работу с лидерами мнений</li>
+      </ul>
     </div>
   </div>
   <div class="sources">
@@ -721,6 +1150,7 @@
     <span class="source-tag">КОНТЕКСТ/07_Юнит_экономика/</span>
     <span class="source-tag">КОНТЕКСТ/05_Стратегия/</span>
     <span class="source-tag">КОНТЕКСТ/02_Сегменты/</span>
+    <span class="source-tag">КОНТЕКСТ/08_Анализ/</span>
   </div>
 </div>
 
@@ -728,7 +1158,7 @@
 <div class="section" id="s12">
   <div class="section-header">
     <div class="section-title">12. Роадмап по кварталам</div>
-    <div class="section-goal"><strong>Цель:</strong> Конкретные действия по месяцам для команды 4-8 человек.</div>
+    <div class="section-goal"><strong>Команда 4-8 человек.</strong> 8 месяцев до декабря 2026. Q2 — фундамент, Q3 — масштабирование, Q4 — цель 40М.</div>
   </div>
   <div class="blocks">
     <div class="block">
@@ -736,32 +1166,47 @@
       <ul>
         <li class="checkbox">MVP кабинета (финансы + реферальный дашборд)</li>
         <li class="checkbox">Лендинг с калькулятором дохода</li>
-        <li class="checkbox">Реактивация спящей базы (5000 → 180-220)</li>
-        <li class="checkbox">Старт кросс-сейла электрокарнизов</li>
+        <li class="checkbox">Запуск реактивации спящей базы (5000 → 180-220 активных)</li>
+        <li class="checkbox">Старт кросс-сейла электрокарнизов 1000 партнёрам</li>
         <li class="checkbox">Прямые продажи Premium/HoReCa</li>
         <li class="checkbox">Юр. экспертиза налоговой схемы и L2</li>
+        <li class="checkbox">Интервью с 10 партнёрами по доверию к выплатам</li>
+        <li class="checkbox">Двухэтапная верификация ТЗ (запуск процесса)</li>
       </ul>
     </div>
     <div class="block">
       <div class="block-title">Q3 2026 (июл–сен) — Масштабирование</div>
       <ul>
-        <li class="checkbox">Полный кабинет (смарт-импорт, геймификация)</li>
+        <li class="checkbox">Полный кабинет (smart-импорт, геймификация Base/Pro/Expert)</li>
         <li class="checkbox">Запуск L2 реферальной программы</li>
-        <li class="checkbox">Платный трафик (после 100 рефералов)</li>
-        <li class="checkbox">Партнёрство со школами (Skillbox, Contented)</li>
-        <li class="checkbox">Масштабирование смежных: потолочники, ландшафт</li>
+        <li class="checkbox">Платный трафик (Я.Директ, TG Ads) после 100 рефералов</li>
+        <li class="checkbox">Партнёрство со школами (Skillbox, Contented, Details)</li>
+        <li class="checkbox">Масштабирование смежных: потолочники, ландшафтные дизайнеры</li>
         <li class="checkbox">Кросс-сейл умного дома для Premium</li>
+        <li class="checkbox">Cohort-тест L2 100-150 участников</li>
+        <li class="checkbox">Нагрузочный тест операций (50-100 параллельных)</li>
       </ul>
     </div>
-    <div class="block">
+    <div class="block full">
       <div class="block-title success">Q4 2026 (окт–дек) — Цель 40М</div>
       <ul>
         <li class="checkbox">Региональная экспансия (ЕКБ, Казань, Новосибирск)</li>
-        <li class="checkbox">Ивенты и комьюнити (Padel, MosBuild)</li>
-        <li class="checkbox">Оптимизация конверсии по воронке</li>
-        <li class="checkbox">Умный дом как полноценная категория</li>
+        <li class="checkbox">Ивенты и комьюнити (Padel-турниры, MosBuild, ArchDaily)</li>
+        <li class="checkbox">Оптимизация конверсии по всей воронке</li>
+        <li class="checkbox">Умный дом как полноценная категория для всех сегментов</li>
+        <li class="checkbox">Светорасчёт (Dialux интеграция) для HoReCa</li>
         <li class="checkbox">Ревью стратегии: план-факт, корректировка на 2027</li>
       </ul>
+    </div>
+    <div class="block full">
+      <div class="block-title">GTM детализация — первый месяц</div>
+      <table class="data-table">
+        <tr><th>Неделя</th><th>Действия</th><th>Цель</th></tr>
+        <tr><td>1</td><td>Тизер топ-100 партнёрам в WhatsApp, лендинг в работе</td><td>Создать ожидание</td></tr>
+        <tr><td>2</td><td>Официальный старт по 1500 партнёрам, оффер «Деньги вчера» + «Тех. аудит»</td><td>Активация базы</td></tr>
+        <tr><td>3</td><td>Закрытый Padel-турнир, Stories-сериал, напоминание молчунам</td><td>Сообщество + охват</td></tr>
+        <tr><td>4</td><td>Платный трафик, блогер-посевы, итоговый вебинар</td><td>500 активных реф-ссылок</td></tr>
+      </table>
     </div>
   </div>
   <div class="sources">
@@ -775,7 +1220,7 @@
 <div class="section" id="s13">
   <div class="section-header">
     <div class="section-title">13. KPI и система контроля</div>
-    <div class="section-goal"><strong>Цель:</strong> Измерять прогресс и вовремя корректировать курс.</div>
+    <div class="section-goal"><strong>Что и как измерять.</strong> Еженедельные метрики, ежемесячные срезы, квартальные ревью, алерты.</div>
   </div>
   <div class="blocks">
     <div class="block">
@@ -785,6 +1230,8 @@
         <li>GMV за неделю</li>
         <li>Количество заказов</li>
         <li>Средний чек</li>
+        <li>Time-to-Respond по сегментам</li>
+        <li>Доля заказов с кросс-сейлом</li>
       </ul>
     </div>
     <div class="block">
@@ -795,6 +1242,8 @@
         <li>Доля заказов с кросс-сейлом (карнизы, умный дом)</li>
         <li>CAC по каналам</li>
         <li>NPS партнёров</li>
+        <li>Out-of-stock rate</li>
+        <li>% ошибок в ТЗ менеджеров</li>
       </ul>
     </div>
     <div class="block">
@@ -804,16 +1253,21 @@
         <li>Каналы привлечения: ROI по каждому</li>
         <li>Сегментная структура: соответствует целевой?</li>
         <li>Ревью рисков: какие сработали, какие новые</li>
+        <li>Проверка готовности к следующему кварталу</li>
+        <li>Финмодель: пересчёт сценариев</li>
       </ul>
     </div>
     <div class="block">
-      <div class="block-title warning">Алерты</div>
-      <p style="font-size:13px; color:#cbd5e1; margin-bottom:8px;">При каких значениях бить тревогу:</p>
+      <div class="block-title warning">Алерты — когда бить тревогу</div>
       <ul>
-        <li>SLA выше порога — сигнал о коллапсе сервиса</li>
-        <li>Retention ниже порога — отток</li>
-        <li>CAC растёт — канал перегревается</li>
-        <li>Доля кросс-сейла падает — менеджеры не продают</li>
+        <li>SLA выше порога (Expert &gt; 2ч, Pro &gt; 4ч)</li>
+        <li>Retention падает ниже 80%</li>
+        <li>CAC растёт (канал перегревается)</li>
+        <li>Доля кросс-сейла &lt; 20% (менеджеры не продают)</li>
+        <li>Attach rate smart home &lt; 25-30%</li>
+        <li>Маржа на заказе &lt; безопасного уровня</li>
+        <li>Payback &gt; 3 месяцев</li>
+        <li>Out-of-stock топ-100 &gt; 5%</li>
       </ul>
     </div>
   </div>
@@ -828,7 +1282,7 @@
 </div>
 
 <div class="footer">
-  Стратегия роста ДонПлафон · Внутренний документ команды · 13 разделов из СТРАТЕГИЯ_СТРУКТУРА.md
+  Стратегия роста ДонПлафон · Внутренний документ команды · 14 разделов · По данным КОНТЕКСТ/ и КОНТЕКСТ СМЕЖНЫЕ/
 </div>
 
 <script>
@@ -847,7 +1301,6 @@
     });
   });
 
-  // Open section from hash on load
   if (window.location.hash) {
     const id = window.location.hash.slice(1);
     const tab = document.querySelector(`.tab[data-section="${id}"]`);

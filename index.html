@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Стратегия роста ДонПлафон — 20М → 40М</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html, body { background:#0f172a; color:#e2e8f0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen,Ubuntu,sans-serif; line-height:1.5; }
+
+  /* HEADER */
+  .header { background:#0f172a; border-bottom:1px solid #1e293b; padding:20px 32px 0; position:sticky; top:0; z-index:10; }
+  .header-top { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:16px; gap:24px; flex-wrap:wrap; }
+  .header h1 { font-size:22px; font-weight:700; color:#f1f5f9; }
+  .header .subtitle { font-size:13px; color:#64748b; margin-top:4px; }
+  .metrics { display:flex; gap:20px; align-items:center; }
+  .metric { text-align:center; }
+  .metric-value { font-size:22px; font-weight:700; color:#3b82f6; line-height:1; }
+  .metric-value.target { color:#22c55e; }
+  .metric-value.deadline { color:#f97316; }
+  .metric-label { font-size:10px; color:#64748b; text-transform:uppercase; letter-spacing:0.5px; margin-top:4px; }
+  .arrow { color:#64748b; font-size:18px; }
+
+  /* TABS */
+  .tabs { display:flex; gap:4px; overflow-x:auto; scrollbar-width:thin; scrollbar-color:#334155 transparent; }
+  .tabs::-webkit-scrollbar { height:3px; }
+  .tabs::-webkit-scrollbar-thumb { background:#334155; border-radius:3px; }
+  .tab { padding:10px 14px; font-size:12px; color:#94a3b8; background:#1e293b; border-radius:8px 8px 0 0; cursor:pointer; white-space:nowrap; transition:all 0.15s; border:1px solid transparent; border-bottom:none; flex-shrink:0; user-select:none; }
+  .tab:hover { color:#e2e8f0; background:#253347; }
+  .tab.active { color:#f1f5f9; background:#1e293b; border-color:#334155; font-weight:600; }
+  .tab.blocker { border-left:2px solid #f97316; }
+  .tab .num { color:#475569; margin-right:4px; font-size:11px; }
+  .tab.active .num { color:#94a3b8; }
+
+  /* CONTENT */
+  .content-wrap { padding:0 32px 32px; }
+  .content { background:#1e293b; border-radius:0 8px 8px 8px; border:1px solid #334155; border-top:none; padding:28px; min-height:500px; }
+  .section { display:none; }
+  .section.active { display:block; }
+
+  .section-header { margin-bottom:24px; padding-bottom:16px; border-bottom:1px solid #334155; }
+  .section-title { font-size:20px; font-weight:700; color:#f1f5f9; }
+  .section-goal { font-size:14px; color:#94a3b8; margin-top:8px; line-height:1.6; }
+  .section-goal strong { color:#cbd5e1; }
+
+  /* BLOCKS */
+  .blocks { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  .block { background:#0f172a; border-radius:8px; padding:18px; border:1px solid #334155; }
+  .block.full { grid-column: 1 / -1; }
+  .block-title { font-size:11px; font-weight:600; color:#3b82f6; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:12px; }
+  .block-title.warning { color:#f97316; }
+  .block-title.danger { color:#ef4444; }
+  .block-title.success { color:#22c55e; }
+  .block ul { list-style:none; }
+  .block li { font-size:13px; color:#cbd5e1; padding:5px 0; padding-left:18px; position:relative; line-height:1.55; }
+  .block li::before { content:"•"; position:absolute; left:4px; color:#475569; }
+  .block li.checkbox { padding-left:26px; }
+  .block li.checkbox::before { content:"☐"; color:#475569; font-size:14px; left:4px; top:5px; }
+
+  .block h4 { font-size:13px; color:#cbd5e1; margin:14px 0 6px; font-weight:600; }
+  .block h4:first-child { margin-top:0; }
+
+  /* TABLE */
+  .data-table { width:100%; border-collapse:collapse; margin-top:8px; font-size:12px; }
+  .data-table th { font-size:10px; text-transform:uppercase; letter-spacing:0.5px; color:#64748b; text-align:left; padding:8px 10px; border-bottom:1px solid #334155; font-weight:600; }
+  .data-table td { font-size:12px; color:#cbd5e1; padding:9px 10px; border-bottom:1px solid #1e293b; vertical-align:top; }
+  .data-table tr:hover td { background:#16223a; }
+  .data-table td strong { color:#f1f5f9; font-weight:600; }
+
+  .badge { display:inline-block; padding:2px 8px; border-radius:10px; font-size:10px; font-weight:600; white-space:nowrap; }
+  .badge.green { background:#052e16; color:#22c55e; }
+  .badge.blue { background:#172554; color:#60a5fa; }
+  .badge.orange { background:#431407; color:#fb923c; }
+  .badge.red { background:#450a0a; color:#f87171; }
+  .badge.gray { background:#1e293b; color:#94a3b8; }
+
+  /* INSIGHT BOX */
+  .insight { background:#172554; border-radius:6px; padding:12px 14px; border:1px solid #1e3a5f; margin-top:12px; }
+  .insight.warning { background:#431407; border-color:#7c2d12; }
+  .insight.success { background:#052e16; border-color:#14532d; }
+  .insight-label { font-size:10px; color:#3b82f6; font-weight:700; text-transform:uppercase; letter-spacing:0.5px; }
+  .insight.warning .insight-label { color:#fb923c; }
+  .insight.success .insight-label { color:#22c55e; }
+  .insight-text { font-size:13px; color:#cbd5e1; margin-top:4px; line-height:1.5; }
+
+  /* SOURCES */
+  .sources { margin-top:24px; padding-top:18px; border-top:1px solid #334155; }
+  .sources-title { font-size:10px; color:#64748b; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:10px; }
+  .source-tag { display:inline-block; background:#0f172a; color:#94a3b8; font-size:11px; padding:4px 10px; border-radius:4px; margin:0 6px 6px 0; border:1px solid #334155; font-family:monospace; }
+
+  /* FORMULA */
+  .formula { background:#0f172a; border:1px solid #334155; border-radius:8px; padding:16px; text-align:center; font-size:14px; color:#cbd5e1; margin:8px 0; }
+  .formula .num { color:#3b82f6; font-weight:700; font-size:18px; }
+  .formula .op { color:#64748b; margin:0 6px; }
+  .formula .res { color:#22c55e; font-weight:700; font-size:18px; }
+
+  /* FOOTER */
+  .footer { padding:20px 32px 30px; text-align:center; color:#475569; font-size:11px; }
+  .footer a { color:#64748b; text-decoration:none; }
+  .footer a:hover { color:#94a3b8; }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    .blocks { grid-template-columns:1fr; }
+    .header { padding:16px 16px 0; }
+    .content-wrap { padding:0 16px 16px; }
+    .content { padding:20px 16px; }
+    .metrics { gap:12px; }
+    .metric-value { font-size:16px; }
+    .metric-label { font-size:9px; }
+    .header h1 { font-size:18px; }
+    .data-table { font-size:11px; }
+    .data-table th, .data-table td { padding:6px 8px; }
+    .footer { padding:16px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-top">
+    <div>
+      <h1>Стратегия роста ДонПлафон</h1>
+      <div class="subtitle">Внутренний справочник команды · апрель 2026</div>
+    </div>
+    <div class="metrics">
+      <div class="metric">
+        <div class="metric-value">20М</div>
+        <div class="metric-label">Сейчас</div>
+      </div>
+      <div class="arrow">→</div>
+      <div class="metric">
+        <div class="metric-value target">40М</div>
+        <div class="metric-label">Цель</div>
+      </div>
+      <div class="metric" style="margin-left:8px;">
+        <div class="metric-value deadline">8 мес</div>
+        <div class="metric-label">До декабря</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tabs" id="tabs">
+    <div class="tab active" data-section="s1"><span class="num">1.</span>As-Is</div>
+    <div class="tab" data-section="s2"><span class="num">2.</span>To-Be</div>
+    <div class="tab" data-section="s3"><span class="num">3.</span>Рычаги</div>
+    <div class="tab blocker" data-section="s4"><span class="num">4.</span>Продукт ⚠️</div>
+    <div class="tab" data-section="s5"><span class="num">5.</span>Сегменты</div>
+    <div class="tab" data-section="s6"><span class="num">6.</span>Каналы</div>
+    <div class="tab" data-section="s7"><span class="num">7.</span>Кросс-сейл</div>
+    <div class="tab" data-section="s8"><span class="num">8.</span>Операции</div>
+    <div class="tab" data-section="s9"><span class="num">9.</span>Конкуренты</div>
+    <div class="tab" data-section="s10"><span class="num">10.</span>Риски</div>
+    <div class="tab" data-section="s11"><span class="num">11.</span>Финмодель</div>
+    <div class="tab" data-section="s12"><span class="num">12.</span>Роадмап</div>
+    <div class="tab" data-section="s13"><span class="num">13.</span>KPI</div>
+  </div>
+</div>
+
+<!-- CONTENT -->
+<div class="content-wrap">
+<div class="content">
+
+<!-- SECTION 1: As-Is -->
+<div class="section active" id="s1">
+  <div class="section-header">
+    <div class="section-title">1. Исходная позиция (As-Is)</div>
+    <div class="section-goal"><strong>Цель:</strong> Зафиксировать отправную точку — где мы сейчас, чтобы точно измерять прогресс.</div>
+  </div>
+  <div class="blocks">
+    <div class="block">
+      <div class="block-title">Ключевые вопросы</div>
+      <ul>
+        <li>Сколько приносит бизнес сейчас? (выручка, GMV, маржа)</li>
+        <li>Кто наши партнёры? 1000 активных — по сегментам, сколько приносит каждый</li>
+        <li>Какой средний чек и частота заказов?</li>
+        <li>CAC, LTV, ARPPU, retention по сегментам?</li>
+        <li>Что есть в ассортименте: свет, электрокарнизы, умный дом — что продаётся?</li>
+        <li>Спящая база 5000 — кто они, почему ушли?</li>
+      </ul>
+    </div>
+    <div class="block">
+      <div class="block-title">Текущие метрики</div>
+      <table class="data-table">
+        <tr><th>Метрика</th><th>Значение</th><th>Статус</th></tr>
+        <tr><td>Активные партнёры</td><td><strong>1 000</strong></td><td><span class="badge blue">база</span></td></tr>
+        <tr><td>Спящая база</td><td><strong>5 000</strong></td><td><span class="badge orange">реактивация</span></td></tr>
+        <tr><td>Выручка/мес</td><td><strong>20М ₽</strong></td><td><span class="badge green">стабильно</span></td></tr>
+        <tr><td>Средний CAC</td><td>18 500 ₽</td><td><span class="badge blue">норма</span></td></tr>
+        <tr><td>LTV/CAC</td><td>8.1x</td><td><span class="badge green">здорово</span></td></tr>
+        <tr><td>Payback</td><td>1 месяц</td><td><span class="badge green">быстро</span></td></tr>
+      </table>
+    </div>
+    <div class="block">
+      <div class="block-title warning">Продукт: что есть и чего нет</div>
+      <table class="data-table">
+        <tr><th>Компонент</th><th>Статус</th></tr>
+        <tr><td>Основной ассортимент (свет)</td><td><span class="badge green">работает</span></td></tr>
+        <tr><td>Электрокарнизы</td><td><span class="badge green">в ассортименте</span></td></tr>
+        <tr><td>Умный дом</td><td><span class="badge green">в ассортименте</span></td></tr>
+        <tr><td>Личный кабинет</td><td><span class="badge red">нет</span></td></tr>
+        <tr><td>Лендинг</td><td><span class="badge red">нет</span></td></tr>
+        <tr><td>Реферальная система L2</td><td><span class="badge red">нет</span></td></tr>
+      </table>
+    </div>
+    <div class="block">
+      <div class="block-title">Ассортимент</div>
+      <ul>
+        <li><strong>Свет</strong> — основная категория, рабочий процесс</li>
+        <li><strong>Электрокарнизы</strong> — готово, можно продавать сегодня</li>
+        <li><strong>Умный дом</strong> — готово, можно продавать сегодня</li>
+      </ul>
+      <div class="insight">
+        <div class="insight-label">Потенциал кросс-сейла</div>
+        <div class="insight-text">+33% к среднему чеку через допродажу карнизов и умного дома текущим 1000 партнёрам</div>
+      </div>
+    </div>
+  </div>
+  <div class="sources">
+    <div class="sources-title">Источники данных</div>
+    <span class="source-tag">КОНТЕКСТ/01_Продукт/</span>
+    <span class="source-tag">КОНТЕКСТ/02_Сегменты/</span>
+    <span class="source-tag">КОНТЕКСТ/07_Юнит_экономика/</span>
+  </div>
+</div>
+
+<!-- SECTION 2: To-Be -->
+<div class="section" id="s2">
+  <div class="section-header">
+    <div class="section-title">2. Целевая позиция (To-Be)</div>
+    <div class="section-goal"><strong>Цель:</strong> Конкретные цифры на декабрь 2026 — что значит «40М/мес» в деталях.</div>
+  </div>
+  <div class="blocks">
+    <div class="block full">
+      <div class="block-title success">Раскладка цели 40М/мес</div>
+      <div class="formula">
+        <span class="num">~1 500</span><span class="op">×</span><span class="num">~26 700 ₽</span><span class="op">=</span><span class="res">40 000 000 ₽/мес</span>
+      </div>
+      <div style="font-size:12px; color:#94a3b8; text-align:center; margin-top:8px;">партнёров × средняя выручка с партнёра/мес</div>
+    </div>
+    <div class="block">
+      <div class="block-title">Ключевые вопросы</div>
+      <ul>
+        <li>40М/мес — как раскладывается: партнёры × чек × частота?</li>
+        <li>Целевая структура базы по сегментам — кого сколько?</li>
+        <li>Доля кросс-сейла в выручке: свет vs карнизы vs умный дом?</li>
+        <li>Операционные метрики для x2 объёма: SLA, NPS?</li>
+        <li>Как выглядит «типичный месяц» при 40М?</li>
+      </ul>
+    </div>
+    <div class="block">
+      <div class="block-title">Целевые показатели</div>
+      <table class="data-table">
+        <tr><th>Показатель</th><th>Сейчас</th><th>Цель</th></tr>
+        <tr><td>Активные партнёры</td><td>1 000</td><td><strong>1 500</strong></td></tr>
+        <tr><td>Выручка/партнёр/мес</td><td>20 000 ₽</td><td><strong>26 700 ₽</strong></td></tr>
+        <tr><td>Выручка/мес</td><td>20М ₽</td><td><strong>40М ₽</strong></td></tr>
+        <tr><td>Доля кросс-сейла</td><td>низкая</td><td><strong>25-30%</strong></td></tr>
+        <tr><td>NPS</td><td>—</td><td><strong>≥ 50</strong></td></tr>
+      </table>
+    </div>
+  </div>
+  <div class="sources">
+    <div class="sources-title">Источники данных</div>
+    <span class="source-tag">КОНТЕКСТ/07_Юнит_экономика/</span>
+    <span class="source-tag">КОНТЕКСТ/05_Стратегия/</span>
+    <span class="source-tag">КОНТЕКСТ/02_Сегменты/</span>
+  </div>
+</div>
+
+<!-- SECTION 3: Levers -->
+<div class="section" id="s3">
+  <div class="section-header">
+    <div class="section-title">3. Стратегические рычаги</div>
+    <div class="section-goal"><strong>Цель:</strong> Определить два главных рычага роста и их вклад в удвоение выручки.</div>
+  </div>
+  <div class="blocks">
+    <div class="block">
+      <div class="block-title">Рычаг 1 — рост базы</div>
+      <p style="font-size:13px; color:#cbd5e1; margin-bottom:12px;">От 1000 до ~1500 активных партнёров. Откуда +500?</p>
+      <ul>
+        <li><strong>Реактивация спящих</strong> (5000 база) → 180-220 партнёров</li>
+        <li><strong>Реферальная сеть L2</strong> → 100-130 партнёров</li>
+        <li><strong>Прямые продажи</strong> Premium/HoReCa → 80-110 партнёров</li>
+        <li><strong>Лендинг + контент</strong> → 50-70 партнёров</li>
+        <li><strong>Школы/ивенты</strong> → 30-50 партнёров</li>
+      </ul>
+    </div>
+    <div class="block">
+      <div class="block-title">Рычаг 2 — рост выручки на партнёра</div>
+      <p style="font-size:13px; color:#cbd5e1; margin-bottom:12px;">+33% к среднему чеку через кросс-сейл</p>
+      <ul>
+        <li><strong>Электрокарнизы</strong> — допродажа существующим партнёрам</li>
+        <li><strong>Умный дом</strong> — для Premium и HoReCa</li>
+      </ul>
+      <div class="insight success">
+        <div class="insight-label">Преимущество</div>
+        <div class="insight-text">Категории уже в ассортименте — продавать можно сегодня</div>
+      </div>
+    </div>
+    <div class="block full">
+      <div class="block-title">Соотношение рычагов</div>
+      <table class="data-table">
+        <tr><th>Рычаг</th><th>Вклад</th><th>Скорость</th><th>Зависимость от продукта</th></tr>
+        <tr><td>Рост базы (+500)</td><td>~50%</td><td>Медленнее (8 мес)</td><td>Высокая (нужен кабинет, лендинг)</td></tr>
+        <tr><td>Рост выручки/партнёр (+33%)</td><td>~50%</td><td>Быстрее (можно начать сразу)</td><td>Низкая (категории готовы)</td></tr>
+      </table>
+      <div class="insight">
+        <div class="insight-label">Стратегическая логика</div>
+        <div class="insight-text">Кросс-сейл текущим партнёрам стартует немедленно. Рост базы блокирован продуктом — раздел 4.</div>
+      </div>
+    </div>
+  </div>
+  <div class="sources">
+    <div class="sources-title">Источники данных</div>
+    <span class="source-tag">КОНТЕКСТ/05_Стратегия/</span>
+    <span class="source-tag">КОНТЕКСТ/07_Юнит_экономика/</span>
+  </div>
+</div>
+
+<!-- SECTION 4: Product (BLOCKER) -->
+<div class="section" id="s4">
+  <div class="section-header">
+    <div class="section-title">4. Продуктовая стратегия <span style="background:#431407; color:#fb923c; font-size:11px; padding:3px 10px; border-radius:4px; vertical-align:middle; margin-left:8px;">⚠️ БЛОКЕР №1</span></div>
+    <div class="section-goal"><strong>Цель:</strong> Определить что строить и в каком порядке. Без продукта остальные рычаги не работают.</div>
+  </div>
+  <div class="blocks">
+    <div class="block full">
+      <div class="block-title warning">Что нужно построить</div>
+      <table class="data-table">
+        <tr><th>Компонент</th><th>Что внутри</th><th>Приоритет</th></tr>
+        <tr><td><strong>MVP кабинета</strong></td><td>Финансовый модуль (баланс, выплаты, история), реферальный дашборд (L2)</td><td><span class="badge red">P0</span></td></tr>
+        <tr><td><strong>Лендинг</strong></td><td>Калькулятор дохода, конверсионная воронка</td><td><span class="badge red">P0</span></td></tr>
+        <tr><td><strong>Реферальная система L2</strong></td><td>Механика, антифрод (DaDa API), быстрые выплаты</td><td><span class="badge red">P0</span></td></tr>
+        <tr><td>Полный кабинет</td><td>Смарт-импорт XLSX/PDF/JPG → OCR, геймификация Base/Pro/Expert</td><td><span class="badge orange">P1</span></td></tr>
+        <tr><td>Интеграции</td><td>1С/ERP, API самозанятых</td><td><span class="badge gray">P2</span></td></tr>
+      </table>
+    </div>
+    <div class="block">
+      <div class="block-title">Ключевые вопросы</div>
+      <ul>
+        <li>Какой MVP кабинета запустить первым?</li>
+        <li>Какой лендинг нужен и как считать доход?</li>
+        <li>Как устроена реферальная система L2?</li>
+        <li>Что даёт максимальный разблок за минимум разработки?</li>
+        <li>Какие интеграции необходимы (1С, самозанятые)?</li>
+      </ul>
+    </div>
+    <div class="block">
+      <div class="block-title">Геймификация уровней</div>
+      <table class="data-table">
+        <tr><th>Уровень</th><th>Комиссия</th><th>SLA</th></tr>
+        <tr><td>Base</td><td>20%</td><td>8 ч</td></tr>
+        <tr><td>Pro</td><td>30%</td><td>4 ч</td></tr>
+        <tr><td>Expert</td><td>40%</td><td>2 ч</td></tr>
+      </table>
+    </div>
+  </div>
+  <div class="sources">
+    <div class="sources-title">Источники данных</div>
+    <span class="source-tag">КОНТЕКСТ/06_Документы/</span>
+    <span class="source-tag">КОНТЕКСТ/05_Стратегия/</span>
+    <span class="source-tag">КОНТЕКСТ/03_Риски/</span>
+  </div>
+</div>
+
+<!-- SECTION 5: Segments -->
+<div class="section" id="s5">
+  <div class="section-header">
+    <div class="section-title">5. Сегментная стратегия</div>
+    <div class="section-goal"><strong>Цель:</strong> Расставить приоритеты — кого привлекать первыми, кого позже, кого пока не трогать.</div>
+  </div>
+  <div class="blocks">
+    <div class="block full">
+      <div class="block-title">Основные сегменты (8 шт.)</div>
+      <table class="data-table">
+        <tr><th>Сегмент</th><th>Скоринг</th><th>LTV/CAC</th><th>Роль в стратегии</th></tr>
+        <tr><td><strong>Дизайнер-блогер</strong></td><td>81</td><td><span class="badge green">200x</span></td><td>Виральный: нулевой CAC, сетевой эффект</td></tr>
+        <tr><td><strong>Дизайнер-декоратор</strong></td><td>80</td><td><span class="badge green">58x</span></td><td>Частотный: 3 заказа/мес, быстрый оборот</td></tr>
+        <tr><td><strong>Студия полного цикла</strong></td><td>80</td><td><span class="badge blue">6.3x</span></td><td>Крупночековый: умный дом + карнизы</td></tr>
+        <tr><td><strong>Архитектор HoReCa</strong></td><td>79</td><td><span class="badge blue">7.5x</span></td><td>HoReCa: большие проекты, повторы</td></tr>
+        <tr><td><strong>Комплектатор-аутсорсер</strong></td><td>78</td><td><span class="badge green">53x</span></td><td>Якорный: стабильный поток, высокий LTV</td></tr>
+        <tr><td><strong>Региональный партнёр</strong></td><td>78</td><td><span class="badge orange">3.15x</span></td><td>Географический рычаг</td></tr>
+        <tr><td>Начинающий дизайнер</td><td>75</td><td><span class="badge blue">5.7x</span></td><td>Инкубатор: ранний захват лояльности</td></tr>
+        <tr><td>Частный фрилансер</td><td>65</td><td><span class="badge orange">4.0x</span></td><td>Фундамент: объём, низкий приоритет</td></tr>
+      </table>
+    </div>
+    <div class="block full">
+      <div class="block-title">Смежные сегменты (7 шт.)</div>
+      <table class="data-table">
+        <tr><th>Сегмент</th><th>Switch Score</th><th>LTV/CAC</th><th>Статус</th></tr>
+        <tr><td><strong>Ландшафтный дизайнер (уличный)</strong></td><td>55</td><td><span class="badge green">6.4x</span></td><td>Высокий потенциал, сезонность</td></tr>
+        <tr><td>Прораб жилых объектов</td><td>51</td><td><span class="badge orange">1.8x → 3.0x</span></td><td>Зависит от кросс-сейла</td></tr>
+        <tr><td>Ландшафтный архитектор (коммерч.)</td><td>44</td><td><span class="badge blue">4.0x</span></td><td>Маленький рынок, 44-ФЗ</td></tr>
+        <tr><td>Прораб коммерческих объектов</td><td>37</td><td><span class="badge red">1.4x</span></td><td>Слабая экономика, не приоритет</td></tr>
+        <tr><td><strong>Потолочник-монтажник</strong></td><td>35</td><td><span class="badge orange">3.2x</span></td><td>Уже работает — масштабировать</td></tr>
+        <tr><td>Мастер-универсал</td><td>25</td><td><span class="badge orange">1.7x → 8.5x</span></td><td>Масштаб, но слабая база</td></tr>
+        <tr><td>Электрик-монтажник</td><td>5</td><td><span class="badge red">1.1x</span></td><td>На грани рентабельности</td></tr>
+      </table>
+    </div>
+    <div class="block">
+      <div class="block-title success">Фокус-сегменты</div>
+      <ul>
+        <li>Комплектатор-аутсорсер — якорь</li>
+        <li>Дизайнер-блогер — виральность</li>
+        <li>Студия полного цикла — крупный чек</li>
+        <li>Дизайнер-декоратор — частотность</li>
+        <li>Потолочник + Ландшафтный — смежные</li>
+      </ul>
+    </div>
+    <div class="block">
+      <div class="block-title">Ключевые вопросы</div>
+      <ul>
+        <li>Сколько партнёров нужно в каждом сегменте?</li>
+        <li>Какая ожидаемая выручка от сегмента?</li>
+        <li>Какая специфика работы: SLA, инструменты?</li>
+        <li>Какие смежные подключать и когда?</li>
+        <li>Для каких нужен апсейл, чтобы экономика сошлась?</li>
+      </ul>
+    </div>
+  </div>
+  <div class="sources">
+    <div class="sources-title">Источники данных</div>
+    <span class="source-tag">КОНТЕКСТ/02_Сегменты/</span>
+    <span class="source-tag">КОНТЕКСТ СМЕЖНЫЕ/</span>
+  </div>
+</div>
+
+<!-- SECTION 6: Channels -->
+<div class="section" id="s6">
+  <div class="section-header">
+    <div class="section-title">6. Каналы привлечения</div>
+    <div class="section-goal"><strong>Цель:</strong> Определить микс каналов, последовательность запуска и бюджет.</div>
+  </div>
+  <div class="blocks">
+    <div class="block full">
+      <div class="block-title success">Тир 1 — быстрые каналы (первые 30 дней)</div>
+      <table class="data-table">
+        <tr><th>Канал</th><th>Прогноз</th><th>CAC</th><th>Почему быстрый</th></tr>
+        <tr><td><strong>Реактивация спящей базы 5000</strong></td><td>180-220 партнёров</td><td><span class="badge green">минимальный</span></td><td>Уже знают продукт, есть доверие</td></tr>
+        <tr><td><strong>Реферальная сеть L2</strong></td><td>100-130 партнёров</td><td><span class="badge blue">через комиссию</span></td><td>Активные приводят коллег</td></tr>
+        <tr><td><strong>Прямые продажи (PDF/встречи)</strong></td><td>80-110 партнёров</td><td><span class="badge blue">средний</span></td><td>Точечная работа с Premium/HoReCa</td></tr>
+      </table>
+    </div>
+    <div class="block full">
+      <div class="block-title">Тир 2 — системные каналы</div>
+      <table class="data-table">
+        <tr><th>Канал</th><th>Прогноз</th><th>CAC</th><th>Когда запускать</th></tr>
+        <tr><td>Лендинг + контент + лид-магнит</td><td>50-70 партнёров</td><td>~8К ₽</td><td>После готовности лендинга</td></tr>
+        <tr><td>Школы/ивенты/комьюнити</td><td>30-50 партнёров</td><td>~40К ₽</td><td>Параллельно с тир 1</td></tr>
+      </table>
+    </div>
+    <div class="block">
+      <div class="block-title">Ключевые вопросы</div>
+      <ul>
+        <li>Какой бюджет на каждый канал?</li>
+        <li>В какой последовательности запускать?</li>
+        <li>Как измерять эффективность канала?</li>
+        <li>Когда подключать платный трафик (Яндекс.Директ, TG Ads)?</li>
+      </ul>
+    </div>
+    <div class="block">
+      <div class="block-title">Принципы запуска</div>
+      <ul>
+        <li>Сначала тир 1 — быстрая обратная связь</li>
+        <li>Платный трафик — только после первых 100 рефералов</li>
+        <li>Школы — параллельно, длинный цикл</li>
+        <li>Каждый канал = отдельный CAC и метрики</li>
+      </ul>
+    </div>
+  </div>
+  <div class="sources">
+    <div class="sources-title">Источники данных</div>
+    <span class="source-tag">КОНТЕКСТ/05_Стратегия/</span>
+    <span class="source-tag">КОНТЕКСТ/06_Документы/</span>
+  </div>
+</div>
+
+<!-- SECTION 7: Cross-sell -->
+<div class="section" id="s7">
+  <div class="section-header">
+    <div class="section-title">7. Стратегия кросс-сейла</div>
+    <div class="section-goal"><strong>Цель:</strong> Увеличить средний чек на +33% через допродажу электрокарнизов и умного дома.</div>
+  </div>
+  <div class="blocks">
+    <div class="block">
+      <div class="block-title">Категории кросс-сейла</div>
+      <table class="data-table">
+        <tr><th>Категория</th><th>Статус</th></tr>
+        <tr><td><strong>Электрокарнизы</strong></td><td><span class="badge green">в ассортименте</span></td></tr>
+        <tr><td><strong>Умный дом</strong></td><td><span class="badge green">в ассортименте</span></td></tr>
+      </table>
+      <div class="insight success">
+        <div class="insight-label">Готовность</div>
+        <div class="insight-text">Обе категории есть, поставщики подключены — продавать можно сегодня</div>
+      </div>
+    </div>
+    <div class="block">
+      <div class="block-title">Сегменты-покупатели</div>
+      <table class="data-table">
+        <tr><th>Сегмент</th><th>Восприимчивость</th></tr>
+        <tr><td>Premium-студии</td><td><span class="badge green">высокая</span> · карнизы + умный дом</td></tr>
+        <tr><td>Архитектор HoReCa</td><td><span class="badge green">высокая</span> · автоматизация</td></tr>
+        <tr><td>Комплектатор-аутсорсер</td><td><span class="badge blue">средняя</span></td></tr>
+        <tr><td>Дизайнер-декоратор</td><td><span class="badge orange">низкая</span></td></tr>
+      </table>
+    </div>
+    <div class="block">
+      <div class="block-title">Ключевые вопросы</div>
+      <ul>
+        <li>Какой вклад каждой категории в +33%?</li>
+        <li>Какие сегменты восприимчивее?</li>
+        <li>Как встраивать в процесс продажи (не болт-он, а часть проекта)?</li>
+        <li>Нужно ли обучение менеджеров?</li>
+        <li>Какие барьеры: незнание категории, нет доверия?</li>
+      </ul>
+    </div>
+    <div class="block">
+      <div class="block-title">Метрики кросс-сейла</div>
+      <ul>
+        <li>Доля заказов с кросс-сейлом</li>
+        <li>Средний чек с кросс-сейлом vs без</li>
+        <li>Конверсия из света в карнизы/умный дом</li>
+        <li>Маржинальность по категориям</li>
+      </ul>
+    </div>
+  </div>
+  <div class="sources">
+    <div class="sources-title">Источники данных</div>
+    <span class="source-tag">КОНТЕКСТ/05_Стратегия/</span>
+    <span class="source-tag">КОНТЕКСТ/02_Сегменты/</span>
+    <span class="source-tag">КОНТЕКСТ/01_Продукт/</span>
+  </div>
+</div>
+
+<!-- SECTION 8: Operations -->
+<div class="section" id="s8">
+  <div class="section-header">
+    <div class="section-title">8. Операционная модель масштабирования</div>
+    <div class="section-goal"><strong>Цель:</strong> Обслуживать x2 объём и не потерять качество сервиса.</div>
+  </div>
+  <div class="blocks">
+    <div class="block">
+      <div class="block-title">SLA по уровням партнёров</div>
+      <table class="data-table">
+        <tr><th>Уровень</th><th>Ответ</th><th>Комиссия</th></tr>
+        <tr><td><strong>Expert</strong></td><td>2 часа</td><td>40%</td></tr>
+        <tr><td><strong>Pro</strong></td><td>4 часа</td><td>30%</td></tr>
+        <tr><td><strong>Base</strong></td><td>8 часов</td><td>20%</td></tr>
+      </table>
+    </div>
+    <div class="block">
+      <div class="block-title warning">Критичные процессы</div>
+      <ul>
+        <li><strong>Верификация спецификаций</strong> — двухэтапная проверка</li>
+        <li><strong>Аудит первых 50 заказов</strong> нового партнёра — экспертный</li>
+        <li><strong>Быстрые выплаты</strong> — конкурентное преимущество</li>
+        <li><strong>API самозанятых</strong> — для легальных выплат</li>
+      </ul>
+    </div>
+    <div class="block">
+      <div class="block-title">Ключевые вопросы</div>
+      <ul>
+        <li>Как верифицировать спецификации?</li>
+        <li>Как устроены выплаты?</li>
+        <li>Кого нанимать при росте?</li>
+        <li>Где узкие места в команде?</li>
+        <li>Как не допустить коллапс SLA?</li>
+        <li>Что автоматизировать в первую очередь?</li>
+      </ul>
+    </div>
+    <div class="block">
+      <div class="block-title danger">Главный операционный риск</div>
+      <p style="font-size:13px; color:#cbd5e1;">Коллапс SLA при масштабировании (риск score 20). Premium и HoReCa требуют интенсивного сервиса. При росте объёма команда не успевает.</p>
+      <div class="insight warning">
+        <div class="insight-label">Митигация</div>
+        <div class="insight-text">Автоматизация рутины + найм по триггерам объёма + двухэтапная верификация</div>
+      </div>
+    </div>
+  </div>
+  <div class="sources">
+    <div class="sources-title">Источники данных</div>
+    <span class="source-tag">КОНТЕКСТ/03_Риски/</span>
+    <span class="source-tag">КОНТЕКСТ/06_Документы/</span>
+    <span class="source-tag">КОНТЕКСТ/05_Стратегия/</span>
+  </div>
+</div>
+
+<!-- SECTION 9: Competitors -->
+<div class="section" id="s9">
+  <div class="section-header">
+    <div class="section-title">9. Конкурентное позиционирование</div>
+    <div class="section-goal"><strong>Цель:</strong> Отстроиться от VamSvet.ru, BasicDecor, Lu.ru и маркетплейсов.</div>
+  </div>
+  <div class="blocks">
+    <div class="block full">
+      <div class="block-title">Прямые конкуренты</div>
+      <table class="data-table">
+        <tr><th>Конкурент</th><th>Сильная сторона</th><th>Слабость (наша возможность)</th></tr>
+        <tr><td><strong>VamSvet.ru</strong></td><td>120+ брендов, рейтинг 4.8/5</td><td>Нестабильный SLA, медленная рекламация</td></tr>
+        <tr><td><strong>BasicDecor</strong></td><td>Свет + мебель + декор в одном месте</td><td>Высокие цены, нестабильные менеджеры</td></tr>
+        <tr><td><strong>Lu.ru</strong></td><td>Скорость доставки, ассортимент</td><td>Нет партнёрской модели, нет прозрачного заработка</td></tr>
+      </table>
+    </div>
+    <div class="block">
+      <div class="block-title danger">Угроза маркетплейсов</div>
+      <p style="font-size:13px; color:#cbd5e1; margin-bottom:10px;">Ozon/WB/Я.Маркет — клиенты ищут по артикулу и покупают на 10-30% дешевле</p>
+      <ul>
+        <li><strong>Эксклюзивные SKU</strong> — нет в маркетплейсе</li>
+        <li><strong>Проектная защита</strong> — зарегистрированный клиент = фиксированная цена</li>
+        <li><strong>Техаудит</strong> — маркетплейс не даёт</li>
+      </ul>
+    </div>
+    <div class="block">
+      <div class="block-title success">Ключевое отличие ДонПлафон</div>
+      <ul>
+        <li>Прозрачная реферальная экономика 20-40% + L2</li>
+        <li>Техаудит спецификаций</li>
+        <li>White-label позиционирование для студий</li>
+        <li>Быстрые выплаты как сервис</li>
+      </ul>
+    </div>
+  </div>
+  <div class="sources">
+    <div class="sources-title">Источники данных</div>
+    <span class="source-tag">КОНТЕКСТ/04_Конкуренты/</span>
+    <span class="source-tag">КОНТЕКСТ/03_Риски/</span>
+  </div>
+</div>
+
+<!-- SECTION 10: Risks -->
+<div class="section" id="s10">
+  <div class="section-header">
+    <div class="section-title">10. Управление рисками</div>
+    <div class="section-goal"><strong>Цель:</strong> Топ-риски, которые могут сорвать стратегию, и план митигации.</div>
+  </div>
+  <div class="blocks">
+    <div class="block full">
+      <div class="block-title danger">Критические риски (score 25)</div>
+      <table class="data-table">
+        <tr><th>Риск</th><th>Суть</th><th>Что делать</th></tr>
+        <tr><td><strong>Дефицит доверия к выплатам</strong></td><td>Дизайнеры боятся, что комиссию не заплатят</td><td>Быстрые выплаты, прозрачность, юр. договоры</td></tr>
+        <tr><td><strong>Налоговая нагрузка</strong></td><td>13% НДФЛ + 30% взносы убивают юнит-экономику</td><td>Аудит налоговой схемы, пилот с самозанятыми</td></tr>
+      </table>
+    </div>
+    <div class="block full">
+      <div class="block-title warning">Высокие риски (score 20)</div>
+      <table class="data-table">
+        <tr><th>Риск</th><th>Суть</th><th>Что делать</th></tr>
+        <tr><td>Ошибки в ТЗ</td><td>Менеджер подбирает не тот аналог → потеря партнёра</td><td>Двухэтапная верификация</td></tr>
+        <tr><td>Экономика комиссий</td><td>L1+L2+операционка съедают маржу</td><td>Стресс-тест по сценариям</td></tr>
+        <tr><td>Коллапс SLA</td><td>При росте не успеваем отвечать</td><td>Автоматизация + найм</td></tr>
+        <tr><td>Переклассификация L2 как трудовые</td><td>Налоговая признаёт рефералов сотрудниками</td><td>Юридическая экспертиза</td></tr>
+        <tr><td>Негативный CAC в бюджетных сегментах</td><td>Фрилансеры/студенты не окупаются</td><td>Фокус на рентабельных сегментах</td></tr>
+        <tr><td>Lock-in эффект поставщиков</td><td>Привычка работать с текущими менеджерами</td><td>Превосходящий сервис + финансовый стимул</td></tr>
+      </table>
+    </div>
+    <div class="block full">
+      <div class="block-title">Подход к управлению рисками</div>
+      <ul>
+        <li>Для каждого риска: триггер, план митигации, ответственный, дедлайн</li>
+        <li>Какие риски блокируют запуск (доверие, налоги) — решать первыми</li>
+        <li>Какие можно принять — фиксировать в журнале</li>
+        <li>Ежеквартальный пересмотр карты рисков</li>
+      </ul>
+    </div>
+  </div>
+  <div class="sources">
+    <div class="sources-title">Источники данных</div>
+    <span class="source-tag">КОНТЕКСТ/03_Риски/ — все 37 файлов</span>
+  </div>
+</div>
+
+<!-- SECTION 11: Finmodel -->
+<div class="section" id="s11">
+  <div class="section-header">
+    <div class="section-title">11. Финансовая модель</div>
+    <div class="section-goal"><strong>Цель:</strong> Помесячная проекция от 20М до 40М — цифры, а не ощущения.</div>
+  </div>
+  <div class="blocks">
+    <div class="block full">
+      <div class="block-title">Базовая формула</div>
+      <div class="formula">
+        <span class="num">Партнёры</span><span class="op">×</span><span class="num">ARPPU</span><span class="op">×</span><span class="num">Частота</span><span class="op">=</span><span class="res">Выручка</span>
+      </div>
+    </div>
+    <div class="block full">
+      <div class="block-title">Три сценария на декабрь 2026</div>
+      <table class="data-table">
+        <tr><th>Сценарий</th><th>Выручка/мес</th><th>Партнёров</th><th>Условия</th></tr>
+        <tr><td><span class="badge green">Оптимистичный</span></td><td><strong>40М+ ₽</strong></td><td>1500+</td><td>Оба рычага сработали полностью</td></tr>
+        <tr><td><span class="badge blue">Базовый</span></td><td><strong>35М ₽</strong></td><td>1300</td><td>Один из рычагов сработал на 70-80%</td></tr>
+        <tr><td><span class="badge orange">Пессимистичный</span></td><td><strong>28-30М ₽</strong></td><td>1100</td><td>Только кросс-сейл, продукт задержался</td></tr>
+      </table>
+    </div>
+    <div class="block">
+      <div class="block-title">Ключевые вопросы</div>
+      <ul>
+        <li>Помесячная модель: база × ARPPU × частота = выручка</li>
+        <li>Вклад каждого рычага по месяцам</li>
+        <li>Бюджет на привлечение по каналам и ROI</li>
+        <li>Расходы на разработку (кабинет, лендинг)</li>
+        <li>Точка окупаемости инвестиций в продукт</li>
+      </ul>
+    </div>
+    <div class="block">
+      <div class="block-title">Юнит-экономика</div>
+      <table class="data-table">
+        <tr><td>Средний CAC</td><td><strong>18 500 ₽</strong></td></tr>
+        <tr><td>LTV</td><td><strong>150 000 ₽</strong></td></tr>
+        <tr><td>LTV/CAC</td><td><strong>8.1x</strong></td></tr>
+        <tr><td>ARPPU (за заказ)</td><td><strong>100 000 ₽</strong></td></tr>
+        <tr><td>Маржа на заказ</td><td><strong>30 000 ₽</strong></td></tr>
+        <tr><td>Payback</td><td><strong>1 месяц</strong></td></tr>
+      </table>
+    </div>
+  </div>
+  <div class="sources">
+    <div class="sources-title">Источники данных</div>
+    <span class="source-tag">КОНТЕКСТ/07_Юнит_экономика/</span>
+    <span class="source-tag">КОНТЕКСТ/05_Стратегия/</span>
+    <span class="source-tag">КОНТЕКСТ/02_Сегменты/</span>
+  </div>
+</div>
+
+<!-- SECTION 12: Roadmap -->
+<div class="section" id="s12">
+  <div class="section-header">
+    <div class="section-title">12. Роадмап по кварталам</div>
+    <div class="section-goal"><strong>Цель:</strong> Конкретные действия по месяцам для команды 4-8 человек.</div>
+  </div>
+  <div class="blocks">
+    <div class="block">
+      <div class="block-title">Q2 2026 (апр–июн) — Фундамент</div>
+      <ul>
+        <li class="checkbox">MVP кабинета (финансы + реферальный дашборд)</li>
+        <li class="checkbox">Лендинг с калькулятором дохода</li>
+        <li class="checkbox">Реактивация спящей базы (5000 → 180-220)</li>
+        <li class="checkbox">Старт кросс-сейла электрокарнизов</li>
+        <li class="checkbox">Прямые продажи Premium/HoReCa</li>
+        <li class="checkbox">Юр. экспертиза налоговой схемы и L2</li>
+      </ul>
+    </div>
+    <div class="block">
+      <div class="block-title">Q3 2026 (июл–сен) — Масштабирование</div>
+      <ul>
+        <li class="checkbox">Полный кабинет (смарт-импорт, геймификация)</li>
+        <li class="checkbox">Запуск L2 реферальной программы</li>
+        <li class="checkbox">Платный трафик (после 100 рефералов)</li>
+        <li class="checkbox">Партнёрство со школами (Skillbox, Contented)</li>
+        <li class="checkbox">Масштабирование смежных: потолочники, ландшафт</li>
+        <li class="checkbox">Кросс-сейл умного дома для Premium</li>
+      </ul>
+    </div>
+    <div class="block">
+      <div class="block-title success">Q4 2026 (окт–дек) — Цель 40М</div>
+      <ul>
+        <li class="checkbox">Региональная экспансия (ЕКБ, Казань, Новосибирск)</li>
+        <li class="checkbox">Ивенты и комьюнити (Padel, MosBuild)</li>
+        <li class="checkbox">Оптимизация конверсии по воронке</li>
+        <li class="checkbox">Умный дом как полноценная категория</li>
+        <li class="checkbox">Ревью стратегии: план-факт, корректировка на 2027</li>
+      </ul>
+    </div>
+  </div>
+  <div class="sources">
+    <div class="sources-title">Источники данных</div>
+    <span class="source-tag">КОНТЕКСТ/05_Стратегия/</span>
+    <span class="source-tag">КОНТЕКСТ/06_Документы/</span>
+  </div>
+</div>
+
+<!-- SECTION 13: KPI -->
+<div class="section" id="s13">
+  <div class="section-header">
+    <div class="section-title">13. KPI и система контроля</div>
+    <div class="section-goal"><strong>Цель:</strong> Измерять прогресс и вовремя корректировать курс.</div>
+  </div>
+  <div class="blocks">
+    <div class="block">
+      <div class="block-title">Еженедельные метрики</div>
+      <ul>
+        <li>Новые партнёры (регистрации + активации)</li>
+        <li>GMV за неделю</li>
+        <li>Количество заказов</li>
+        <li>Средний чек</li>
+      </ul>
+    </div>
+    <div class="block">
+      <div class="block-title">Ежемесячные метрики</div>
+      <ul>
+        <li>ARPPU по сегментам</li>
+        <li>Retention (% партнёров с повторным заказом)</li>
+        <li>Доля заказов с кросс-сейлом (карнизы, умный дом)</li>
+        <li>CAC по каналам</li>
+        <li>NPS партнёров</li>
+      </ul>
+    </div>
+    <div class="block">
+      <div class="block-title">Квартальные ревью</div>
+      <ul>
+        <li>Рычаг 1 vs рычаг 2: план-факт</li>
+        <li>Каналы привлечения: ROI по каждому</li>
+        <li>Сегментная структура: соответствует целевой?</li>
+        <li>Ревью рисков: какие сработали, какие новые</li>
+      </ul>
+    </div>
+    <div class="block">
+      <div class="block-title warning">Алерты</div>
+      <p style="font-size:13px; color:#cbd5e1; margin-bottom:8px;">При каких значениях бить тревогу:</p>
+      <ul>
+        <li>SLA выше порога — сигнал о коллапсе сервиса</li>
+        <li>Retention ниже порога — отток</li>
+        <li>CAC растёт — канал перегревается</li>
+        <li>Доля кросс-сейла падает — менеджеры не продают</li>
+      </ul>
+    </div>
+  </div>
+  <div class="sources">
+    <div class="sources-title">Источники данных</div>
+    <span class="source-tag">КОНТЕКСТ/05_Стратегия/</span>
+    <span class="source-tag">КОНТЕКСТ/06_Документы/</span>
+  </div>
+</div>
+
+</div>
+</div>
+
+<div class="footer">
+  Стратегия роста ДонПлафон · Внутренний документ команды · 13 разделов из СТРАТЕГИЯ_СТРУКТУРА.md
+</div>
+
+<script>
+  const tabs = document.querySelectorAll('.tab');
+  const sections = document.querySelectorAll('.section');
+
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      const id = tab.dataset.section;
+      tabs.forEach(t => t.classList.remove('active'));
+      sections.forEach(s => s.classList.remove('active'));
+      tab.classList.add('active');
+      document.getElementById(id).classList.add('active');
+      window.scrollTo({top:0, behavior:'smooth'});
+      if (history.replaceState) history.replaceState(null, '', '#' + id);
+    });
+  });
+
+  // Open section from hash on load
+  if (window.location.hash) {
+    const id = window.location.hash.slice(1);
+    const tab = document.querySelector(`.tab[data-section="${id}"]`);
+    if (tab) tab.click();
+  }
+</script>
+
+</body>
+</html>

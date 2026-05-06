@@ -480,8 +480,174 @@
   /* SOURCES */
   .sources { margin-top: 32px; padding-top: 18px; border-top: 1px solid var(--line); }
   .sources-label { font-family: var(--mono); font-size: 10px; color: var(--ink-4); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 10px; }
-  .source-tag { display: inline-block; font-family: var(--mono); font-size: 11px; color: var(--ink-3); padding: 3px 10px; border: 1px solid var(--line); border-radius: 4px; margin: 0 6px 6px 0; transition: all 0.15s var(--ease); }
-  .source-tag:hover { border-color: var(--gold-line); color: var(--gold); }
+  .source-tag { display: inline-block; font-family: var(--mono); font-size: 11px; color: var(--ink-3); padding: 3px 10px; border: 1px solid var(--line); border-radius: 4px; margin: 0 6px 6px 0; transition: all 0.15s var(--ease); cursor: pointer; text-decoration: none; }
+  .source-tag:hover { border-color: var(--gold-line); color: var(--gold); background: var(--gold-tint); }
+  .source-tag::after { content: ' ↗'; opacity: 0; margin-left: 2px; transition: opacity 0.15s var(--ease); }
+  .source-tag:hover::after { opacity: 1; }
+
+  /* REF-LINK — inline deep-link to archive */
+  .ref-link { color: inherit; text-decoration: none; cursor: pointer; border-bottom: 1px dotted var(--gold-line); padding-bottom: 1px; transition: all 0.15s var(--ease); position: relative; white-space: nowrap; }
+  .ref-link:hover { color: var(--gold); border-bottom-color: var(--gold); border-bottom-style: solid; }
+  .ref-link::after { content: '↗'; font-size: 0.7em; vertical-align: super; margin-left: 1px; color: var(--gold); opacity: 0.5; transition: opacity 0.15s var(--ease); font-weight: 600; }
+  .ref-link:hover::after { opacity: 1; }
+  /* Don't underline links inside table cells double */
+  .data-table .ref-link, .kpi-table .ref-link { white-space: normal; }
+  /* Variant for inside <strong> / <b> */
+  strong .ref-link, b .ref-link { color: inherit; }
+  strong .ref-link:hover, b .ref-link:hover { color: var(--gold); }
+
+  /* DRAWER */
+  .drawer-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(5, 7, 12, 0.6);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    z-index: 200;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s var(--ease);
+  }
+  .drawer-overlay.open { opacity: 1; pointer-events: auto; }
+
+  .drawer {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 65%;
+    max-width: 880px;
+    background: var(--bg);
+    border-left: 1px solid var(--line-strong);
+    z-index: 201;
+    transform: translateX(100%);
+    transition: transform 0.32s var(--ease);
+    display: flex;
+    flex-direction: column;
+    box-shadow: -24px 0 60px rgba(0, 0, 0, 0.5);
+  }
+  .drawer.open { transform: translateX(0); }
+
+  .drawer-header {
+    padding: 16px 28px;
+    border-bottom: 1px solid var(--line);
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-shrink: 0;
+    background: var(--bg-soft);
+  }
+  .drawer-meta {
+    flex: 1;
+    min-width: 0;
+  }
+  .drawer-breadcrumb {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--ink-4);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .drawer-title {
+    font-family: var(--serif);
+    font-size: 16px;
+    color: var(--ink);
+    margin-top: 4px;
+    font-variation-settings: 'opsz' 60;
+    line-height: 1.3;
+  }
+  .drawer-actions { display: flex; gap: 8px; flex-shrink: 0; }
+  .drawer-btn {
+    background: transparent;
+    border: 1px solid var(--line);
+    color: var(--ink-3);
+    font-family: var(--sans);
+    font-size: 12px;
+    font-weight: 500;
+    padding: 8px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.15s var(--ease);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .drawer-btn:hover { color: var(--ink); border-color: var(--gold-line); }
+  .drawer-btn-icon {
+    background: transparent;
+    border: 1px solid var(--line);
+    color: var(--ink-3);
+    font-size: 16px;
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s var(--ease);
+  }
+  .drawer-btn-icon:hover { color: var(--ink); border-color: var(--ink-3); background: var(--bg-card); }
+
+  .drawer-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 32px 40px 60px;
+  }
+  .drawer-content { font-size: 15px; line-height: 1.7; }
+  .drawer-content h1 { font-family: var(--serif); font-size: 28px; color: var(--ink); margin: 0 0 14px; line-height: 1.2; font-weight: 500; font-variation-settings: 'opsz' 144, 'SOFT' 50; }
+  .drawer-content h2 { font-family: var(--serif); font-size: 22px; color: var(--ink); margin: 24px 0 12px; padding-bottom: 8px; border-bottom: 1px solid var(--line-soft); font-weight: 500; }
+  .drawer-content h3 { font-family: var(--sans); font-size: 16px; color: var(--ink); margin: 20px 0 10px; font-weight: 700; }
+  .drawer-content h4 { font-family: var(--sans); font-size: 14px; color: var(--ink); margin: 16px 0 8px; font-weight: 700; }
+  .drawer-content p { font-size: 14.5px; color: var(--ink-2); margin: 12px 0; line-height: 1.7; }
+  .drawer-content ul, .drawer-content ol { margin: 12px 0 12px 22px; }
+  .drawer-content li { font-size: 14.5px; color: var(--ink-2); padding: 4px 0; line-height: 1.6; }
+  .drawer-content strong { color: var(--ink); font-weight: 600; }
+  .drawer-content em { color: var(--ink-3); font-style: italic; }
+  .drawer-content code { font-family: var(--mono); background: var(--bg-card); color: var(--gold); padding: 2px 6px; border-radius: 3px; font-size: 12.5px; border: 1px solid var(--line); }
+  .drawer-content blockquote { font-family: var(--serif); font-style: italic; border-left: 2px solid var(--gold); padding: 8px 0 8px 18px; margin: 14px 0; color: var(--ink-2); font-size: 16px; line-height: 1.5; }
+  .drawer-content table { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: 13.5px; }
+  .drawer-content th { background: var(--bg-card); color: var(--ink-3); font-family: var(--mono); font-size: 10px; text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--line); font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; }
+  .drawer-content td { padding: 10px 12px; border-bottom: 1px solid var(--line-soft); color: var(--ink-2); vertical-align: top; }
+  .drawer-content hr { border: none; border-top: 1px solid var(--line); margin: 24px 0; }
+  .drawer-content a { color: var(--gold); text-decoration: none; border-bottom: 1px solid var(--gold-line); }
+
+  .drawer-folder-list {
+    background: var(--bg-soft);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin: 16px 0 24px;
+  }
+  .drawer-folder-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--ink-4);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .drawer-folder-link {
+    display: block;
+    padding: 5px 0;
+    font-size: 13px;
+    color: var(--ink-2);
+    text-decoration: none;
+    cursor: pointer;
+    transition: color 0.15s var(--ease);
+    border-bottom: 1px solid transparent;
+  }
+  .drawer-folder-link:hover { color: var(--gold); }
+
+  @media (max-width: 840px) {
+    .drawer { width: 100%; max-width: none; }
+    .drawer-body { padding: 24px 20px 80px; }
+    .drawer-header { padding: 14px 20px; }
+    .drawer-btn { display: none; }
+  }
 
   /* MUTED */
   .muted { color: var(--ink-4); font-size: 11px; font-style: italic; }
@@ -12685,8 +12851,176 @@ Per-unit экономика работает (LTV/CAC ~6.4), но **сезонн
 
 </main>
 
+<!-- DRAWER for archive deep-dive -->
+<div class="drawer-overlay" id="drawerOverlay"></div>
+<aside class="drawer" id="drawer" aria-hidden="true">
+  <div class="drawer-header">
+    <div class="drawer-meta">
+      <div class="drawer-breadcrumb" id="drawerBreadcrumb"></div>
+      <div class="drawer-title" id="drawerTitle"></div>
+    </div>
+    <div class="drawer-actions">
+      <button class="drawer-btn" id="drawerOpenFull">Открыть в архиве →</button>
+      <button class="drawer-btn-icon" id="drawerClose" aria-label="Закрыть">✕</button>
+    </div>
+  </div>
+  <div class="drawer-body">
+    <div class="drawer-content" id="drawerContent"></div>
+  </div>
+</aside>
+
 <button class="menu-toggle" id="menuToggle">☰</button>
 
+<script>
+// Маппинг ключевых терминов на конкретные файлы архива
+// Используется для inline deep-links из справочника и стратегии в архив
+window.LINK_TARGETS = {
+  // ========== СЕГМЕНТЫ — ОСНОВНЫЕ (8) ==========
+  'seg_premium': { file: 'f31', title: 'Студия интерьера полного цикла (Premium)' },
+  'seg_premium_score': { file: 'f29', title: 'Скоринг Premium-студии' },
+  'seg_premium_econ': { file: 'f30', title: 'Стресс-тест экономики Premium 500к' },
+  'seg_premium_jobs': { file: 'f32', title: 'Job Graph Premium-студии' },
+
+  'seg_blogger': { file: 'f8', title: 'Дизайнер-блогер-инфлюенсер' },
+  'seg_blogger_score': { file: 'f9', title: 'Скоринг блогера' },
+  'seg_blogger_econ': { file: 'f10', title: 'Экономика инфлюенсеров' },
+
+  'seg_decorator': { file: 'f13', title: 'Дизайнер-декоратор (Home Staging)' },
+  'seg_decorator_score': { file: 'f14', title: 'Скоринг декоратора' },
+  'seg_decorator_econ': { file: 'f16', title: 'Экономика Home Staging' },
+
+  'seg_horeca': { file: 'f4', title: 'Архитектор HoReCa и коворкингов' },
+  'seg_horeca_score': { file: 'f5', title: 'Скоринг HoReCa' },
+  'seg_horeca_econ': { file: 'f6', title: 'Экономика HoReCa (база 1500)' },
+
+  'seg_complektator': { file: 'f17', title: 'Комплектатор-аутсорсер' },
+  'seg_complektator_score': { file: 'f18', title: 'Скоринг комплектатора' },
+  'seg_complektator_econ': { file: 'f20', title: 'Экономика комплектатора' },
+
+  'seg_student': { file: 'f21', title: 'Начинающий дизайнер (студент)' },
+  'seg_student_score': { file: 'f22', title: 'Скоринг студента' },
+  'seg_student_econ': { file: 'f24', title: 'Экономика студента' },
+
+  'seg_regional': { file: 'f26', title: 'Региональный партнёр' },
+  'seg_regional_score': { file: 'f25', title: 'Скоринг регионального партнёра' },
+  'seg_regional_econ': { file: 'f28', title: 'Экономика регионального' },
+
+  'seg_freelancer': { file: 'f34', title: 'Частный фрилансер (Low-budget)' },
+  'seg_freelancer_score': { file: 'f33', title: 'Скоринг фрилансера' },
+  'seg_freelancer_econ': { file: 'f36', title: 'Экономика фрилансера' },
+
+  // ========== СМЕЖНЫЕ СЕГМЕНТЫ (7) ==========
+  'adj_landscape': { file: 'f134', title: 'Ландшафтный дизайнер (уличный свет)' },
+  'adj_landscape_arch': { file: 'f133', title: 'Ландшафтный архитектор (коммерческие)' },
+  'adj_master': { file: 'f135', title: 'Мастер-универсал (ремонт под ключ)' },
+  'adj_potolok': { file: 'f136', title: 'Потолочник-монтажник' },
+  'adj_prorab_comm': { file: 'f137', title: 'Прораб коммерческих объектов' },
+  'adj_prorab_zhil': { file: 'f138', title: 'Прораб жилых объектов' },
+  'adj_electric': { file: 'f139', title: 'Электрик-монтажник' },
+
+  // ========== РИСКИ ==========
+  'risk_categorization': { file: 'f37', title: 'Категоризация рисков (сводная)' },
+  'risk_trust': { file: 'f55', title: 'Недоверие к выплатам (score 25)' },
+  'risk_tax': { file: 'f43', title: 'Налоговая нагрузка ФЛ/СЗ (score 25)' },
+  'risk_spec_errors': { file: 'f66', title: 'Ошибки в техспецификациях (score 20)' },
+  'risk_manager_errors': { file: 'f62', title: 'Технические ошибки менеджеров (score 20)' },
+  'risk_l2_reclass': { file: 'f51', title: 'Переквалификация L2 как трудовые (score 20)' },
+  'risk_low_roi': { file: 'f48', title: 'Отрицательный ROI low-budget (score 20)' },
+  'risk_l1_l2_econ': { file: 'f38', title: 'L1+L2 ломают юнит-экономику (score 20)' },
+  'risk_premium_service': { file: 'f63', title: 'Сервис не выдержит Premium (score 20)' },
+  'risk_premium_smart': { file: 'f73', title: 'Premium не купят smart home (score 20)' },
+  'risk_l2_no_flow': { file: 'f54', title: 'Рефералка L2 не даст потока (score 16)' },
+  'risk_cac_premium': { file: 'f71', title: 'CAC премиум-каналов выше допустимого (score 16)' },
+  'risk_sla_low': { file: 'f45', title: 'Низкий SLA при масштабировании (score 16)' },
+  'risk_lock_in': { file: 'f53', title: 'Привычка к текущим поставщикам (score 16)' },
+  'risk_friction': { file: 'f60', title: 'Сопротивление переходу с Excel (score 16)' },
+  'risk_price_war': { file: 'f70', title: 'Ценовая война с монобрендами (score 16)' },
+  'risk_competitor_drift': { file: 'f69', title: 'Уход в монобренды (score 16)' },
+  'risk_stock_out': { file: 'f39', title: 'Дефицит складских остатков' },
+  'risk_sla_collapse': { file: 'f41', title: 'Крах SLA отдела комплектации' },
+  'risk_marketplaces': { file: 'f42', title: 'Маркетплейсы отжимают Premium' },
+  'risk_horeca_44fz': { file: 'f44', title: 'HoReCa и 44-ФЗ' },
+  'risk_retention': { file: 'f57', title: 'Низкая частота повторных заказов' },
+  'risk_brand_toxic': { file: 'f68', title: 'Токсичность бренда от L2-спама' },
+  'risk_3d_models': { file: 'f67', title: 'Плохие 3D-модели' },
+  'risk_regional_local': { file: 'f65', title: 'Сильные локальные дилеры в регионах' },
+  'risk_premium_custom': { file: 'f56', title: 'Кастомизация для Premium' },
+  'risk_certification': { file: 'f59', title: 'Сертификация для HoReCa' },
+
+  // ========== КОНКУРЕНТЫ ==========
+  'comp_vamsvet': { file: 'f75', title: 'ВамСвет — конкурент' },
+  'comp_lu': { file: 'f76', title: 'Lu.ru — конкурент' },
+  'comp_basicdecor': { file: 'f74', title: 'BasicDecor — конкурент' },
+  'comp_centrsvet': { file: 'f78', title: 'Центрсвет — конкурент премиум' },
+  'comp_donolux': { file: 'f79', title: 'Donolux — конкурент' },
+  'comp_marketplaces': { file: 'f77', title: 'Маркетплейсы (Ozon/WB/Я.Маркет)' },
+
+  // ========== КАНАЛЫ ==========
+  'ch_action_plan': { file: 'f81', title: 'Action Plan: рост до 5000 партнёров' },
+  'ch_500_plan': { file: 'f88', title: 'Каналы привлечения +500 партнёров' },
+  'ch_landing': { file: 'f82', title: 'Лендинг + лид-магнит + контент' },
+  'ch_30days': { file: 'f83', title: 'План запуска каналов на первые 30 дней' },
+  'ch_direct_sales': { file: 'f84', title: 'Прямые продажи через PDF и встречи' },
+  'ch_reactivation': { file: 'f85', title: 'Реактивация спящей базы' },
+  'ch_l2_referral': { file: 'f86', title: 'Реферальная сеть L2' },
+  'ch_schools': { file: 'f87', title: 'Школы, события и комьюнити' },
+  'ch_segments_priority': { file: 'f89', title: 'Приоритет сегментов роста' },
+  'ch_budget_scenarios': { file: 'f80', title: 'Два сценария бюджета: Base vs Aggressive' },
+
+  // ========== ПРОДУКТ И ДОКУМЕНТЫ ==========
+  'doc_lk': { file: 'f123', title: 'ТЗ Личный Кабинет партнёра' },
+  'doc_lk_promo': { file: 'f103', title: 'ЛК для промокодов и начислений' },
+  'doc_lighting_calc': { file: 'f104', title: 'Светорасчёт' },
+  'doc_landing_tz': { file: 'f122', title: 'ТЗ Лендинг и Презентация' },
+  'doc_landing_struct': { file: 'f120', title: 'Структура AJTBD-лендинга' },
+  'doc_landing_copy': { file: 'f105', title: 'Копирайтинг лендинга 2.0' },
+  'doc_loyalty': { file: 'f124', title: 'Шкала лояльности 20-40%' },
+  'doc_gtm_l2': { file: 'f109', title: 'GTM план: запуск L2 5%' },
+  'doc_gtm_launch': { file: 'f126', title: 'GTM Launch Month' },
+  'doc_prd': { file: 'f127', title: 'PRD Партнёрская программа' },
+  'doc_prd_mvp2': { file: 'f128', title: 'PRD MVP 2.0 Экосистема' },
+  'doc_blue_ocean': { file: 'f115', title: 'Стратегическая карта Голубой Океан' },
+  'doc_blue_ocean_es': { file: 'f125', title: 'Executive Summary Голубого Океана' },
+  'doc_full_report': { file: 'f111', title: 'Полный итоговый отчёт' },
+  'doc_summary_es': { file: 'f112', title: 'Полный Executive Summary' },
+  'doc_handbook': { file: 'f114', title: 'Справочник Партнёрской программы' },
+  'doc_reactivation_scripts': { file: 'f113', title: 'Скрипты реактивации базы' },
+  'doc_positioning': { file: 'f119', title: 'Стратегия позиционирования' },
+  'doc_word_of_mouth': { file: 'f116', title: 'Дизайнерское сарафанное радио' },
+  'doc_incubator': { file: 'f117', title: 'Стратегия канала Инкубатор школ' },
+  'doc_inbound': { file: 'f118', title: 'Стратегия канала Inbound' },
+
+  // ========== ЮНИТ-ЭКОНОМИКА ==========
+  'econ_scenarios_40m': { file: 'f129', title: 'Сценарии роста до 40М/мес' },
+  'econ_benchmarks': { file: 'f130', title: 'Unit Economics Benchmarks Светотехника' },
+  'econ_5000_partners': { file: 'f26', title: 'Средневзвешенная прибыль на 5000 партнёров' },
+
+  // ========== АНАЛИЗ ==========
+  'analysis_segments': { file: 'f131', title: 'Оцифровка сегментов' },
+  'analysis_go_pivot': { file: 'f132', title: 'GO/PIVOT Вердикт' },
+
+  // ========== РЫНОК ==========
+  'market_size': { file: 'f1', title: 'Объём рынка комплектации светом РФ' },
+  'market_partner_program': { file: 'f2', title: 'Партнёрская программа ДонПлафон' },
+  'market_overview': { file: 'f3', title: 'Рынок комплектации интерьеров (свет)' },
+
+  // ========== СТРАТЕГИЧЕСКИЕ ИДЕИ ==========
+  'idea_b2b_platform': { file: 'f90', title: 'Платформа для B2B комплектации' },
+  'idea_personal_brand': { file: 'f91', title: 'Свет как личный бренд (Collab)' },
+  'idea_bim_lockin': { file: 'f92', title: 'Lock-in через BIM + AI' },
+  'idea_bim_integration': { file: 'f93', title: 'Deep Integration BIM-библиотеки' },
+  'idea_rental': { file: 'f94', title: 'Свет как инвестиция (арендное жильё)' },
+  'idea_staging_kits': { file: 'f95', title: 'Световые сеты для Home Staging' },
+  'idea_marketplace': { file: 'f96', title: 'Marketplace для профи-света B2B2C' },
+  'idea_ai_killer': { file: 'f97', title: 'AI-Killer: автоподбор аналогов' },
+  'idea_ai_scout': { file: 'f98', title: 'AI-Scouter: подбор по визуалу' },
+  'idea_instant_money': { file: 'f99', title: 'Быстрые деньги (Instant Rewards)' },
+  'idea_fintech': { file: 'f100', title: 'Fintech-сервис для комплектаторов' },
+  'idea_white_label': { file: 'f101', title: 'White Label Collab' },
+  'idea_tech_outsource': { file: 'f102', title: 'Технический департамент на аутсорсе' }
+};
+
+</script>
 <script>
 // Справочник стратегии — 13 разделов в блочном формате
 // Каждый раздел: id, num, title, goal, blocks[], sources[]
@@ -14471,6 +14805,144 @@ window.STRATEGY = [
 </script>
 
 <script>
+  // ========== FILES INDEX (для source-tag deep links) ==========
+  const FILES_INDEX = [{"id":"f1","path":"КОНТЕКСТ/01_Продукт/Объем рынка Комплектация светом (РФ).md","name":"Объем рынка Комплектация светом (РФ)"},{"id":"f2","path":"КОНТЕКСТ/01_Продукт/Партнёрская программа ДонПлафон для дизайнеров интерьера.md","name":"Партнёрская программа ДонПлафон для дизайнеров интерьера"},{"id":"f3","path":"КОНТЕКСТ/01_Продукт/Рынок комплектации интерьеров (свет).md","name":"Рынок комплектации интерьеров (свет)"},{"id":"f4","path":"КОНТЕКСТ/02_Сегменты/Архитектор общественных пространств (HoReCa, Коворкинги)/Архитектор общественных пространств (HoReCa, Коворкинги).md","name":"Архитектор общественных пространств (HoReCa, Коворкинги)"},{"id":"f5","path":"КОНТЕКСТ/02_Сегменты/Архитектор общественных пространств (HoReCa, Коворкинги)/Скор Архитектор общественных пространств (Scaling focus).md","name":"Скор Архитектор общественных пространств (Scaling focus)"},{"id":"f6","path":"КОНТЕКСТ/02_Сегменты/Архитектор общественных пространств (HoReCa, Коворкинги)/Экономика Архитектор HoReCa (База 1500 партнеров)回.md","name":"Экономика Архитектор HoReCa (База 1500 партнеров)回"},{"id":"f7","path":"КОНТЕКСТ/02_Сегменты/Архитектор общественных пространств (HoReCa, Коворкинги)/Job Graph Архитектор общественных пространств (HoReCa, Коворкинги).md","name":"Job Graph Архитектор общественных пространств (HoReCa, Коворкинги)"},{"id":"f8","path":"КОНТЕКСТ/02_Сегменты/Дизайнер-блогер-инфлюенсер/Дизайнер-блогер-инфлюенсер.md","name":"Дизайнер-блогер-инфлюенсер"},{"id":"f9","path":"КОНТЕКСТ/02_Сегменты/Дизайнер-блогер-инфлюенсер/Скор Дизайнер-блогер-инфлюенсер.md","name":"Скор Дизайнер-блогер-инфлюенсер"},{"id":"f10","path":"КОНТЕКСТ/02_Сегменты/Дизайнер-блогер-инфлюенсер/Economics Influencer Segment.md","name":"Economics Influencer Segment"},{"id":"f11","path":"КОНТЕКСТ/02_Сегменты/Дизайнер-блогер-инфлюенсер/Job Graph Дизайнер-блогер-инфлюенсер (ДонПлафон).md","name":"Job Graph Дизайнер-блогер-инфлюенсер (ДонПлафон)"},{"id":"f12","path":"КОНТЕКСТ/02_Сегменты/Дизайнер-декоратор (Home Staging)/Граф работ Дизайнер-декоратор (Home Staging) — Скорость 2472.md","name":"Граф работ Дизайнер-декоратор (Home Staging) — Скорость 2472"},{"id":"f13","path":"КОНТЕКСТ/02_Сегменты/Дизайнер-декоратор (Home Staging)/Дизайнер-декоратор (Home Staging).md","name":"Дизайнер-декоратор (Home Staging)"},{"id":"f14","path":"КОНТЕКСТ/02_Сегменты/Дизайнер-декоратор (Home Staging)/Скор Дизайнер-декоратор (Home Staging).md","name":"Скор Дизайнер-декоратор (Home Staging)"},{"id":"f15","path":"КОНТЕКСТ/02_Сегменты/Дизайнер-декоратор (Home Staging)/Job Graph Дизайнер-декоратор (Home Staging) — Быстрая комплектация.md","name":"Job Graph Дизайнер-декоратор (Home Staging) — Быстрая комплектация"},{"id":"f16","path":"КОНТЕКСТ/02_Сегменты/Дизайнер-декоратор (Home Staging)/Unit Economics Home Staging (High Frequency).md","name":"Unit Economics Home Staging (High Frequency)"},{"id":"f17","path":"КОНТЕКСТ/02_Сегменты/Комплектатор-аутсорсер (Multi-project Manager)/Комплектатор-аутсорсер (Multi-project Manager).md","name":"Комплектатор-аутсорсер (Multi-project Manager)"},{"id":"f18","path":"КОНТЕКСТ/02_Сегменты/Комплектатор-аутсорсер (Multi-project Manager)/Скор Комплектатор-аутсорсер (Multi-project).md","name":"Скор Комплектатор-аутсорсер (Multi-project)"},{"id":"f19","path":"КОНТЕКСТ/02_Сегменты/Комплектатор-аутсорсер (Multi-project Manager)/Job Graph Комплектатор-аутсорсер (Свет).md","name":"Job Graph Комплектатор-аутсорсер (Свет)"},{"id":"f20","path":"КОНТЕКСТ/02_Сегменты/Комплектатор-аутсорсер (Multi-project Manager)/Unit Economics Комплектатор-аутсорсер (Multi-project).md","name":"Unit Economics Комплектатор-аутсорсер (Multi-project)"},{"id":"f21","path":"КОНТЕКСТ/02_Сегменты/Начинающий дизайнер (студент)/Начинающий дизайнер (студент).md","name":"Начинающий дизайнер (студент)"},{"id":"f22","path":"КОНТЕКСТ/02_Сегменты/Начинающий дизайнер (студент)/Скор Начинающий дизайнер (студент).md","name":"Скор Начинающий дизайнер (студент)"},{"id":"f23","path":"КОНТЕКСТ/02_Сегменты/Начинающий дизайнер (студент)/Job Graph Начинающий дизайнер (студент).md","name":"Job Graph Начинающий дизайнер (студент)"},{"id":"f24","path":"КОНТЕКСТ/02_Сегменты/Начинающий дизайнер (студент)/Unit Econ Начинающий дизайнер (студент).md","name":"Unit Econ Начинающий дизайнер (студент)"},{"id":"f25","path":"КОНТЕКСТ/02_Сегменты/Средневзвешенная прибыль Модель на 5000 партнеров回/Скор Региональный партнер (Миллионники)回.md","name":"Скор Региональный партнер (Миллионники)回"},{"id":"f26","path":"КОНТЕКСТ/02_Сегменты/Средневзвешенная прибыль Модель на 5000 партнеров回/Средневзвешенная прибыль Модель на 5000 партнеров回.md","name":"Средневзвешенная прибыль Модель на 5000 партнеров回"},{"id":"f27","path":"КОНТЕКСТ/02_Сегменты/Средневзвешенная прибыль Модель на 5000 партнеров回/Job Graph Региональный дизайнер-партнер (города-миллионники).md","name":"Job Graph Региональный дизайнер-партнер (города-миллионники)"},{"id":"f28","path":"КОНТЕКСТ/02_Сегменты/Средневзвешенная прибыль Модель на 5000 партнеров回/Unit Economics Региональный партнер (Миллионники).md","name":"Unit Economics Региональный партнер (Миллионники)"},{"id":"f29","path":"КОНТЕКСТ/02_Сегменты/Студия интерьера полного цикла (Premium)/Скор Студия интерьера полного цикла (Premium).md","name":"Скор Студия интерьера полного цикла (Premium)"},{"id":"f30","path":"КОНТЕКСТ/02_Сегменты/Студия интерьера полного цикла (Premium)/Стресс-тест экономики Заказ 500к (40% L1 + 5% L2)回.md","name":"Стресс-тест экономики Заказ 500к (40% L1 + 5% L2)回"},{"id":"f31","path":"КОНТЕКСТ/02_Сегменты/Студия интерьера полного цикла (Premium)/Студия интерьера полного цикла (Premium).md","name":"Студия интерьера полного цикла (Premium)"},{"id":"f32","path":"КОНТЕКСТ/02_Сегменты/Студия интерьера полного цикла (Premium)/Job Graph Студия интерьера полного цикла (Premium).md","name":"Job Graph Студия интерьера полного цикла (Premium)"},{"id":"f33","path":"КОНТЕКСТ/02_Сегменты/Частный дизайнер-фрилансер (Low-budget)/Скор Фрилансер (Low-budget).md","name":"Скор Фрилансер (Low-budget)"},{"id":"f34","path":"КОНТЕКСТ/02_Сегменты/Частный дизайнер-фрилансер (Low-budget)/Частный дизайнер-фрилансер (Low-budget).md","name":"Частный дизайнер-фрилансер (Low-budget)"},{"id":"f35","path":"КОНТЕКСТ/02_Сегменты/Частный дизайнер-фрилансер (Low-budget)/Job Graph Частный дизайнер-фрилансер (Low-budget).md","name":"Job Graph Частный дизайнер-фрилансер (Low-budget)"},{"id":"f36","path":"КОНТЕКСТ/02_Сегменты/Частный дизайнер-фрилансер (Low-budget)/Unit Economics Фрилансер (Low-budget).md","name":"Unit Economics Фрилансер (Low-budget)"},{"id":"f37","path":"КОНТЕКСТ/03_Риски/00_Категоризация рисков (сводная).md","name":"00_Категоризация рисков (сводная)"},{"id":"f38","path":"КОНТЕКСТ/03_Риски/Высокие комиссии L1+L2 сломают юнит-экономику.md","name":"Высокие комиссии L1+L2 сломают юнит-экономику"},{"id":"f39","path":"КОНТЕКСТ/03_Риски/Дефицит складских остатков и срыв сроков комплектации проектов.md","name":"Дефицит складских остатков и срыв сроков комплектации проектов"},{"id":"f40","path":"КОНТЕКСТ/03_Риски/Дефицит складских остатков при взрывном росте заказов (Out-of-stock).md","name":"Дефицит складских остатков при взрывном росте заказов (Out-of-stock)"},{"id":"f41","path":"КОНТЕКСТ/03_Риски/Крах SLA отдела комплектации при масштабировании потока заявок.md","name":"Крах SLA отдела комплектации при масштабировании потока заявок"},{"id":"f42","path":"КОНТЕКСТ/03_Риски/Монобренды и маркетплейсы отожмут премиальный спрос.md","name":"Монобренды и маркетплейсы отожмут премиальный спрос"},{"id":"f43","path":"КОНТЕКСТ/03_Риски/Налоговая нагрузка и юридическая чистота выплат (ФЛСЗ).md","name":"Налоговая нагрузка и юридическая чистота выплат (ФЛСЗ)"},{"id":"f44","path":"КОНТЕКСТ/03_Риски/Неприемлемые условия контрактования в сегменте HoReCa (44-ФЗ).md","name":"Неприемлемые условия контрактования в сегменте HoReCa (44-ФЗ)"},{"id":"f45","path":"КОНТЕКСТ/03_Риски/Низкий SLA ответа менеджеров при масштабировании запросов.md","name":"Низкий SLA ответа менеджеров при масштабировании запросов"},{"id":"f46","path":"КОНТЕКСТ/03_Риски/Низкое удержание партнеров (One-timer partners).md","name":"Низкое удержание партнеров (One-timer partners)"},{"id":"f47","path":"КОНТЕКСТ/03_Риски/Операционная убыточность малых чеков (ЛогистикаПримерка).md","name":"Операционная убыточность малых чеков (ЛогистикаПримерка)"},{"id":"f48","path":"КОНТЕКСТ/03_Риски/Отрицательный ROI на первого клиента (CAC LTV) в низких чеках.md","name":"Отрицательный ROI на первого клиента (CAC LTV) в низких чеках"},{"id":"f49","path":"КОНТЕКСТ/03_Риски/Отрицательный ROI программы из-за высокой агентской комиссии L1+L2.md","name":"Отрицательный ROI программы из-за высокой агентской комиссии L1+L2"},{"id":"f50","path":"КОНТЕКСТ/03_Риски/Ошибки в спецификациях smart home и карнизов разрушат ценность.md","name":"Ошибки в спецификациях smart home и карнизов разрушат ценность"},{"id":"f51","path":"КОНТЕКСТ/03_Риски/Переквалификация реферальных выплат в трудовые отношения.md","name":"Переквалификация реферальных выплат в трудовые отношения"},{"id":"f52","path":"КОНТЕКСТ/03_Риски/Премиальных проектов для smart home и карнизов меньше, чем нужно.md","name":"Премиальных проектов для smart home и карнизов меньше, чем нужно"},{"id":"f53","path":"КОНТЕКСТ/03_Риски/Привычка работать с текущими поставщиками удержит дизайнеров.md","name":"Привычка работать с текущими поставщиками удержит дизайнеров"},{"id":"f54","path":"КОНТЕКСТ/03_Риски/Рефералка L2 не даст прогнозируемого потока и будет гнить.md","name":"Рефералка L2 не даст прогнозируемого потока и будет гнить"},{"id":"f55","path":"КОНТЕКСТ/03_Риски/Риск Недоверие к системе реферальных выплат и прозрачности расчетов.md","name":"Риск Недоверие к системе реферальных выплат и прозрачности расчетов"},{"id":"f56","path":"КОНТЕКСТ/03_Риски/Риск Неспособность обеспечить уровень кастомизации для Premium-сегмента.md","name":"Риск Неспособность обеспечить уровень кастомизации для Premium-сегмента"},{"id":"f57","path":"КОНТЕКСТ/03_Риски/Риск Низкая частота повторных заказов (Low Retention)回.md","name":"Риск Низкая частота повторных заказов (Low Retention)回"},{"id":"f58","path":"КОНТЕКСТ/03_Риски/Риск Операционная убыточность при экстремально высоких комиссиях (40%+).md","name":"Риск Операционная убыточность при экстремально высоких комиссиях (40%+)"},{"id":"f59","path":"КОНТЕКСТ/03_Риски/Риск Отсутствие необходимой документациисертификации для спец. проектов (HoReCa).md","name":"Риск Отсутствие необходимой документациисертификации для спец. проектов (HoReCa)"},{"id":"f60","path":"КОНТЕКСТ/03_Риски/Риск Сопротивление переходу с ExcelWhatsApp на платформу (Friction).md","name":"Риск Сопротивление переходу с ExcelWhatsApp на платформу (Friction)"},{"id":"f61","path":"КОНТЕКСТ/03_Риски/Риск Срыв сроков из-за некорректных данных об остатках (Out-of-stock)回.md","name":"Риск Срыв сроков из-за некорректных данных об остатках (Out-of-stock)回"},{"id":"f62","path":"КОНТЕКСТ/03_Риски/Риск Технические ошибки менеджеров при подборе аналогов по спецификации.md","name":"Риск Технические ошибки менеджеров при подборе аналогов по спецификации"},{"id":"f63","path":"КОНТЕКСТ/03_Риски/Сервис не выдержит рост по Premium и комплектаторам.md","name":"Сервис не выдержит рост по Premium и комплектаторам"},{"id":"f64","path":"КОНТЕКСТ/03_Риски/Сила привычки работы с конкурентами (Lock-in эффект других брендов).md","name":"Сила привычки работы с конкурентами (Lock-in эффект других брендов)"},{"id":"f65","path":"КОНТЕКСТ/03_Риски/Сильные локальные дилеры в регионах (Барьер входа).md","name":"Сильные локальные дилеры в регионах (Барьер входа)"},{"id":"f66","path":"КОНТЕКСТ/03_Риски/Смерть лояльности из-за ошибок в технических спецификациях (SLA качества).md","name":"Смерть лояльности из-за ошибок в технических спецификациях (SLA качества)"},{"id":"f67","path":"КОНТЕКСТ/03_Риски/Техническая сложность интеграции (Плохие 3D-модели).md","name":"Техническая сложность интеграции (Плохие 3D-модели)"},{"id":"f68","path":"КОНТЕКСТ/03_Риски/Токсичность бренда из-за агрессивного реферального спама (L2).md","name":"Токсичность бренда из-за агрессивного реферального спама (L2)"},{"id":"f69","path":"КОНТЕКСТ/03_Риски/Уход дизайнеров в монобренды и к прямым поставщикам.md","name":"Уход дизайнеров в монобренды и к прямым поставщикам"},{"id":"f70","path":"КОНТЕКСТ/03_Риски/Ценовая война комиссий с монобрендами (CentrsvetDonolux).md","name":"Ценовая война комиссий с монобрендами (CentrsvetDonolux)"},{"id":"f71","path":"КОНТЕКСТ/03_Риски/CAC по премиальным каналам окажется выше допустимого.md","name":"CAC по премиальным каналам окажется выше допустимого"},{"id":"f72","path":"КОНТЕКСТ/03_Риски/Premium-студии и комплектаторы требуют разных офферов.md","name":"Premium-студии и комплектаторы требуют разных офферов"},{"id":"f73","path":"КОНТЕКСТ/03_Риски/Premium-студии не купят smart home и умные карнизы.md","name":"Premium-студии не купят smart home и умные карнизы"},{"id":"f74","path":"КОНТЕКСТ/04_Конкуренты/БэйсикДекор.md","name":"БэйсикДекор"},{"id":"f75","path":"КОНТЕКСТ/04_Конкуренты/ВамСвет.md","name":"ВамСвет"},{"id":"f76","path":"КОНТЕКСТ/04_Конкуренты/Лю.ру.md","name":"Лю.ру"},{"id":"f77","path":"КОНТЕКСТ/04_Конкуренты/Маркетплейсы (Ozon WB Я.Маркет).md","name":"Маркетплейсы (Ozon WB Я.Маркет)"},{"id":"f78","path":"КОНТЕКСТ/04_Конкуренты/Центрсвет (Centrsvet).md","name":"Центрсвет (Centrsvet)"},{"id":"f79","path":"КОНТЕКСТ/04_Конкуренты/Donolux (Донолюкс).md","name":"Donolux (Донолюкс)"},{"id":"f80","path":"КОНТЕКСТ/05_Стратегия/Два сценария бюджета Base vs Aggressive回.md","name":"Два сценария бюджета Base vs Aggressive回"},{"id":"f81","path":"КОНТЕКСТ/05_Стратегия/Итоговый Action Plan Рост до 5000 партнеров ДонПлафон.md","name":"Итоговый Action Plan Рост до 5000 партнеров ДонПлафон"},{"id":"f82","path":"КОНТЕКСТ/05_Стратегия/Каналы/Лендинг + лид-магнит + контент.md","name":"Лендинг + лид-магнит + контент"},{"id":"f83","path":"КОНТЕКСТ/05_Стратегия/Каналы/План запуска каналов на первые 30 дней.md","name":"План запуска каналов на первые 30 дней"},{"id":"f84","path":"КОНТЕКСТ/05_Стратегия/Каналы/Прямые продажи через PDF и встречи.md","name":"Прямые продажи через PDF и встречи"},{"id":"f85","path":"КОНТЕКСТ/05_Стратегия/Каналы/Реактивация спящей базы.md","name":"Реактивация спящей базы"},{"id":"f86","path":"КОНТЕКСТ/05_Стратегия/Каналы/Реферальная сеть L2.md","name":"Реферальная сеть L2"},{"id":"f87","path":"КОНТЕКСТ/05_Стратегия/Каналы/Школы, события и комьюнити.md","name":"Школы, события и комьюнити"},{"id":"f88","path":"КОНТЕКСТ/05_Стратегия/Каналы привлечения +500 активных партнёров.md","name":"Каналы привлечения +500 активных партнёров"},{"id":"f89","path":"КОНТЕКСТ/05_Стратегия/Приоритет сегментов роста ДонПлафон.md","name":"Приоритет сегментов роста ДонПлафон"},{"id":"f90","path":"КОНТЕКСТ/05_Стратегия/Стратегические_идеи/[Business Model] Платформа для B2B комплектации (ОфисыТЦ).md","name":"[Business Model] Платформа для B2B комплектации (ОфисыТЦ)"},{"id":"f91","path":"КОНТЕКСТ/05_Стратегия/Стратегические_идеи/[Business Model] Свет как Личный Бренд (Collab).md","name":"[Business Model] Свет как Личный Бренд (Collab)"},{"id":"f92","path":"КОНТЕКСТ/05_Стратегия/Стратегические_идеи/[Channel] Инфраструктурный Lock-in (BIM + AI).md","name":"[Channel] Инфраструктурный Lock-in (BIM + AI)"},{"id":"f93","path":"КОНТЕКСТ/05_Стратегия/Стратегические_идеи/[Channel] Deep Integration (BIM-библиотеки).md","name":"[Channel] Deep Integration (BIM-библиотеки)"},{"id":"f94","path":"КОНТЕКСТ/05_Стратегия/Стратегические_идеи/[Customer Need] Свет как инвестиция — пакеты для арендного жилья.md","name":"[Customer Need] Свет как инвестиция — пакеты для арендного жилья"},{"id":"f95","path":"КОНТЕКСТ/05_Стратегия/Стратегические_идеи/[Customer Need] Световые сеты для Home Staging.md","name":"[Customer Need] Световые сеты для Home Staging"},{"id":"f96","path":"КОНТЕКСТ/05_Стратегия/Стратегические_идеи/[Platform] Marketplace для профи-света (B2B2C).md","name":"[Platform] Marketplace для профи-света (B2B2C)"},{"id":"f97","path":"КОНТЕКСТ/05_Стратегия/Стратегические_идеи/[Technology] AI-Killer — Автоподбор аналогов смет.md","name":"[Technology] AI-Killer — Автоподбор аналогов смет"},{"id":"f98","path":"КОНТЕКСТ/05_Стратегия/Стратегические_идеи/[Technology] AI-Scouter — подбор по визуалу.md","name":"[Technology] AI-Scouter — подбор по визуалу"},{"id":"f99","path":"КОНТЕКСТ/05_Стратегия/Стратегические_идеи/[Value Capture] Быстрые деньги (Instant Rewards).md","name":"[Value Capture] Быстрые деньги (Instant Rewards)"},{"id":"f100","path":"КОНТЕКСТ/05_Стратегия/Стратегические_идеи/[Value Capture] Fintech-сервис для комплектаторов.md","name":"[Value Capture] Fintech-сервис для комплектаторов"},{"id":"f101","path":"КОНТЕКСТ/05_Стратегия/Стратегические_идеи/[Zoom-out] Твой бренд — наш свет (White Label Collab).md","name":"[Zoom-out] Твой бренд — наш свет (White Label Collab)"},{"id":"f102","path":"КОНТЕКСТ/05_Стратегия/Стратегические_идеи/[Zoom-out] Технический департамент на аутсорсе.md","name":"[Zoom-out] Технический департамент на аутсорсе"},{"id":"f103","path":"КОНТЕКСТ/05_Стратегия/Фичи/Личный кабинет для промокодов и начислений.md","name":"Личный кабинет для промокодов и начислений"},{"id":"f104","path":"КОНТЕКСТ/05_Стратегия/Фичи/Светорасчёт.md","name":"Светорасчёт"},{"id":"f105","path":"КОНТЕКСТ/06_Документы/Копирайтинг лендинга 2.0 Структура и смыслы回.md","name":"Копирайтинг лендинга 2.0 Структура и смыслы回"},{"id":"f106","path":"КОНТЕКСТ/06_Документы/Копирайтинг-бриф и гайд по сообщениям для лендинга ДонПлафон.md","name":"Копирайтинг-бриф и гайд по сообщениям для лендинга ДонПлафон"},{"id":"f107","path":"КОНТЕКСТ/06_Документы/Лендинги/Структура лендинга Партнёрская программа (AJTBD-упаковка)_2.md","name":"Структура лендинга Партнёрская программа (AJTBD-упаковка)_2"},{"id":"f108","path":"КОНТЕКСТ/06_Документы/Лендинги/Структура лендинга Партнёрская программа (AJTBD-упаковка).md","name":"Структура лендинга Партнёрская программа (AJTBD-упаковка)"},{"id":"f109","path":"КОНТЕКСТ/06_Документы/План запуска (GTM) Реферальная система ДонПлафон 5% L2.md","name":"План запуска (GTM) Реферальная система ДонПлафон 5% L2"},{"id":"f110","path":"КОНТЕКСТ/06_Документы/ПОЛНЫЙ ИТОГОВЫЙ ОТЧЁТ Партнёрская программа ДонПлафон для дизайнеров интерьера (_2.md","name":"ПОЛНЫЙ ИТОГОВЫЙ ОТЧЁТ Партнёрская программа ДонПлафон для дизайнеров интерьера (_2"},{"id":"f111","path":"КОНТЕКСТ/06_Документы/ПОЛНЫЙ ИТОГОВЫЙ ОТЧЁТ Партнёрская программа ДонПлафон для дизайнеров интерьера (.md","name":"ПОЛНЫЙ ИТОГОВЫЙ ОТЧЁТ Партнёрская программа ДонПлафон для дизайнеров интерьера ("},{"id":"f112","path":"КОНТЕКСТ/06_Документы/Полный Итоговый Executive Summary Партнёрская программа ДонПлафон для дизайнеров.md","name":"Полный Итоговый Executive Summary Партнёрская программа ДонПлафон для дизайнеров"},{"id":"f113","path":"КОНТЕКСТ/06_Документы/Скрипты реактивации базы и первых продаж.md","name":"Скрипты реактивации базы и первых продаж"},{"id":"f114","path":"КОНТЕКСТ/06_Документы/Справочник Партнёрская программа ДонПлафон — Все наработки по дизайнерам.md","name":"Справочник Партнёрская программа ДонПлафон — Все наработки по дизайнерам"},{"id":"f115","path":"КОНТЕКСТ/06_Документы/Стратегическая карта ценности Голубой Океан ДонПлафон.md","name":"Стратегическая карта ценности Голубой Океан ДонПлафон"},{"id":"f116","path":"КОНТЕКСТ/06_Документы/Стратегия канала Дизайнерское сарафанное радио 2.0.md","name":"Стратегия канала Дизайнерское сарафанное радио 2.0"},{"id":"f117","path":"КОНТЕКСТ/06_Документы/Стратегия канала Инкубатор профессионалов (Schools).md","name":"Стратегия канала Инкубатор профессионалов (Schools)"},{"id":"f118","path":"КОНТЕКСТ/06_Документы/Стратегия канала Конвейер автоматизированного подбора (Inbound).md","name":"Стратегия канала Конвейер автоматизированного подбора (Inbound)"},{"id":"f119","path":"КОНТЕКСТ/06_Документы/Стратегия позиционирования От магазина к экосистеме.md","name":"Стратегия позиционирования От магазина к экосистеме"},{"id":"f120","path":"КОНТЕКСТ/06_Документы/Структура AJTBD-лендинга Партнёрская программа ДонПлафон.md","name":"Структура AJTBD-лендинга Партнёрская программа ДонПлафон"},{"id":"f121","path":"КОНТЕКСТ/06_Документы/ТЗ Лендинг и Презентация для партнеров «ДонПлафон»_2.md","name":"ТЗ Лендинг и Презентация для партнеров «ДонПлафон»_2"},{"id":"f122","path":"КОНТЕКСТ/06_Документы/ТЗ Лендинг и Презентация для партнеров «ДонПлафон».md","name":"ТЗ Лендинг и Презентация для партнеров «ДонПлафон»"},{"id":"f123","path":"КОНТЕКСТ/06_Документы/ТЗ Личный Кабинет партнера «ДонПлафон» (Digital Infrastructure).md","name":"ТЗ Личный Кабинет партнера «ДонПлафон» (Digital Infrastructure)"},{"id":"f124","path":"КОНТЕКСТ/06_Документы/Шкала лояльности Уровни 20-40% по обороту回.md","name":"Шкала лояльности Уровни 20-40% по обороту回"},{"id":"f125","path":"КОНТЕКСТ/06_Документы/Executive Summary Стратегия «Голубого океана» ДонПлафон (2025).md","name":"Executive Summary Стратегия «Голубого океана» ДонПлафон (2025)"},{"id":"f126","path":"КОНТЕКСТ/06_Документы/GTM Plan Launch Month — Операционный план запуска реферальной программы «ДонПлаф.md","name":"GTM Plan Launch Month — Операционный план запуска реферальной программы «ДонПлаф"},{"id":"f127","path":"КОНТЕКСТ/06_Документы/PRD Партнёрская программа ДонПлафон.md","name":"PRD Партнёрская программа ДонПлафон"},{"id":"f128","path":"КОНТЕКСТ/06_Документы/PRD MVP 2.0 ДонПлафон Экосистема.md","name":"PRD MVP 2.0 ДонПлафон Экосистема"},{"id":"f129","path":"КОНТЕКСТ/07_Юнит_экономика/Сценарии роста до 40 млн ₽мес.md","name":"Сценарии роста до 40 млн ₽мес"},{"id":"f130","path":"КОНТЕКСТ/07_Юнит_экономика/Unit Economics Benchmarks Светотехника (РФ).md","name":"Unit Economics Benchmarks Светотехника (РФ)"},{"id":"f131","path":"КОНТЕКСТ/08_Анализ/Оцифровка сегментов ДонПлафон.md","name":"Оцифровка сегментов ДонПлафон"},{"id":"f132","path":"КОНТЕКСТ/08_Анализ/GO-PIVOT Вердикт ДонПлафон.md","name":"GO-PIVOT Вердикт ДонПлафон"},{"id":"f133","path":"КОНТЕКСТ СМЕЖНЫЕ/Ландшафтный архитектор (коммерческие объекты)/Ландшафтный архитектор (коммерческие объекты).md","name":"Ландшафтный архитектор (коммерческие объекты)"},{"id":"f134","path":"КОНТЕКСТ СМЕЖНЫЕ/Ландшафтный дизайнер (уличный свет)/Ландшафтный дизайнер (уличный свет).md","name":"Ландшафтный дизайнер (уличный свет)"},{"id":"f135","path":"КОНТЕКСТ СМЕЖНЫЕ/Мастер-универсал (ремонт под ключ)/Мастер-универсал (ремонт под ключ).md","name":"Мастер-универсал (ремонт под ключ)"},{"id":"f136","path":"КОНТЕКСТ СМЕЖНЫЕ/Потолочник-монтажник натяжных потолков/Потолочник-монтажник натяжных потолков.md","name":"Потолочник-монтажник натяжных потолков"},{"id":"f137","path":"КОНТЕКСТ СМЕЖНЫЕ/Прораб коммерческих объектов (HoReCa, Офисы)/Прораб коммерческих объектов (HoReCa, Офисы).md","name":"Прораб коммерческих объектов (HoReCa, Офисы)"},{"id":"f138","path":"КОНТЕКСТ СМЕЖНЫЕ/Прораб-комплектатор (ремонт квартир и домов)/Прораб-комплектатор (ремонт квартир и домов).md","name":"Прораб-комплектатор (ремонт квартир и домов)"},{"id":"f139","path":"КОНТЕКСТ СМЕЖНЫЕ/Электрик-монтажник (Реферальный канал)/Электрик-монтажник (Реферальный канал).md","name":"Электрик-монтажник (Реферальный канал)"}];
+
+  // ========== AUTO-LINK PATTERNS ==========
+  // Сопоставление слов/фраз в тексте → target из LINK_TARGETS (link-mapping.js)
+  // Порядок важен: более специфичные паттерны сначала
+  const LINK_PATTERNS = [
+    // Сегменты — основные
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])Premium-студи[яиюейяи]\w*(?:\s+полного\s+цикла)?(?![а-яА-ЯёЁA-Za-z0-9])/g, t: 'seg_premium' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])студи[яюиейя]\s+полного\s+цикла(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'seg_premium' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])Premium-сегмент\w*(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'seg_premium' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])дизайнер[а-я]?-блогер\w*(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'seg_blogger' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])инфлюенсер\w*(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'seg_blogger' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])Home\s+Staging(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'seg_decorator' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])дизайнер[а-я]?-декоратор\w*(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'seg_decorator' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])архитектор\w*\s+HoReCa(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'seg_horeca' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])HoReCa(?![а-яА-ЯёЁA-Za-z0-9])/g, t: 'seg_horeca' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])комплектатор[а-я]?-аутсорсер\w*(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'seg_complektator' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])комплектатор[а-я]*(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'seg_complektator' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])начинающ\w+\s+дизайнер\w*(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'seg_student' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])региональн\w+\s+(?:партн[её]р\w*|дизайнер\w*)(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'seg_regional' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])частн\w+\s+(?:дизайнер\w*-)?фрилансер\w*(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'seg_freelancer' },
+
+    // Смежные
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])потолочник[а-я]*(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'adj_potolok' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])электрик[а-я]?-монтажник\w*(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'adj_electric' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])ландшафтн\w+\s+архитектор\w*(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'adj_landscape_arch' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])ландшафтн\w+\s+дизайнер\w*(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'adj_landscape' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])мастер\w?-универсал\w*(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'adj_master' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])прораб\w?\s+коммерческ\w+(?:\s+объект\w*)?(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'adj_prorab_comm' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])прораб\w?\s+жил\w+(?:\s+объект\w*)?(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'adj_prorab_zhil' },
+
+    // Конкуренты
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])VamSvet(?:\.ru)?(?![а-яА-ЯёЁA-Za-z0-9])/g, t: 'comp_vamsvet' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])ВамСвет(?![а-яА-ЯёЁA-Za-z0-9])/g, t: 'comp_vamsvet' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])BasicDecor(?:\.ru)?(?![а-яА-ЯёЁA-Za-z0-9])/g, t: 'comp_basicdecor' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])БэйсикДекор(?![а-яА-ЯёЁA-Za-z0-9])/g, t: 'comp_basicdecor' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])Lu\.ru(?![а-яА-ЯёЁA-Za-z0-9])/g, t: 'comp_lu' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])Лю\.ру(?![а-яА-ЯёЁA-Za-z0-9])/g, t: 'comp_lu' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])Centrsvet(?![а-яА-ЯёЁA-Za-z0-9])/g, t: 'comp_centrsvet' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])Центрсвет(?![а-яА-ЯёЁA-Za-z0-9])/g, t: 'comp_centrsvet' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])Donolux(?![а-яА-ЯёЁA-Za-z0-9])/g, t: 'comp_donolux' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])Донолюкс(?![а-яА-ЯёЁA-Za-z0-9])/g, t: 'comp_donolux' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])(?:Ozon|WB|Wildberries|Я\.Маркет|Яндекс\.Маркет)(?![а-яА-ЯёЁA-Za-z0-9])/g, t: 'comp_marketplaces' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])маркетплейс\w*(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'comp_marketplaces' },
+
+    // Каналы
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])(?:реактиваци[яю]\s+)?спящ\w+\s+баз\w+(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'ch_reactivation' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])реактиваци\w+(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'ch_reactivation' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])реферальн\w+\s+сет\w*\s+L2(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'ch_l2_referral' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])реферальн\w+\s+систем\w+(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'ch_l2_referral' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])L2\s+(?:реферальн|программ|вознаграждени)\w*/gi, t: 'ch_l2_referral' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])прям\w+\s+продаж\w+(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'ch_direct_sales' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])(?:Skillbox|Contented|Details)(?![а-яА-ЯёЁA-Za-z0-9])/g, t: 'doc_incubator' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])школ\w+(?:,\s*(?:события|ивент\w*|комьюнит\w+))?(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'ch_schools' },
+
+    // Продукт и документы
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])личн\w+\s+кабинет\w*(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'doc_lk' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])MVP\s+кабинет\w*(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'doc_lk' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])лендинг\w*\s+с\s+калькулятор\w*(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'doc_landing_struct' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])лендинг\w*(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'doc_landing_struct' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])светорасч[её]т\w*(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'doc_lighting_calc' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])Dialux(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'doc_lighting_calc' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])геймификаци\w+(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'doc_loyalty' },
+
+    // Риски
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])недовери\w+\s+к\s+выплат\w+(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'risk_trust' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])налогов\w+\s+нагрузк\w+(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'risk_tax' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])44-ФЗ(?![а-яА-ЯёЁA-Za-z0-9])/g, t: 'risk_horeca_44fz' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])smart\s+home(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'risk_premium_smart' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])умн\w+\s+дом\w*(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'risk_premium_smart' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])электрокарниз\w*(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'doc_prd_mvp2' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])L2\s+как\s+трудов\w+(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'risk_l2_reclass' },
+
+    // Стратегия
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])(?:Голуб\w+\s+океан\w*|Blue\s+Ocean)(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'doc_blue_ocean' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])GTM(?![а-яА-ЯёЁA-Za-z0-9])/g, t: 'doc_gtm_launch' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])PRD(?![а-яА-ЯёЁA-Za-z0-9])/g, t: 'doc_prd' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])юнит-экономик\w+(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'econ_benchmarks' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])5\s*000\s+партн[её]р\w*(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'econ_5000_partners' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])сценари\w+\s+роста(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'econ_scenarios_40m' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])Action\s+Plan(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'ch_action_plan' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])мгновенн\w+\s+выплат\w*(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'idea_instant_money' }
+  ];
+
+  // ========== AUTO-LINK ENGINE ==========
+  // Tokenize HTML, обрабатываем только текст вне тегов <a>, <code>, <pre>
+  function autoLink(html) {
+    if (!html) return html;
+
+    // Build single combined regex with named groups via index
+    const combined = new RegExp(LINK_PATTERNS.map((p, i) => '(' + p.p.source + ')').join('|'),
+      LINK_PATTERNS[0].p.flags.replace(/g/g, '') + 'g');
+
+    const tokens = html.split(/(<[^>]+>)/);
+    let depth = 0;
+
+    return tokens.map(tok => {
+      if (!tok) return tok;
+      if (tok.startsWith('<')) {
+        if (/^<a\b/i.test(tok)) depth++;
+        else if (/^<\/a>/i.test(tok)) depth--;
+        else if (/^<code\b/i.test(tok) || /^<pre\b/i.test(tok)) depth++;
+        else if (/^<\/code>|^<\/pre>/i.test(tok)) depth--;
+        return tok;
+      }
+      if (depth > 0) return tok;
+
+      return tok.replace(combined, function() {
+        const args = Array.prototype.slice.call(arguments);
+        const match = args[0];
+        // Find which group matched (groups 1..LINK_PATTERNS.length)
+        for (let i = 0; i < LINK_PATTERNS.length; i++) {
+          if (args[i + 1] !== undefined) {
+            const target = LINK_PATTERNS[i].t;
+            const meta = window.LINK_TARGETS[target];
+            if (!meta) return match;
+            return '<a class="ref-link" data-target="' + target + '" data-file="' + meta.file + '" title="' + meta.title.replace(/"/g, '&quot;') + '">' + match + '</a>';
+          }
+        }
+        return match;
+      });
+    }).join('');
+  }
+
+  // ========== SOURCE-TAG → file lookup ==========
+  function findFileByPathPrefix(prefix) {
+    // Normalize: trim trailing slash
+    const norm = prefix.replace(/\/$/, '').replace(/^\.\/?/, '');
+    const found = FILES_INDEX.find(f => f.path.startsWith(norm));
+    return found ? found.id : null;
+  }
+
+  function getFilesInPath(prefix) {
+    const norm = prefix.replace(/\/$/, '');
+    return FILES_INDEX.filter(f => f.path.startsWith(norm));
+  }
+
   // ========== BUILD REFERENCE ==========
   const refTabs = document.getElementById('refTabs');
   const refSections = document.getElementById('refSections');
@@ -14490,14 +14962,14 @@ window.STRATEGY = [
     s.blocks.forEach(b => {
       blocksHtml += '<div class="card' + (b.full ? ' full' : '') + '">';
       blocksHtml += '<div class="card-label label-' + b.color + '">' + b.title + '</div>';
-      blocksHtml += b.content;
+      blocksHtml += autoLink(b.content);
       blocksHtml += '</div>';
     });
 
     let sourcesHtml = '';
     if (s.sources && s.sources.length) {
       sourcesHtml = '<div class="sources"><div class="sources-label">Источники данных</div>';
-      s.sources.forEach(src => sourcesHtml += '<span class="source-tag">' + src + '</span>');
+      s.sources.forEach(src => sourcesHtml += '<a class="source-tag" data-source-path="' + src + '">' + src + '</a>');
       sourcesHtml += '</div>';
     }
 
@@ -14551,7 +15023,7 @@ window.STRATEGY = [
       '<div class="strat-meta">' + s.part + '</div>' +
       '<h1 class="strat-title">' + s.title + '</h1>' +
       (s.subtitle ? '<div class="strat-subtitle">' + s.subtitle + '</div>' : '') +
-      '<div class="strat-body">' + s.body + '</div>';
+      '<div class="strat-body">' + autoLink(s.body) + '</div>';
     stratDocs.appendChild(doc);
   });
 
@@ -14630,6 +15102,102 @@ window.STRATEGY = [
   document.getElementById('menuToggle').addEventListener('click', () => {
     document.getElementById('stratNav')?.classList.toggle('open');
     document.getElementById('archNav')?.classList.toggle('open');
+  });
+
+  // ========== DRAWER ==========
+  const drawer = document.getElementById('drawer');
+  const drawerOverlay = document.getElementById('drawerOverlay');
+  const drawerClose = document.getElementById('drawerClose');
+  const drawerOpenFull = document.getElementById('drawerOpenFull');
+  const drawerBreadcrumb = document.getElementById('drawerBreadcrumb');
+  const drawerTitle = document.getElementById('drawerTitle');
+  const drawerContent = document.getElementById('drawerContent');
+  let drawerCurrentFile = null;
+
+  function openDrawer(fileId) {
+    if (!fileId) return;
+    const fileMeta = FILES_INDEX.find(f => f.id === fileId);
+    if (!fileMeta) return;
+    drawerCurrentFile = fileId;
+
+    // Get rendered content from the archive doc
+    const archiveDoc = document.getElementById(fileId);
+    if (!archiveDoc) return;
+
+    const body = archiveDoc.querySelector('[data-md]');
+    drawerContent.innerHTML = body ? body.innerHTML : '';
+    drawerBreadcrumb.textContent = fileMeta.path.replace(/\/[^\/]+$/, '');
+    drawerTitle.textContent = fileMeta.name;
+
+    drawer.classList.add('open');
+    drawerOverlay.classList.add('open');
+    drawer.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+    drawerContent.scrollTop = 0;
+  }
+
+  function openDrawerFolder(folderPath) {
+    const files = getFilesInPath(folderPath);
+    if (!files.length) return;
+
+    // Open first file, but show list of all files at top
+    const firstId = files[0].id;
+    openDrawer(firstId);
+
+    // Prepend folder file list
+    const list = document.createElement('div');
+    list.className = 'drawer-folder-list';
+    list.innerHTML = '<div class="drawer-folder-label">Все файлы в ' + folderPath + ' (' + files.length + ')</div>' +
+      files.map(f => '<a class="drawer-folder-link" data-file="' + f.id + '">' + f.name + '</a>').join('');
+    drawerContent.insertBefore(list, drawerContent.firstChild);
+
+    list.querySelectorAll('.drawer-folder-link').forEach(link => {
+      link.addEventListener('click', () => openDrawer(link.dataset.file));
+    });
+  }
+
+  function closeDrawer() {
+    drawer.classList.remove('open');
+    drawerOverlay.classList.remove('open');
+    drawer.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+    drawerCurrentFile = null;
+  }
+
+  drawerClose.addEventListener('click', closeDrawer);
+  drawerOverlay.addEventListener('click', closeDrawer);
+  drawerOpenFull.addEventListener('click', () => {
+    if (!drawerCurrentFile) return;
+    closeDrawer();
+    setTimeout(() => {
+      switchMode('archive');
+      showArchive(drawerCurrentFile);
+    }, 300);
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && drawer.classList.contains('open')) closeDrawer();
+  });
+
+  // Click handlers for ref-links (delegated)
+  document.addEventListener('click', e => {
+    const refLink = e.target.closest('.ref-link');
+    if (refLink) {
+      e.preventDefault();
+      const fileId = refLink.dataset.file;
+      if (fileId) openDrawer(fileId);
+      return;
+    }
+    const sourceTag = e.target.closest('.source-tag');
+    if (sourceTag) {
+      e.preventDefault();
+      const sourcePath = sourceTag.dataset.sourcePath;
+      if (sourcePath) {
+        // Try as folder first, fallback to file
+        const files = getFilesInPath(sourcePath);
+        if (files.length > 1) openDrawerFolder(sourcePath);
+        else if (files.length === 1) openDrawer(files[0].id);
+      }
+    }
   });
 
   // ========== HASH ROUTING ==========

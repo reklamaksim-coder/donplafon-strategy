@@ -11,6 +11,7 @@ const OUT = path.join(__dirname, 'index.html');
 
 const referenceContent = fs.readFileSync(path.join(__dirname, 'reference-content.js'), 'utf8');
 const strategyContent = fs.readFileSync(path.join(__dirname, 'strategy-content.js'), 'utf8');
+const linkMapping = fs.readFileSync(path.join(__dirname, 'link-mapping.js'), 'utf8');
 
 function walk(dir, base = '') {
   const out = [];
@@ -87,6 +88,15 @@ trees.forEach(t => {
   archiveSidebar += `<div class="archive-folder"><div class="archive-folder-name">${escapeHtml(t.name)}</div>${renderArchiveSidebar(t.children)}</div>`;
   archiveDocsHtml += renderArchiveContent(t.children, t.name);
 });
+
+// Build path→file mapping for source-tag deep links
+const allFilesFlat = [];
+trees.forEach(t => {
+  flattenFiles(t.children).forEach(f => {
+    allFilesFlat.push({ id: f.id, path: path.join(t.name, f.path), name: f.name.replace(/\.md$/, '') });
+  });
+});
+const filesIndex = JSON.stringify(allFilesFlat);
 
 const html = `<!DOCTYPE html>
 <html lang="ru">
@@ -570,8 +580,174 @@ const html = `<!DOCTYPE html>
   /* SOURCES */
   .sources { margin-top: 32px; padding-top: 18px; border-top: 1px solid var(--line); }
   .sources-label { font-family: var(--mono); font-size: 10px; color: var(--ink-4); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 10px; }
-  .source-tag { display: inline-block; font-family: var(--mono); font-size: 11px; color: var(--ink-3); padding: 3px 10px; border: 1px solid var(--line); border-radius: 4px; margin: 0 6px 6px 0; transition: all 0.15s var(--ease); }
-  .source-tag:hover { border-color: var(--gold-line); color: var(--gold); }
+  .source-tag { display: inline-block; font-family: var(--mono); font-size: 11px; color: var(--ink-3); padding: 3px 10px; border: 1px solid var(--line); border-radius: 4px; margin: 0 6px 6px 0; transition: all 0.15s var(--ease); cursor: pointer; text-decoration: none; }
+  .source-tag:hover { border-color: var(--gold-line); color: var(--gold); background: var(--gold-tint); }
+  .source-tag::after { content: ' ↗'; opacity: 0; margin-left: 2px; transition: opacity 0.15s var(--ease); }
+  .source-tag:hover::after { opacity: 1; }
+
+  /* REF-LINK — inline deep-link to archive */
+  .ref-link { color: inherit; text-decoration: none; cursor: pointer; border-bottom: 1px dotted var(--gold-line); padding-bottom: 1px; transition: all 0.15s var(--ease); position: relative; white-space: nowrap; }
+  .ref-link:hover { color: var(--gold); border-bottom-color: var(--gold); border-bottom-style: solid; }
+  .ref-link::after { content: '↗'; font-size: 0.7em; vertical-align: super; margin-left: 1px; color: var(--gold); opacity: 0.5; transition: opacity 0.15s var(--ease); font-weight: 600; }
+  .ref-link:hover::after { opacity: 1; }
+  /* Don't underline links inside table cells double */
+  .data-table .ref-link, .kpi-table .ref-link { white-space: normal; }
+  /* Variant for inside <strong> / <b> */
+  strong .ref-link, b .ref-link { color: inherit; }
+  strong .ref-link:hover, b .ref-link:hover { color: var(--gold); }
+
+  /* DRAWER */
+  .drawer-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(5, 7, 12, 0.6);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    z-index: 200;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s var(--ease);
+  }
+  .drawer-overlay.open { opacity: 1; pointer-events: auto; }
+
+  .drawer {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 65%;
+    max-width: 880px;
+    background: var(--bg);
+    border-left: 1px solid var(--line-strong);
+    z-index: 201;
+    transform: translateX(100%);
+    transition: transform 0.32s var(--ease);
+    display: flex;
+    flex-direction: column;
+    box-shadow: -24px 0 60px rgba(0, 0, 0, 0.5);
+  }
+  .drawer.open { transform: translateX(0); }
+
+  .drawer-header {
+    padding: 16px 28px;
+    border-bottom: 1px solid var(--line);
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-shrink: 0;
+    background: var(--bg-soft);
+  }
+  .drawer-meta {
+    flex: 1;
+    min-width: 0;
+  }
+  .drawer-breadcrumb {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--ink-4);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .drawer-title {
+    font-family: var(--serif);
+    font-size: 16px;
+    color: var(--ink);
+    margin-top: 4px;
+    font-variation-settings: 'opsz' 60;
+    line-height: 1.3;
+  }
+  .drawer-actions { display: flex; gap: 8px; flex-shrink: 0; }
+  .drawer-btn {
+    background: transparent;
+    border: 1px solid var(--line);
+    color: var(--ink-3);
+    font-family: var(--sans);
+    font-size: 12px;
+    font-weight: 500;
+    padding: 8px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.15s var(--ease);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .drawer-btn:hover { color: var(--ink); border-color: var(--gold-line); }
+  .drawer-btn-icon {
+    background: transparent;
+    border: 1px solid var(--line);
+    color: var(--ink-3);
+    font-size: 16px;
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s var(--ease);
+  }
+  .drawer-btn-icon:hover { color: var(--ink); border-color: var(--ink-3); background: var(--bg-card); }
+
+  .drawer-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 32px 40px 60px;
+  }
+  .drawer-content { font-size: 15px; line-height: 1.7; }
+  .drawer-content h1 { font-family: var(--serif); font-size: 28px; color: var(--ink); margin: 0 0 14px; line-height: 1.2; font-weight: 500; font-variation-settings: 'opsz' 144, 'SOFT' 50; }
+  .drawer-content h2 { font-family: var(--serif); font-size: 22px; color: var(--ink); margin: 24px 0 12px; padding-bottom: 8px; border-bottom: 1px solid var(--line-soft); font-weight: 500; }
+  .drawer-content h3 { font-family: var(--sans); font-size: 16px; color: var(--ink); margin: 20px 0 10px; font-weight: 700; }
+  .drawer-content h4 { font-family: var(--sans); font-size: 14px; color: var(--ink); margin: 16px 0 8px; font-weight: 700; }
+  .drawer-content p { font-size: 14.5px; color: var(--ink-2); margin: 12px 0; line-height: 1.7; }
+  .drawer-content ul, .drawer-content ol { margin: 12px 0 12px 22px; }
+  .drawer-content li { font-size: 14.5px; color: var(--ink-2); padding: 4px 0; line-height: 1.6; }
+  .drawer-content strong { color: var(--ink); font-weight: 600; }
+  .drawer-content em { color: var(--ink-3); font-style: italic; }
+  .drawer-content code { font-family: var(--mono); background: var(--bg-card); color: var(--gold); padding: 2px 6px; border-radius: 3px; font-size: 12.5px; border: 1px solid var(--line); }
+  .drawer-content blockquote { font-family: var(--serif); font-style: italic; border-left: 2px solid var(--gold); padding: 8px 0 8px 18px; margin: 14px 0; color: var(--ink-2); font-size: 16px; line-height: 1.5; }
+  .drawer-content table { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: 13.5px; }
+  .drawer-content th { background: var(--bg-card); color: var(--ink-3); font-family: var(--mono); font-size: 10px; text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--line); font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; }
+  .drawer-content td { padding: 10px 12px; border-bottom: 1px solid var(--line-soft); color: var(--ink-2); vertical-align: top; }
+  .drawer-content hr { border: none; border-top: 1px solid var(--line); margin: 24px 0; }
+  .drawer-content a { color: var(--gold); text-decoration: none; border-bottom: 1px solid var(--gold-line); }
+
+  .drawer-folder-list {
+    background: var(--bg-soft);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin: 16px 0 24px;
+  }
+  .drawer-folder-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--ink-4);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .drawer-folder-link {
+    display: block;
+    padding: 5px 0;
+    font-size: 13px;
+    color: var(--ink-2);
+    text-decoration: none;
+    cursor: pointer;
+    transition: color 0.15s var(--ease);
+    border-bottom: 1px solid transparent;
+  }
+  .drawer-folder-link:hover { color: var(--gold); }
+
+  @media (max-width: 840px) {
+    .drawer { width: 100%; max-width: none; }
+    .drawer-body { padding: 24px 20px 80px; }
+    .drawer-header { padding: 14px 20px; }
+    .drawer-btn { display: none; }
+  }
 
   /* MUTED */
   .muted { color: var(--ink-4); font-size: 11px; font-style: italic; }
@@ -849,8 +1025,29 @@ const html = `<!DOCTYPE html>
 
 </main>
 
+<!-- DRAWER for archive deep-dive -->
+<div class="drawer-overlay" id="drawerOverlay"></div>
+<aside class="drawer" id="drawer" aria-hidden="true">
+  <div class="drawer-header">
+    <div class="drawer-meta">
+      <div class="drawer-breadcrumb" id="drawerBreadcrumb"></div>
+      <div class="drawer-title" id="drawerTitle"></div>
+    </div>
+    <div class="drawer-actions">
+      <button class="drawer-btn" id="drawerOpenFull">Открыть в архиве →</button>
+      <button class="drawer-btn-icon" id="drawerClose" aria-label="Закрыть">✕</button>
+    </div>
+  </div>
+  <div class="drawer-body">
+    <div class="drawer-content" id="drawerContent"></div>
+  </div>
+</aside>
+
 <button class="menu-toggle" id="menuToggle">☰</button>
 
+<script>
+${linkMapping}
+</script>
 <script>
 ${referenceContent}
 </script>
@@ -859,6 +1056,144 @@ ${strategyContent}
 </script>
 
 <script>
+  // ========== FILES INDEX (для source-tag deep links) ==========
+  const FILES_INDEX = ${filesIndex};
+
+  // ========== AUTO-LINK PATTERNS ==========
+  // Сопоставление слов/фраз в тексте → target из LINK_TARGETS (link-mapping.js)
+  // Порядок важен: более специфичные паттерны сначала
+  const LINK_PATTERNS = [
+    // Сегменты — основные
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])Premium-студи[яиюейяи]\\w*(?:\\s+полного\\s+цикла)?(?![а-яА-ЯёЁA-Za-z0-9])/g, t: 'seg_premium' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])студи[яюиейя]\\s+полного\\s+цикла(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'seg_premium' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])Premium-сегмент\\w*(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'seg_premium' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])дизайнер[а-я]?-блогер\\w*(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'seg_blogger' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])инфлюенсер\\w*(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'seg_blogger' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])Home\\s+Staging(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'seg_decorator' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])дизайнер[а-я]?-декоратор\\w*(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'seg_decorator' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])архитектор\\w*\\s+HoReCa(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'seg_horeca' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])HoReCa(?![а-яА-ЯёЁA-Za-z0-9])/g, t: 'seg_horeca' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])комплектатор[а-я]?-аутсорсер\\w*(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'seg_complektator' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])комплектатор[а-я]*(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'seg_complektator' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])начинающ\\w+\\s+дизайнер\\w*(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'seg_student' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])региональн\\w+\\s+(?:партн[её]р\\w*|дизайнер\\w*)(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'seg_regional' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])частн\\w+\\s+(?:дизайнер\\w*-)?фрилансер\\w*(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'seg_freelancer' },
+
+    // Смежные
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])потолочник[а-я]*(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'adj_potolok' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])электрик[а-я]?-монтажник\\w*(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'adj_electric' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])ландшафтн\\w+\\s+архитектор\\w*(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'adj_landscape_arch' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])ландшафтн\\w+\\s+дизайнер\\w*(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'adj_landscape' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])мастер\\w?-универсал\\w*(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'adj_master' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])прораб\\w?\\s+коммерческ\\w+(?:\\s+объект\\w*)?(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'adj_prorab_comm' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])прораб\\w?\\s+жил\\w+(?:\\s+объект\\w*)?(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'adj_prorab_zhil' },
+
+    // Конкуренты
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])VamSvet(?:\\.ru)?(?![а-яА-ЯёЁA-Za-z0-9])/g, t: 'comp_vamsvet' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])ВамСвет(?![а-яА-ЯёЁA-Za-z0-9])/g, t: 'comp_vamsvet' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])BasicDecor(?:\\.ru)?(?![а-яА-ЯёЁA-Za-z0-9])/g, t: 'comp_basicdecor' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])БэйсикДекор(?![а-яА-ЯёЁA-Za-z0-9])/g, t: 'comp_basicdecor' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])Lu\\.ru(?![а-яА-ЯёЁA-Za-z0-9])/g, t: 'comp_lu' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])Лю\\.ру(?![а-яА-ЯёЁA-Za-z0-9])/g, t: 'comp_lu' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])Centrsvet(?![а-яА-ЯёЁA-Za-z0-9])/g, t: 'comp_centrsvet' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])Центрсвет(?![а-яА-ЯёЁA-Za-z0-9])/g, t: 'comp_centrsvet' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])Donolux(?![а-яА-ЯёЁA-Za-z0-9])/g, t: 'comp_donolux' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])Донолюкс(?![а-яА-ЯёЁA-Za-z0-9])/g, t: 'comp_donolux' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])(?:Ozon|WB|Wildberries|Я\\.Маркет|Яндекс\\.Маркет)(?![а-яА-ЯёЁA-Za-z0-9])/g, t: 'comp_marketplaces' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])маркетплейс\\w*(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'comp_marketplaces' },
+
+    // Каналы
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])(?:реактиваци[яю]\\s+)?спящ\\w+\\s+баз\\w+(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'ch_reactivation' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])реактиваци\\w+(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'ch_reactivation' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])реферальн\\w+\\s+сет\\w*\\s+L2(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'ch_l2_referral' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])реферальн\\w+\\s+систем\\w+(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'ch_l2_referral' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])L2\\s+(?:реферальн|программ|вознаграждени)\\w*/gi, t: 'ch_l2_referral' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])прям\\w+\\s+продаж\\w+(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'ch_direct_sales' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])(?:Skillbox|Contented|Details)(?![а-яА-ЯёЁA-Za-z0-9])/g, t: 'doc_incubator' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])школ\\w+(?:,\\s*(?:события|ивент\\w*|комьюнит\\w+))?(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'ch_schools' },
+
+    // Продукт и документы
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])личн\\w+\\s+кабинет\\w*(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'doc_lk' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])MVP\\s+кабинет\\w*(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'doc_lk' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])лендинг\\w*\\s+с\\s+калькулятор\\w*(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'doc_landing_struct' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])лендинг\\w*(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'doc_landing_struct' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])светорасч[её]т\\w*(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'doc_lighting_calc' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])Dialux(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'doc_lighting_calc' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])геймификаци\\w+(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'doc_loyalty' },
+
+    // Риски
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])недовери\\w+\\s+к\\s+выплат\\w+(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'risk_trust' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])налогов\\w+\\s+нагрузк\\w+(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'risk_tax' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])44-ФЗ(?![а-яА-ЯёЁA-Za-z0-9])/g, t: 'risk_horeca_44fz' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])smart\\s+home(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'risk_premium_smart' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])умн\\w+\\s+дом\\w*(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'risk_premium_smart' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])электрокарниз\\w*(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'doc_prd_mvp2' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])L2\\s+как\\s+трудов\\w+(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'risk_l2_reclass' },
+
+    // Стратегия
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])(?:Голуб\\w+\\s+океан\\w*|Blue\\s+Ocean)(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'doc_blue_ocean' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])GTM(?![а-яА-ЯёЁA-Za-z0-9])/g, t: 'doc_gtm_launch' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])PRD(?![а-яА-ЯёЁA-Za-z0-9])/g, t: 'doc_prd' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])юнит-экономик\\w+(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'econ_benchmarks' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])5\\s*000\\s+партн[её]р\\w*(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'econ_5000_partners' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])сценари\\w+\\s+роста(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'econ_scenarios_40m' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])Action\\s+Plan(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'ch_action_plan' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])мгновенн\\w+\\s+выплат\\w*(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'idea_instant_money' }
+  ];
+
+  // ========== AUTO-LINK ENGINE ==========
+  // Tokenize HTML, обрабатываем только текст вне тегов <a>, <code>, <pre>
+  function autoLink(html) {
+    if (!html) return html;
+
+    // Build single combined regex with named groups via index
+    const combined = new RegExp(LINK_PATTERNS.map((p, i) => '(' + p.p.source + ')').join('|'),
+      LINK_PATTERNS[0].p.flags.replace(/g/g, '') + 'g');
+
+    const tokens = html.split(/(<[^>]+>)/);
+    let depth = 0;
+
+    return tokens.map(tok => {
+      if (!tok) return tok;
+      if (tok.startsWith('<')) {
+        if (/^<a\\b/i.test(tok)) depth++;
+        else if (/^<\\/a>/i.test(tok)) depth--;
+        else if (/^<code\\b/i.test(tok) || /^<pre\\b/i.test(tok)) depth++;
+        else if (/^<\\/code>|^<\\/pre>/i.test(tok)) depth--;
+        return tok;
+      }
+      if (depth > 0) return tok;
+
+      return tok.replace(combined, function() {
+        const args = Array.prototype.slice.call(arguments);
+        const match = args[0];
+        // Find which group matched (groups 1..LINK_PATTERNS.length)
+        for (let i = 0; i < LINK_PATTERNS.length; i++) {
+          if (args[i + 1] !== undefined) {
+            const target = LINK_PATTERNS[i].t;
+            const meta = window.LINK_TARGETS[target];
+            if (!meta) return match;
+            return '<a class="ref-link" data-target="' + target + '" data-file="' + meta.file + '" title="' + meta.title.replace(/"/g, '&quot;') + '">' + match + '</a>';
+          }
+        }
+        return match;
+      });
+    }).join('');
+  }
+
+  // ========== SOURCE-TAG → file lookup ==========
+  function findFileByPathPrefix(prefix) {
+    // Normalize: trim trailing slash
+    const norm = prefix.replace(/\\/$/, '').replace(/^\\.\\/?/, '');
+    const found = FILES_INDEX.find(f => f.path.startsWith(norm));
+    return found ? found.id : null;
+  }
+
+  function getFilesInPath(prefix) {
+    const norm = prefix.replace(/\\/$/, '');
+    return FILES_INDEX.filter(f => f.path.startsWith(norm));
+  }
+
   // ========== BUILD REFERENCE ==========
   const refTabs = document.getElementById('refTabs');
   const refSections = document.getElementById('refSections');
@@ -878,14 +1213,14 @@ ${strategyContent}
     s.blocks.forEach(b => {
       blocksHtml += '<div class="card' + (b.full ? ' full' : '') + '">';
       blocksHtml += '<div class="card-label label-' + b.color + '">' + b.title + '</div>';
-      blocksHtml += b.content;
+      blocksHtml += autoLink(b.content);
       blocksHtml += '</div>';
     });
 
     let sourcesHtml = '';
     if (s.sources && s.sources.length) {
       sourcesHtml = '<div class="sources"><div class="sources-label">Источники данных</div>';
-      s.sources.forEach(src => sourcesHtml += '<span class="source-tag">' + src + '</span>');
+      s.sources.forEach(src => sourcesHtml += '<a class="source-tag" data-source-path="' + src + '">' + src + '</a>');
       sourcesHtml += '</div>';
     }
 
@@ -939,7 +1274,7 @@ ${strategyContent}
       '<div class="strat-meta">' + s.part + '</div>' +
       '<h1 class="strat-title">' + s.title + '</h1>' +
       (s.subtitle ? '<div class="strat-subtitle">' + s.subtitle + '</div>' : '') +
-      '<div class="strat-body">' + s.body + '</div>';
+      '<div class="strat-body">' + autoLink(s.body) + '</div>';
     stratDocs.appendChild(doc);
   });
 
@@ -1018,6 +1353,102 @@ ${strategyContent}
   document.getElementById('menuToggle').addEventListener('click', () => {
     document.getElementById('stratNav')?.classList.toggle('open');
     document.getElementById('archNav')?.classList.toggle('open');
+  });
+
+  // ========== DRAWER ==========
+  const drawer = document.getElementById('drawer');
+  const drawerOverlay = document.getElementById('drawerOverlay');
+  const drawerClose = document.getElementById('drawerClose');
+  const drawerOpenFull = document.getElementById('drawerOpenFull');
+  const drawerBreadcrumb = document.getElementById('drawerBreadcrumb');
+  const drawerTitle = document.getElementById('drawerTitle');
+  const drawerContent = document.getElementById('drawerContent');
+  let drawerCurrentFile = null;
+
+  function openDrawer(fileId) {
+    if (!fileId) return;
+    const fileMeta = FILES_INDEX.find(f => f.id === fileId);
+    if (!fileMeta) return;
+    drawerCurrentFile = fileId;
+
+    // Get rendered content from the archive doc
+    const archiveDoc = document.getElementById(fileId);
+    if (!archiveDoc) return;
+
+    const body = archiveDoc.querySelector('[data-md]');
+    drawerContent.innerHTML = body ? body.innerHTML : '';
+    drawerBreadcrumb.textContent = fileMeta.path.replace(/\\/[^\\/]+$/, '');
+    drawerTitle.textContent = fileMeta.name;
+
+    drawer.classList.add('open');
+    drawerOverlay.classList.add('open');
+    drawer.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+    drawerContent.scrollTop = 0;
+  }
+
+  function openDrawerFolder(folderPath) {
+    const files = getFilesInPath(folderPath);
+    if (!files.length) return;
+
+    // Open first file, but show list of all files at top
+    const firstId = files[0].id;
+    openDrawer(firstId);
+
+    // Prepend folder file list
+    const list = document.createElement('div');
+    list.className = 'drawer-folder-list';
+    list.innerHTML = '<div class="drawer-folder-label">Все файлы в ' + folderPath + ' (' + files.length + ')</div>' +
+      files.map(f => '<a class="drawer-folder-link" data-file="' + f.id + '">' + f.name + '</a>').join('');
+    drawerContent.insertBefore(list, drawerContent.firstChild);
+
+    list.querySelectorAll('.drawer-folder-link').forEach(link => {
+      link.addEventListener('click', () => openDrawer(link.dataset.file));
+    });
+  }
+
+  function closeDrawer() {
+    drawer.classList.remove('open');
+    drawerOverlay.classList.remove('open');
+    drawer.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+    drawerCurrentFile = null;
+  }
+
+  drawerClose.addEventListener('click', closeDrawer);
+  drawerOverlay.addEventListener('click', closeDrawer);
+  drawerOpenFull.addEventListener('click', () => {
+    if (!drawerCurrentFile) return;
+    closeDrawer();
+    setTimeout(() => {
+      switchMode('archive');
+      showArchive(drawerCurrentFile);
+    }, 300);
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && drawer.classList.contains('open')) closeDrawer();
+  });
+
+  // Click handlers for ref-links (delegated)
+  document.addEventListener('click', e => {
+    const refLink = e.target.closest('.ref-link');
+    if (refLink) {
+      e.preventDefault();
+      const fileId = refLink.dataset.file;
+      if (fileId) openDrawer(fileId);
+      return;
+    }
+    const sourceTag = e.target.closest('.source-tag');
+    if (sourceTag) {
+      e.preventDefault();
+      const sourcePath = sourceTag.dataset.sourcePath;
+      if (sourcePath) {
+        // Try as folder first, fallback to file
+        const files = getFilesInPath(sourcePath);
+        if (files.length > 1) openDrawerFolder(sourcePath);
+        else if (files.length === 1) openDrawer(files[0].id);
+      }
+    }
   });
 
   // ========== HASH ROUTING ==========

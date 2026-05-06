@@ -1143,12 +1143,14 @@ ${strategyContent}
 
   // ========== AUTO-LINK ENGINE ==========
   // Tokenize HTML, обрабатываем только текст вне тегов <a>, <code>, <pre>
+  const COMBINED_RE = (function() {
+    return new RegExp(LINK_PATTERNS.map(p => '(' + p.p.source + ')').join('|'), 'gi');
+  })();
+
   function autoLink(html) {
     if (!html) return html;
-
-    // Build single combined regex with named groups via index
-    const combined = new RegExp(LINK_PATTERNS.map((p, i) => '(' + p.p.source + ')').join('|'),
-      LINK_PATTERNS[0].p.flags.replace(/g/g, '') + 'g');
+    // Reset lastIndex on global regex (otherwise stateful per-call bugs)
+    COMBINED_RE.lastIndex = 0;
 
     const tokens = html.split(/(<[^>]+>)/);
     let depth = 0;
@@ -1164,7 +1166,7 @@ ${strategyContent}
       }
       if (depth > 0) return tok;
 
-      return tok.replace(combined, function() {
+      return tok.replace(COMBINED_RE, function() {
         const args = Array.prototype.slice.call(arguments);
         const match = args[0];
         // Find which group matched (groups 1..LINK_PATTERNS.length)

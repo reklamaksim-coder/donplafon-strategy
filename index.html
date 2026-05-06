@@ -14887,7 +14887,82 @@ window.STRATEGY = [
     { p: /(?<![а-яА-ЯёЁA-Za-z0-9])5\s*000\s+партн[её]р\w*(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'econ_5000_partners' },
     { p: /(?<![а-яА-ЯёЁA-Za-z0-9])сценари\w+\s+роста(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'econ_scenarios_40m' },
     { p: /(?<![а-яА-ЯёЁA-Za-z0-9])Action\s+Plan(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'ch_action_plan' },
-    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])мгновенн\w+\s+выплат\w*(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'idea_instant_money' }
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])мгновенн\w+\s+выплат\w*(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'idea_instant_money' },
+
+    // === МЕТРИКИ И ЦИФРЫ ===
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])40М\+?(?:\s*₽)?(?![а-яА-ЯёЁA-Za-z0-9])/g, t: 'econ_scenarios_40m' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])20М(?:\s*₽)?\s*(?:\/\s*мес)?(?![а-яА-ЯёЁA-Za-z0-9])/g, t: 'market_partner_program' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])LTV\/CAC(?:\s*[\d.]+x?)?(?![а-яА-ЯёЁA-Za-z0-9])/g, t: 'econ_benchmarks' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])CAC(?![а-яА-ЯёЁA-Za-z0-9])/g, t: 'econ_benchmarks' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])LTV(?![а-яА-ЯёЁA-Za-z0-9])/g, t: 'econ_benchmarks' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])ARPPU(?![а-яА-ЯёЁA-Za-z0-9])/g, t: 'econ_benchmarks' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])AMPPU(?![а-яА-ЯёЁA-Za-z0-9])/g, t: 'econ_benchmarks' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])GMV(?![а-яА-ЯёЁA-Za-z0-9])/g, t: 'econ_5000_partners' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])EBITDA(?![а-яА-ЯёЁA-Za-z0-9])/g, t: 'econ_5000_partners' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])TAM(?![а-яА-ЯёЁA-Za-z0-9])/g, t: 'market_size' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])SAM(?![а-яА-ЯёЁA-Za-z0-9])/g, t: 'market_size' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])SOM(?![а-яА-ЯёЁA-Za-z0-9])/g, t: 'market_size' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])5\s*000\s*(?:активн\w*\s*)?(?:баз\w*|спящ\w*)/gi, t: 'ch_reactivation' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])1\s*500\s*(?:активн\w*)?(?:\s*партн[её]р\w*)?(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'econ_5000_partners' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])1\s*000\s*(?:активн\w*)?\s*партн[её]р\w*(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'market_partner_program' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])\+500\s*(?:новых\s*)?партн[её]р\w*(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'ch_500_plan' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])\+33%(?![а-яА-ЯёЁA-Za-z0-9])/g, t: 'econ_scenarios_40m' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])\+6\s*700\s*₽?(?![а-яА-ЯёЁA-Za-z0-9])/g, t: 'econ_scenarios_40m' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])26\s*700\s*₽?(?![а-яА-ЯёЁA-Za-z0-9])/g, t: 'econ_scenarios_40m' },
+
+    // === КОНКРЕТНЫЕ РИСКИ И БОЛИ ===
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])lock-in(?:\s+эффект\w*)?(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'risk_lock_in' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])showrooming(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'risk_marketplaces' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])ошибк\w+\s+(?:в\s+)?(?:ТЗ|спецификаци\w+|менеджер\w+)/gi, t: 'risk_spec_errors' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])коллапс\w*\s+SLA(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'risk_sla_collapse' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])крах\s+SLA(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'risk_sla_collapse' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])SLA(?![а-яА-ЯёЁA-Za-z0-9])/g, t: 'risk_sla_low' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])стресс-тест\w*(?:\s+Expert)?(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'seg_premium_econ' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])retention(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'risk_retention' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])churn(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'risk_retention' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])payback(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'econ_benchmarks' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])защит\w+\s+проект\w*(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'risk_marketplaces' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])(?:Out-of-stock|out-of-stock|дефицит\s+(?:складск\w+\s+)?остатк\w+)(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'risk_stock_out' },
+
+    // === ВЕНДОРЫ И ИНСТРУМЕНТЫ ===
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])DaDa(?:\s+API)?(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'doc_lk' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])(?:1С|1C)(?![а-яА-ЯёЁA-Za-z0-9])/g, t: 'doc_lk' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])Padel(?:-турнир\w*)?(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'doc_handbook' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])MosBuild(?![а-яА-ЯёЁA-Za-z0-9])/g, t: 'doc_handbook' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])ArchDaily(?![а-яА-ЯёЁA-Za-z0-9])/g, t: 'doc_handbook' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])smart-импорт\w*(?:\s+смет\w*)?(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'doc_prd_mvp2' },
+
+    // === ЛЮДИ И УРОВНИ ===
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])Expert(?:-уровн\w*|-партн\w*|-сегмент\w*)?(?![а-яА-ЯёЁA-Za-z0-9])/g, t: 'doc_loyalty' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])(?:Base|Pro)\s*\/\s*(?:Base|Pro|Expert)(?![а-яА-ЯёЁA-Za-z0-9])/g, t: 'doc_loyalty' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])самозанят\w+(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'risk_tax' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])НДФЛ(?![а-яА-ЯёЁA-Za-z0-9])/g, t: 'risk_tax' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])ФНС(?![а-яА-ЯёЁA-Za-z0-9])/g, t: 'risk_tax' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])(?:сертификат\w+|сертификаци\w+)\s*(?:ЕАС|ГОСТ)/gi, t: 'risk_certification' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])(?:ЕАС|ГОСТ)(?![а-яА-ЯёЁA-Za-z0-9])/g, t: 'risk_certification' },
+
+    // === КЛЮЧЕВЫЕ ТЕЗИСЫ ===
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])кросс-сейл\w*(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'econ_scenarios_40m' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])цена\w+\s+войн\w+(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'risk_price_war' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])монобренд\w*(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'risk_competitor_drift' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])AJTBD(?![а-яА-ЯёЁA-Za-z0-9])/g, t: 'doc_landing_struct' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])белый\s+лейбл(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'idea_white_label' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])White[\s-]?[Ll]abel(?![а-яА-ЯёЁA-Za-z0-9])/g, t: 'idea_white_label' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])BIM(?![а-яА-ЯёЁA-Za-z0-9])/g, t: 'idea_bim_integration' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])IES(?:-файл\w*)?(?![а-яА-ЯёЁA-Za-z0-9])/g, t: 'idea_bim_integration' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])Деньги\s+вчера(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'idea_instant_money' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])fintech(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'idea_fintech' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])финтех(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'idea_fintech' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])AI[-\s]?(?:Killer|Scouter|подбор\w*)(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'idea_ai_killer' },
+
+    // === ТЕХОБСЛУЖИВАНИЕ ===
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])тех(?:нический)?\s*аудит\w*(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'idea_tech_outsource' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])тех\.?\s*департамент\w*\s+на\s+аутсорс\w*(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'idea_tech_outsource' },
+
+    // === GO/PIVOT ===
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])Go\/?No-?Go(?:\s+вердикт)?(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'analysis_go_pivot' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])PMF(?![а-яА-ЯёЁA-Za-z0-9])/g, t: 'analysis_go_pivot' },
+    { p: /(?<![а-яА-ЯёЁA-Za-z0-9])product[-\s]market\s+fit(?![а-яА-ЯёЁA-Za-z0-9])/gi, t: 'analysis_go_pivot' }
   ];
 
   // ========== AUTO-LINK ENGINE ==========
